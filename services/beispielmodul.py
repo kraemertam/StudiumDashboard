@@ -2,7 +2,7 @@ from openpyxl import load_workbook
 import data.Students
 
 
-id = input("Gib hier deine id ein:")
+student_id = input("Gib hier deine id ein:")
 
 
 def login_check(id):

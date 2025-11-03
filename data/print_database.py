@@ -20,5 +20,9 @@ def print_databank():
     print("Zuordnung:")
     for row in cursor.fetchall():
         print(row)
+    cursor.execute("SELECT * FROM studentoverview")
+    print("Übersicht Studenten:")
+    for row in cursor.fetchall():
+        print(row)
 
     connection.close()

@@ -8,6 +8,17 @@ class Module:
     name: str
     etc: int
     status: str = field(default="open", init=True)
+    grade: int = field(default=None, init=True)
+
+    def change_status(self):
+        if self.status == "open":
+           self.status = "in progress"
+        elif self.status == "in progress":
+            self.status = "done"
+
+    def set_grade(self, grade):
+        self.grade = grade
+
 
     #@staticmethod #nochmal checken: Doch eher classmethod?
     #def create(name: str, etc: int, id = str):

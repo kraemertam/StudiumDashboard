@@ -7,4 +7,3 @@ print("Paket Module wurde geladen")
 # from .student_service import Student
 # Dann kann du in die andere Dateien direkt schreiben: "from logic import Student" statt den kompletten Pfad "logic.student_service.Student"
 
-from services import beispielmodul

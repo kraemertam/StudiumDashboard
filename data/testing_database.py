@@ -4,20 +4,25 @@ from data.create_database import insert_moduledata_db, insert_coursedata_db, ini
 from enroll_course_db import enroll_course
 from print_database import print_databank
 
+# --------------- TRYING TESTDATA ----------------------------------------------------------------------------
 
-# --- DATENBANK AUFSETZEN ---
+#--- SET UP DATABASE AND READ IN TEST DATA---
 #start_databank()
 #insert_moduledata_db()
 #insert_coursedata_db()
 #initialize_course()
 
 
-# -- STUDENTEN EINSCHREIBEN ---
+# -- CREATE STUDENTS ---
 #new_student_db("S11", "Tim", "Tuer")
-#enroll_course("S123", "FS-BAAKI-01")
+#new_student_db("S123", "Tamara", "Krämer")
 
 
-# -- DATENBANK ANZEIGEN ---
+# -- ENROLL STUDENTS IN COURSE ---
+#enroll_course("S123", "FS-BAAKI-01", 8)
+
+
+# -- PRINT DATABASE ---
 print_databank()
 
 

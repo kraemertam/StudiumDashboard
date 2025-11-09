@@ -1,12 +1,12 @@
 import sqlite3
-from add_to_database import new_modul_db
-
 from data.add_to_database import new_modul_db, new_course_db, add_modules_to_course
 
-
-# --- Datenbank wird aufgesetzt ---
+# ---DB: Funktionen, um die Datenbank initial aufzusetzen und initiale Daten einzufügen.---
 
 def start_databank():
+    """Die Datenbank wird initial aufgesetzt.
+    Es werden die Tabellen Student, Course, Module, Course-Module, StudentenOverview erstellt."""
+
     connection = sqlite3.connect("databank.db")
     connection.execute("PRAGMA foreign_keys = ON")
     cursor = connection.cursor()
@@ -14,7 +14,10 @@ def start_databank():
            CREATE TABLE IF NOT EXISTS student (
                student_id TEXT PRIMARY KEY NOT NULL,
                student_name TEXT NOT NULL,
-               student_lastname TEXT NOT NULL
+               student_lastname TEXT NOT NULL,
+               student_course TEXT REFERENCES course(id),
+               student_etc INT REFERENCES course(etc),
+               student_semester INT
             )
            """)
 
@@ -67,6 +70,7 @@ def start_databank():
     connection.close()
 
 def insert_moduledata_db():
+    """ Initiale Daten für Module werden eingelesen."""
     with open ("module.csv", "r", encoding="utf-8") as moduleliste:
         for line in moduleliste:
             module = line.strip().strip('"').split(", ")
@@ -78,6 +82,7 @@ def insert_moduledata_db():
             new_modul_db(module_id, module_name, module_etc)
 
 def insert_coursedata_db():
+    """Initiale Daten für Course werden eingelesen."""
     with open ("course.csv", "r", encoding="utf-8") as courselist:
         for line in courselist:
             course = line.strip().strip('"').split(", ")
@@ -90,6 +95,7 @@ def insert_coursedata_db():
             new_course_db(course_id, course_name, course_title, course_etc)
 
 def initialize_course():
+    """Initial wird ein Kurs mit Modulen verbunden"""
     with open ("module.csv", "r", encoding="utf-8") as moduleliste:
         for line in moduleliste:
             module = line.strip().strip('"').split(", ")

@@ -1,10 +1,9 @@
 import sqlite3
 from pathlib import Path
 
-from numpy.f2py.crackfortran import true_intent_list
+# --- Datenbankabfragen ---
 
-
-def select_student_db():
+def select_student_db()->list:
     connection = sqlite3.connect("databank.db")
     cursor = connection.cursor()
     connection.execute("PRAGMA foreign_keys = ON")
@@ -16,7 +15,8 @@ def select_student_db():
     connection.close()
     return list_of_students
 
-def check_student(student_id):
+
+def check_student(student_id: str) -> bool:
     db_path = Path(__file__).resolve().parent / "databank.db"
     connection = sqlite3.connect(db_path)
     connection.execute("PRAGMA foreign_keys = ON")
@@ -29,8 +29,17 @@ def check_student(student_id):
     else:
         return True
 
+def get_student(student_id: str):
+    db_path = Path(__file__).resolve().parent / "databank.db"
+    connection = sqlite3.connect(db_path)
+    connection.execute("PRAGMA foreign_keys = ON")
+    cursor = connection.cursor()
+    cursor.execute("SELECT * from student WHERE student_id = ?", (student_id,))
+    student = cursor.fetchone()
+    connection.close()
+    return student
 
-def get_overview_data(student_id):
+def get_overview_data(student_id: str) -> list:
     db_path = Path(__file__).resolve().parent / "databank.db"
     connection = sqlite3.connect(db_path)
     connection.execute("PRAGMA foreign_keys = ON")
@@ -40,4 +49,3 @@ def get_overview_data(student_id):
 
     connection.close()
     return modulliste
-

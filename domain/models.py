@@ -68,9 +68,9 @@ class Student:
     id: str
     name: str
     lastname: str
-    course: Course = field(default=False, init=False)
-    duration: int
+    course: str = field(default=False, init=False)
     ects: int = field(default=False, init=False)
+    semester: int = field(default=False, init=False)
     modules: list[list] = field(default_factory=list)
 
     def info_student(self):
@@ -79,11 +79,12 @@ class Student:
     def enroll_course(self, course: Course):
         self.course = course
         self.etcs = course.etc
-        self.semester = course.etc / (self.duration * 2)
+        self.semester = course.etc / (self.semester)
         self.modules = [module for module in course.modules]
 
-    def numbers_of_semesters(self):
-        pass
+    def moduls_per_semesters(self) -> int:
+        modules_per_semster = self.etcs / self.semester
+        return modules_per_semster
 
     def change_modul_status(self, modulid):
         pass

@@ -8,7 +8,7 @@ def print_databank():
     print("Studenten:")
     for row in cursor.fetchall():
         print(row)
-    cursor.execute("SELECT * FROM module")
+    cursor.execute("SELECT * FROM modules")
     print("Module:")
     for row in cursor.fetchall():
         print(row)

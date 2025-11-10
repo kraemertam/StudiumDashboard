@@ -16,10 +16,12 @@ from print_database import print_databank
 # -- CREATE STUDENTS ---
 #new_student_db("S11", "Tim", "Tuer")
 #new_student_db("S123", "Tamara", "Krämer")
+#new_student_db("S3", "Lisa", "Lotte")
 
 
 # -- ENROLL STUDENTS IN COURSE ---
 #enroll_course("S123", "FS-BAAKI-01", 8)
+#enroll_course("S11","FS-BAAKI-01", 6 )
 
 
 # -- PRINT DATABASE ---

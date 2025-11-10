@@ -1,6 +1,9 @@
 # Hier werden die Klassen definiert: Student, Course, Modul
 from dataclasses import dataclass, field
 
+from data.enroll_course_db import enroll_course
+from data.save_changes_db import save_modules_changes
+
 
 @dataclass
 class Module:
@@ -10,15 +13,17 @@ class Module:
     status: str = field(default="open", init=True)
     grade: int = field(default=None, init=True)
 
-    def change_status(self):
-        if self.status == "open":
-           self.status = "in progress"
+    def change_status(self, student_id):
+        print(self.status)
+        if self.status == "offen":
+            self.status = "in progress"
         elif self.status == "in progress":
             self.status = "done"
+        save_modules_changes(student_id, self.id, self.status)
+        print("Modulstatus geändert.")
 
     def set_grade(self, grade):
         self.grade = grade
-
 
     #@staticmethod #nochmal checken: Doch eher classmethod?
     #def create(name: str, etc: int, id = str):
@@ -68,24 +73,25 @@ class Student:
     id: str
     name: str
     lastname: str
-    course: str = field(default=False, init=False)
-    ects: int = field(default=False, init=False)
-    semester: int = field(default=False, init=False)
+    course_id: str = field(default=False)
+    course_name: str = field(default=False)
+    etcs: int = field(default=False)
+    semester: int = field(default=False)
     modules: list[list] = field(default_factory=list)
 
     def info_student(self):
         return f"{self.name} {self.lastname} studiert {self.course}"
 
-    def enroll_course(self, course: Course):
-        self.course = course
-        self.etcs = course.etc
-        self.semester = course.etc / (self.semester)
-        self.modules = [module for module in course.modules]
+    def enroll_course(self, course_id, semester):
+        self.course = course_id
+        self.semester = int(semester)
+        enroll_course(self.id, self.course, self.semester)
 
     def moduls_per_semesters(self) -> int:
         modules_per_semster = self.etcs / self.semester
         return modules_per_semster
 
-    def change_modul_status(self, modulid):
+    def change_modul_status(self, module_id):
         pass
+
 

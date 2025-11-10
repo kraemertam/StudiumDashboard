@@ -15,8 +15,7 @@ def start_databank():
                student_id TEXT PRIMARY KEY NOT NULL,
                student_name TEXT NOT NULL,
                student_lastname TEXT NOT NULL,
-               student_course TEXT REFERENCES course(id),
-               student_etc INT REFERENCES course(etc),
+               student_course TEXT REFERENCES course(course_id) ON DELETE RESTRICT,
                student_semester INT
             )
            """)
@@ -31,35 +30,25 @@ def start_databank():
             """)
 
     cursor.execute(f"""
-             CREATE TABLE IF NOT EXISTS module (
+             CREATE TABLE IF NOT EXISTS modules (
                 module_id TEXT PRIMARY KEY NOT NULL,
-                module_name TEXT NOT NULL,
-                module_etc TEXT NOT NULL
+                module_name TEXT NOT NULL UNIQUE,
+                module_etc INT NOT NULL
              )
              """)
     cursor.execute(f"""
              CREATE TABLE IF NOT EXISTS course_modules (
-                course_id TEXT NOT NULL REFERENCES course(id) ON DELETE CASCADE,
-                module_id TEXT NOT NULL REFERENCES module(id) ON DELETE RESTRICT,
+                course_id TEXT NOT NULL REFERENCES course(course_id) ON DELETE RESTRICT,
+                module_id TEXT NOT NULL REFERENCES modules(module_id) ON DELETE RESTRICT,
                 position INTEGER,
                 PRIMARY KEY (course_id, module_id)
              )
              """)
 
     cursor.execute(f"""
-             CREATE TABLE IF NOT EXISTS enrollments (
-                enrollment_id INTEGER PRIMARY KEY,
-                student_id TEXT NOT NULL REFERENCES student(id) ON DELETE CASCADE,
-                course_id TEXT NOT NULL REFERENCES course(id) ON DELETE CASCADE,
-                UNIQUE (student_id, course_id)
-             )
-             """)
-
-    cursor.execute(f"""
              CREATE TABLE IF NOT EXISTS studentoverview (
-                student_id TEXT NOT NULL REFERENCES student(id),
-                module_id TEXT NOT NULL REFERENCES module(id) ON DELETE CASCADE,
-                module_name TEXT NOT NULL REFERENCES module(name) ON DELETE CASCADE,
+                student_id TEXT NOT NULL REFERENCES student(student_id) ON DELETE RESTRICT,
+                module_id TEXT NOT NULL REFERENCES modules(module_id) ON DELETE RESTRICT,
                 module_status TEXT NOT NULL,
                 module_grade INTEGER, 
                 PRIMARY KEY (student_id, module_id)

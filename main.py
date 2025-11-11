@@ -1,5 +1,5 @@
 # Hauptprogramm
-from ui.dashboard import start_gui
+from ui.registrationframe import start_gui
 
 
 # def main() definiert die Hauptfunktion, in der das Projekt startet

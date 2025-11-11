@@ -2,10 +2,12 @@ import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
 import tkinter.font as font
+from pathlib import Path
 
 from services.create_objects import create_modulliste, create_student, create_new_student
 from services.registration import login_student
 from ui.overviewframe import overview_frame
+
 
 try:
     from ctypes import windll
@@ -28,7 +30,8 @@ def start_gui():
 # ---WELCOMEFRAME-------------------------------------------------------------------------------------------------
     welcomeframe = tk.Frame(dashboardframe, bg="lightblue", borderwidth=1, relief="solid")
 
-    image = Image.open("Schreibtisch.jpg").resize((250, 200))
+    image_path = Path(__file__).resolve().parent / "Schreibtisch.jpg"
+    image = Image.open(image_path).resize((250, 200))
     photo = ImageTk.PhotoImage(image)
     label = ttk.Label(welcomeframe, text="Schön, dass du da bist!", image=photo, padding=5, compound="top")
     label.configure(anchor="center", justify="center")

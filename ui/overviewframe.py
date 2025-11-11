@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
 import tkinter.font as font
+from pathlib import Path
 
 from services.create_objects import create_modulliste, create_student
 from services.registration import login_student
@@ -31,7 +32,8 @@ def overview_frame(student_id, dashboardframe):
     header.config(font=("Arial", 20))
     header.grid(sticky="ew", padx=5, pady=5)
 
-    image = Image.open("Schreibtisch.jpg").resize((250, 200))
+    image_path = Path(__file__).resolve().parent / "Schreibtisch.jpg"
+    image = Image.open(image_path).resize((250, 200))
     photo = ImageTk.PhotoImage(image)
     label = ttk.Label(overview, text="Schön, dass du da bist!", image=photo, padding=5, compound="top", anchor="center")
     label.image = photo
@@ -40,7 +42,7 @@ def overview_frame(student_id, dashboardframe):
     ttk.Separator(overview, orient="horizontal").grid(sticky="ew")
 
     moduloverview = ttk.Frame(overview)
-    moduloverview.config(width=900, height=500)
+    moduloverview.config(width=900, height=700)
     moduloverview.grid_propagate(False)
     header = ttk.Label(moduloverview, text="Modulübersicht", anchor="center")
     header.config(font=("Arial", 20))
@@ -63,21 +65,32 @@ def overview_frame(student_id, dashboardframe):
         semesters.append(semester)
 
     # --- MODULFRAME ---------------------------------------------------------------------------------------------------
-    modules = []
-    for module in modulliste:
-        modulframe = tk.Frame(semester, bg="lightblue", borderwidth=1, relief="solid")
-        modulframe.columnconfigure(index=1, weight=1, uniform="cols", pad=5)
-        modulname_label = tk.Label(modulframe, text=f"{module.name}", bg="lightblue", font=("arial", 6, "bold"))
-        modulstatus_label = tk.Label(modulframe, text=f"{module.status}", bg="lightblue", font=("arial", 5, "bold"))
-        modulstatus_button = tk.Button(modulframe, text="Status ändern", bg="lightblue", font=("arial", 5, "bold"))
-        modulname_label.grid(sticky="ew", padx=5, pady=5)
-        modulstatus_label.grid(sticky="ew", padx=5, pady=5)
-        modulstatus_button.grid(sticky="ew", padx=5, pady=5)
-        modules.append(modulframe)
-    print("Modules: ", modules)
 
-    for i in range(0,5):
-        modules[i].grid()
+    modules_per_semester = int(len(modulliste)/student.semester)
+    print("Module pro Semester: ", modules_per_semester)
+
+    module_divide = [modulliste[i:i+modules_per_semester] for i in range(0, len(modulliste), modules_per_semester)]
+    print("Zuordnung der Module: ", module_divide)
+
+    semester_divide = dict(zip(semesters, module_divide))
+    print(semester_divide)
+
+    for s in semester_divide:
+        m = semester_divide[s]
+        i=0
+        for module in m:
+            s.columnconfigure(i, weight=1)
+            modulframe = tk.Frame(s, bg="lightblue", borderwidth=1, relief="solid")
+            modulframe.columnconfigure(index=1, weight=1, uniform="cols", pad=5)
+            modulname_label = tk.Label(modulframe, text=f"{module.name}", bg="lightblue", font=("arial", 6, "bold"))
+            modulstatus_label = tk.Label(modulframe, text=f"{module.status}", bg="lightblue", font=("arial", 5, "bold"))
+            modulstatus_button = tk.Button(modulframe, text="Status ändern", bg="lightblue", font=("arial", 5, "bold"))
+            modulname_label.grid(sticky="ew", padx=5, pady=5)
+            modulstatus_label.grid(sticky="ew", padx=5, pady=5)
+            modulstatus_button.grid(sticky="ew", padx=5, pady=5)
+            modulframe.grid(row= 1, column=i, sticky="ew", padx=5, pady=5)
+            i += 1
+            print(i, ":", module)
 
 
 # --- CHANGE STATUS VERSUCH -------------------------------------------------------------------------------------------
@@ -85,19 +98,6 @@ def overview_frame(student_id, dashboardframe):
     #print(module1)
     #print(type(module1))
     #module1.change_status(student_id)
-
-
-    #for i, module in enumerate(modulliste):
-    #    modulframe = tk.Frame(moduloverview, bg="lightblue", borderwidth=1, relief="solid")
-    #    modulframe.columnconfigure(index=1, weight=1, uniform="cols", pad=5)
-    #    modulframe.grid(row=i, sticky="nsew", padx=5, pady=5)
-    #    modulname_label = tk.Label(modulframe, text=f"{module.name}", bg="lightblue", font=("arial", 6, "bold"))
-    #    modulstatus_label = tk.Label(modulframe, text=f"{module.status}", bg="lightblue", font=("arial", 5, "bold"))
-    #    modulstatus_button = tk.Button(modulframe, text="Status ändern", bg="lightblue", font=("arial", 5, "bold"))
-
-    #    modulname_label.grid(sticky="ew", padx=5, pady=5)
-    #    modulstatus_label.grid(sticky="ew", padx=5, pady=5)
-    #    modulstatus_button.grid(sticky="ew", padx=5, pady=5)
 
 
 

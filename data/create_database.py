@@ -50,7 +50,7 @@ def start_databank():
                 student_id TEXT NOT NULL REFERENCES student(student_id) ON DELETE RESTRICT,
                 module_id TEXT NOT NULL REFERENCES modules(module_id) ON DELETE RESTRICT,
                 module_status TEXT NOT NULL,
-                module_grade INTEGER, 
+                module_grade REAL, 
                 PRIMARY KEY (student_id, module_id)
              )
              """)

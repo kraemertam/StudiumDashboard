@@ -2,7 +2,7 @@
 from dataclasses import dataclass, field
 
 from data.enroll_course_db import enroll_course
-from data.save_changes_db import save_modules_changes
+from data.save_changes_db import save_modules_changes, save_grade_changes
 
 
 @dataclass
@@ -14,16 +14,22 @@ class Module:
     grade: int = field(default=None, init=True)
 
     def change_status(self, student_id):
-        print(self.status)
+        print(self)
         if self.status == "offen":
-            self.status = "in progress"
-        elif self.status == "in progress":
-            self.status = "done"
+            self.status = "in Bearbeitung"
+        elif self.status == "done":
+            self.status = "offen"
+        elif self.status == "in Bearbeitung":
+            self.status = "abgeschlossen"
         save_modules_changes(student_id, self.id, self.status)
-        print("Modulstatus geändert.")
+        print(f"Modulstatus {self.name} geändert.")
+        return self.status
 
-    def set_grade(self, grade):
+    def set_grade(self, student_id, grade):
         self.grade = grade
+        save_grade_changes(student_id, self.id, self.grade)
+        print(f"Note {self.grade} für {self.name} wurde eingetragen.")
+
 
     #@staticmethod #nochmal checken: Doch eher classmethod?
     #def create(name: str, etc: int, id = str):

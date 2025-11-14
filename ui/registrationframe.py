@@ -8,13 +8,11 @@ from services.create_objects import create_modulliste, create_student, create_ne
 from services.registration import login_student
 from ui.overviewframe import overview_frame
 
-
 try:
     from ctypes import windll
     windll.shcore.SetProcessDpiAwareness(1)
 except:
     pass
-
 
 def start_gui():
     dashboardframe = tk.Tk()

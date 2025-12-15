@@ -90,3 +90,14 @@ def get_overview_data(student_id: str) -> list:
         modulelist.append(module)
     connection.close()
     return modulelist
+
+def get_grade_data(student_id: str) -> list:
+    db_path = Path(__file__).resolve().parent / "databank.db"
+    connection = sqlite3.connect(db_path)
+    connection.execute("PRAGMA foreign_keys = ON")
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM studentoverview WHERE student_id = ? AND module_grade != ?", (student_id, "None"))
+    modules_db = cursor.fetchall()
+
+    connection.close()
+    return modules_db

@@ -25,4 +25,6 @@
 "DLBDSME_D, Model Engineering, 5"
 "BBAK, Bachelorarbeit, 10"
 "$WPF,6,2, Wahlpflichtmodule C, 10"
-"$WPF,0,30, Wahlpflichtmodule D, 30"
+"$WPF,0,10, Wahlpflichtmodule D0, 10"
+"$WPF,1,10, Wahlpflichtmodule D1, 10"
+"$WPF,2,10, Wahlpflichtmodule D2, 10"

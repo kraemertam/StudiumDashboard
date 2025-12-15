@@ -1,6 +1,6 @@
 # Hier werden die Klassen definiert: Student, Course, Modul
 from dataclasses import dataclass, field
-
+import math
 from data.enroll_course_db import enroll_course
 from data.save_changes_db import save_modules_changes, save_grade_changes
 
@@ -29,6 +29,7 @@ class Module:
         self.grade = grade
         save_grade_changes(student_id, self.id, self.grade)
         print(f"Note {self.grade} für {self.name} wurde eingetragen.")
+
 
 
     #@staticmethod #nochmal checken: Doch eher classmethod?
@@ -93,9 +94,14 @@ class Student:
         self.semester = int(semester)
         enroll_course(self.id, self.course, self.semester)
 
-    def moduls_per_semesters(self) -> int:
-        modules_per_semster = self.etcs / self.semester
-        return modules_per_semster
+    def calc_etc_per_semesters(self) -> int:
+        etc_per_semester = self.etcs / self.semester
+        if etc_per_semester % 5 !=0:
+            round_up = math.ceil(etc_per_semester / 5) * 5
+            return round_up
+        else:
+            return etc_per_semester
+
 
     def change_modul_status(self, module_id):
         pass

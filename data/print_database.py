@@ -2,7 +2,9 @@ import sqlite3
 
 
 def print_databank():
-    connection = sqlite3.connect("databank.db")
+    db_path = Path(__file__).resolve().parent / "databank.db"
+    connection = sqlite3.connect(db_path)
+    connection.execute("PRAGMA foreign_keys = ON")
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM student")
     print("Studenten:")

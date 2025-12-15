@@ -3,9 +3,14 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 import tkinter.font as font
 from pathlib import Path
+import math
+from itertools import cycle
 
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+import services.semesterassigment
 from services.create_objects import create_modulliste, create_student
-from services.registration import login_student
+from services.key_figures import pie_chart, grade_point_average
 from domain.models import Module
 
 try:
@@ -18,10 +23,7 @@ except:
 
 def overview_frame(student_id, dashboardframe):
     modulliste = create_modulliste(student_id)
-    print("Hi:", modulliste)
     student = create_student(student_id)
-    print("Hi:", student)
-    print(student.name)
 
     overview = tk.Toplevel(dashboardframe)
     overview.geometry("1000x900")
@@ -30,17 +32,32 @@ def overview_frame(student_id, dashboardframe):
 
     header = ttk.Label(overview, text=f"Dashboard für dein Studium {student.name}", anchor="center")
     header.config(font=("Arial", 20))
-    header.grid(sticky="ew", padx=5, pady=5)
+    header.grid(row=0, sticky="nsew", padx=5, pady=5)
 
-    image_path = Path(__file__).resolve().parent / "Schreibtisch.jpg"
-    image = Image.open(image_path).resize((250, 200))
-    photo = ImageTk.PhotoImage(image)
-    label = ttk.Label(overview, text="Schön, dass du da bist!", image=photo, padding=5, compound="top", anchor="center")
-    label.image = photo
-    label.grid(row=3, pady=5, padx=5, sticky="ew")
+# --- NUMBERFRAME -----------------------------------------------------------------------------------------------------
+
+    keyframe = tk.Frame(overview, bg="blue")
+    keyframe.grid(row=1, sticky="nsew", padx=5, pady=5)
+    keyframe.columnconfigure(0, weight=1)
+    keyframe.columnconfigure(1, weight=1)
+
+    pie = pie_chart(student_id)
+    pie_canvas = FigureCanvasTkAgg(pie, master=keyframe)
+    pie_canvas.draw()
+    pie_canvas.get_tk_widget().grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
+
+    gradeframe = tk.Frame(keyframe, bg="green")
+    gradeframe.grid(row=0, column=1,  sticky="nsew", padx=5, pady=5)
+    gradeframe.rowconfigure(0, weight=1)
+    gradeframe.rowconfigure(1, weight=1)
+    gradeframe.columnconfigure(0, weight=1)
+    actual_grade_point_average = grade_point_average(student_id)
+    grade_point_average_text = ttk.Label(gradeframe, text=f"Notendurchschnitt: {actual_grade_point_average} ", anchor="center", font=("arial", 20, "bold"))
+    grade_point_average_text.grid(row=0, column=0, sticky="nsew", padx=5, pady=0)
 
     ttk.Separator(overview, orient="horizontal").grid(sticky="ew")
 
+# ----- MODULEFRAME -----------------------------------------------------------------------------------------------------
     moduloverview = ttk.Frame(overview)
     moduloverview.config(width=900, height=700)
     moduloverview.grid_propagate(False)
@@ -57,7 +74,7 @@ def overview_frame(student_id, dashboardframe):
 
     # --- SEMESTERFRAME -----------------------------------------------------------------------------------------------
     semesters = []
-    for x, semester in enumerate(range((student.semester))):
+    for x, semester in enumerate(range((student.semester +1 ))):
         reihe = x // 2 + 1
         spalte = x % 2
         semester = tk.Frame(moduloverview, bg="lightgrey")
@@ -87,17 +104,17 @@ def overview_frame(student_id, dashboardframe):
             # --- Modulframe --------------------------------------------------------------------------------------
 
             self.frame = tk.Frame(self.container, bg=bgc, borderwidth=1, relief="solid")
-            self.frame.columnconfigure(index=i, weight=1, uniform="cols", pad=5)
-            self.modulename_label = tk.Label(self.frame, text=f"{self.modulename}", bg=bgc, font=("arial", 6, "bold"),
+            self.frame.columnconfigure(0, weight=1, uniform="cols", pad=5)
+            self.modulename_label = tk.Label(self.frame, text=f"{self.modulename}", wraplength=150, bg=bgc, font=("arial", 6, "bold"),
                                              anchor="center")
             self.modulestatus_label = tk.Label(self.frame, text=f"{self.modulestatus}", bg=bgc,
                                                font=("arial", 5, "bold"))
             self.modulestatus_button = tk.Button(self.frame, text="Status ändern", bg=bgc, font=("arial", 5, "bold"),
                                                  command=self.change_modulestatus)
-            self.modulename_label.grid(sticky="ew", padx=5, pady=5)
-            self.modulestatus_label.grid(sticky="ew", padx=5, pady=5)
-            self.modulestatus_button.grid(sticky="ew", padx=5, pady=5)
-            self.frame.grid(row=1, column=i, sticky="ew", padx=5, pady=5)
+            self.modulename_label.grid(sticky="nswe", padx=5, pady=5)
+            self.modulestatus_label.grid(sticky="nswe", padx=5, pady=5)
+            self.modulestatus_button.grid(sticky="nswe", padx=5, pady=5)
+            self.frame.grid(row=1, column=i, sticky="nswe", padx=5, pady=5)
 
         def set_modulegrade_entry(self):
             modulegrade = tk.StringVar()
@@ -110,6 +127,7 @@ def overview_frame(student_id, dashboardframe):
             modulegradeframe = tk.Toplevel(moduloverview)
             modulegrade_label = tk.Label(modulegradeframe, text=f"Gib deine Note für {self.modulename} ein: ")
             modulegrade_entry = tk.Entry(modulegradeframe, textvariable=modulegrade)
+            modulegrade_entry.focus()
             modulegrade_button = tk.Button(modulegradeframe, text="Note eintragen", command=set_modulegrade)
 
             modulegradeframe.grid()
@@ -153,19 +171,13 @@ def overview_frame(student_id, dashboardframe):
 
     # --- Assignment Modules to Semesters -----------------------------------------------------------------------------
 
-    modules_per_semester = int(len(modulliste)/student.semester)
-    print("Module pro Semester: ", modules_per_semester)
-
-    module_divide = [modulliste[i:i+modules_per_semester] for i in range(0, len(modulliste), modules_per_semester)]
-    print("Zuordnung der Module: ", module_divide)
-
-    semester_divide = dict(zip(semesters, module_divide))
-    print(semester_divide)
+    modules_per_semster = services.semesterassigment.semester_assign(student, modulliste)
+    semester_divide = dict(zip(semesters, modules_per_semster))
 
     for s in semester_divide:
         m = semester_divide[s]
         i=0
         for module in m:
             s.columnconfigure(i, weight=1)
-            module = Moduleview(module, student_id, s, i)
+            Moduleview(module, student_id, s, i)
             i += 1

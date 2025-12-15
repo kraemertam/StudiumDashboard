@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 import tkinter.font as font
 from pathlib import Path
 
+
 from services.create_objects import create_modulliste, create_student, create_new_student
 from services.registration import login_student
 from ui.overviewframe import overview_frame

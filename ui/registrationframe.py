@@ -187,5 +187,3 @@ def start_gui():
         enrollment_button.grid(row=10, columnspan=4, padx=50, pady=5, sticky="ew")
 
     dashboardframe.mainloop()
-
-start_gui()

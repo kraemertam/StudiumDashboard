@@ -1,3 +1,5 @@
+"""This file is for printing the DB."""
+
 import sqlite3
 from pathlib import Path
 

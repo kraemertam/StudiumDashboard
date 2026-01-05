@@ -1,11 +1,10 @@
+"""This file is for creating the database."""
 import sqlite3
 from data.add_to_database import new_modul_db, new_course_db, add_modules_to_course
 
-# ---DB: Funktionen, um die Datenbank initial aufzusetzen und initiale Daten einzufügen.---
-
 def start_databank():
-    """Die Datenbank wird initial aufgesetzt.
-    Es werden die Tabellen Student, Course, Module, Course-Module, StudentenOverview erstellt."""
+    """The database is set up initially.
+    The tables student, course, module, course_modules and studentoverview are created."""
 
     connection = sqlite3.connect("databank.db")
     connection.execute("PRAGMA foreign_keys = ON")
@@ -57,38 +56,3 @@ def start_databank():
 
     connection.commit()
     connection.close()
-
-def insert_moduledata_db():
-    """ Initiale Daten für Module werden eingelesen."""
-    with open ("module.csv", "r", encoding="utf-8") as moduleliste:
-        for line in moduleliste:
-            module = line.strip().strip('"').split(", ")
-            module_id = module[0]
-            module_name = module[1]
-            module_etc = module[2]
-            print(module_id, module_name, module_etc)
-
-            new_modul_db(module_id, module_name, module_etc)
-
-def insert_coursedata_db():
-    """Initiale Daten für Course werden eingelesen."""
-    with open ("course.csv", "r", encoding="utf-8") as courselist:
-        for line in courselist:
-            course = line.strip().strip('"').split(", ")
-            course_id = course[0]
-            course_name = course[1]
-            course_title = course[2]
-            course_etc = course[3]
-            print(course_id, course_name, course_title, course_etc)
-
-            new_course_db(course_id, course_name, course_title, course_etc)
-
-def initialize_course():
-    """Initial wird ein Kurs mit Modulen verbunden"""
-    with open ("module.csv", "r", encoding="utf-8") as moduleliste:
-        for line in moduleliste:
-            module = line.strip().strip('"').split(", ")
-            module_id = module[0]
-
-            add_modules_to_course("FS-BAAKI-01", module_id)
-

@@ -1,7 +1,8 @@
+"""This file contains the functions for creating new students, courses, modules and connections in the database."""
+
 import sqlite3
 from pathlib import Path
 
-# ---DB: In dieser Datei befinden sich die Funktionen, um neue Studenten, Kurse, Module und der Verbindungen in der Datenbank anzulegen. ---
 
 def new_student_db(student_id: str, student_name: str, student_lastname: str):
     db_path = Path(__file__).resolve().parent / "databank.db"

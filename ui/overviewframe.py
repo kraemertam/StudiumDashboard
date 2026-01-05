@@ -11,7 +11,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import services.semesterassigment
 from services.create_objects import create_modulliste, create_student
 from services.key_figures import pie_chart, grade_point_average
-from domain.models import Module
+from domains.models import Module
 
 try:
     from ctypes import windll

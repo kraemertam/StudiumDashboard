@@ -20,5 +20,6 @@ Module deines Studiums gegeben. Welche Module sind mit deinem beruflichen Weg ak
 interessant und relevant? Was liegt vor dir? 
 
 ### Verwendete Technologien
-Als Datenbank wurde SQLite verwendet.
+Als Datenbank wurde SQLite (sqplite3) verwendet.
 Die Nutzeroberfläche wurde mit TKinter erstellt.
+

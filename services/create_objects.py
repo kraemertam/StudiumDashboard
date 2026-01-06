@@ -20,7 +20,7 @@ def create_modulliste(student_id:str) ->list:
 def create_student(student_id: str) -> Student:
     new_student = get_student(student_id)
     print(new_student)
-    student = Student(id= new_student[0], name = new_student[1], lastname=new_student[2], course_id = new_student[3], course_name=new_student[4], etcs = new_student[5], semester = new_student[6])
+    student = Student(id= new_student[0], name = new_student[1], lastname=new_student[2], course_id = new_student[3], course_name=new_student[4], etcs = new_student[5], semester = new_student[6], gradetarget = new_student[7])
     return student
 
 def create_new_student(student_id, student_name, student_lastname):

@@ -139,10 +139,11 @@ def start_gui():
         student_lastname = tk.StringVar()
         course_id = tk.StringVar()
         semester = tk.StringVar()
+        gradetarget = tk.StringVar()
 
         def start_enrollment():
             print("Wir legen dich als Student an.")
-            student = create_new_student(student_id.get(), student_name.get(), student_lastname.get())
+            student = create_new_student(student_id.get(), student_name.get(), student_lastname.get(), gradetarget.get())
             print("Du wurdest im Kurs eingeschrieben.")
             student.enroll_course(course_id.get(), semester.get())
             done_label = tk.Label(enrollment_student, text="Du wurdest erfolgreich eingeschrieben.")
@@ -171,6 +172,9 @@ def start_gui():
                                         text="Wieviele Semester studierst du?",
                                         font=("Arial", (12), "bold"))
         semester_entry = tk.Entry(enrollment_student, textvariable=semester)
+        gradetarget_label = tk.Label(enrollment_student, text="Welches Notenziel (Durchschnittsnote) möchtest du erreichen?",
+                                     font=("Arial", (12), "bold"))
+        gradetarget_entry = tk.Entry(enrollment_student, textvariable=gradetarget)
         enrollment_button = tk.Button(enrollment_student, text="In Kurs einschreiben!", anchor="center",
                                       command=start_enrollment)
 
@@ -186,6 +190,8 @@ def start_gui():
         enrollment_entry.grid(row=7, columnspan=4, padx=50, pady=10, sticky="ew")
         entrollment_semester.grid(row=8, columnspan=4, padx=50, pady=5, sticky="w")
         semester_entry.grid(row=9, columnspan=4, padx=50, pady=5, sticky="ew")
-        enrollment_button.grid(row=10, columnspan=4, padx=50, pady=5, sticky="ew")
+        gradetarget_label.grid(row=10, columnspan=4, padx=50, pady=5, sticky="w")
+        gradetarget_entry.grid(row=11, columnspan=4, padx=50, pady=5, sticky="ew")
+        enrollment_button.grid(row=12, columnspan=4, padx=50, pady=5, sticky="ew")
 
     dashboardframe.mainloop()

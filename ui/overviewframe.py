@@ -28,28 +28,45 @@ def overview_frame(student_id, dashboardframe):
     header.config(font=("Arial", 20))
     header.grid(row=0, sticky="nsew", padx=5, pady=5)
 
-# --- NUMBERFRAME -----------------------------------------------------------------------------------------------------
 
+
+# --- KEYFRAME --------------------------------------------------------------------------------------------------------
     keyframe = tk.Frame(overview, bg="blue")
     keyframe.grid(row=1, sticky="nsew", padx=5, pady=5)
     keyframe.columnconfigure(0, weight=1)
     keyframe.columnconfigure(1, weight=1)
-
+# --- PIECHART --------------------------------------------------------------------------------------------------------
     pie = pie_chart(student_id)
     pie_canvas = FigureCanvasTkAgg(pie, master=keyframe)
     pie_canvas.draw()
-    pie_canvas.get_tk_widget().grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
+    pie_canvas.get_tk_widget().grid(row=0, column=1, sticky="nsew", padx=5, pady=5)
+
+# --- WELCOME & GRADES ----------------------------------------------------------------------------------------------------------
 
     gradeframe = tk.Frame(keyframe, bg="green")
-    gradeframe.grid(row=0, column=1,  sticky="nsew", padx=5, pady=5)
+    gradeframe.grid(row=0, column=0,  sticky="nsew", padx=5, pady=5)
     gradeframe.rowconfigure(0, weight=1)
     gradeframe.rowconfigure(1, weight=1)
+    gradeframe.rowconfigure(2, weight=1)
     gradeframe.columnconfigure(0, weight=1)
-    actual_grade_point_average = grade_point_average(student_id)
-    grade_point_average_text = ttk.Label(gradeframe, text=f"Notendurchschnitt: {actual_grade_point_average} ", anchor="center", font=("arial", 20, "bold"))
-    grade_point_average_text.grid(row=0, column=0, sticky="nsew", padx=5, pady=0)
+
+    welcome_label = tk.Label(gradeframe, text=f"Willkommen {student.name}, \n hier findest du eine Übersicht für dein Studium.",
+                             font=("arial", 15, "bold"))
+    welcome_label.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
+
+    grade_info = grade_point_average(student_id)
+    actual_grade_point_average = grade_info[0]
+    gradecolor = grade_info[1]
+    gradetargettext = grade_info[2]
+    grade_point_average_text = tk.Label(gradeframe, text=f"Notendurchschnitt:\n{actual_grade_point_average} ",
+                                        fg=gradecolor, justify="center", anchor="center", font=("arial", 15, "bold"))
+    gradetarget_info = tk.Label(gradeframe, text=gradetargettext, font=("arial", 8))
+    grade_point_average_text.grid(row=1, column=0, sticky="nsew", padx=5, pady=0)
+    gradetarget_info.grid(row=2, column=0, sticky="nsew", padx=5, pady=0)
 
     ttk.Separator(overview, orient="horizontal").grid(sticky="ew")
+
+
 
 # ----- MODULEFRAME -----------------------------------------------------------------------------------------------------
     moduloverview = ttk.Frame(overview)
@@ -57,7 +74,7 @@ def overview_frame(student_id, dashboardframe):
     moduloverview.grid_propagate(False)
     header = ttk.Label(moduloverview, text="Modulübersicht", anchor="center")
     header.config(font=("Arial", 20))
-    header.grid(row=0, columnspan=2, sticky="ew", padx=5, pady=5)
+    header.grid(row=0, columnspan=2, sticky="ew", padx=0, pady=0)
 
     moduloverview.columnconfigure(0, weight=1, uniform="cols", pad=5)
     moduloverview.columnconfigure(1, weight=1, uniform="cols", pad=5)
@@ -114,9 +131,16 @@ def overview_frame(student_id, dashboardframe):
             modulegrade = tk.StringVar()
 
             def set_modulegrade():
-                grade = self.module.set_grade(self.student_id, modulegrade.get())
-                modulegradeframe.destroy()
-                return grade
+                print(type(modulegrade.get()))
+                try:
+                    grade = float(modulegrade.get())
+                    print(type(grade))
+                    self.module.set_grade(self.student_id, grade)
+                    modulegradeframe.destroy()
+                    return grade
+                except ValueError:
+                    modulegradehint = tk.Label(modulegradeframe, text="Deine Note muss eine Nachstelle haben. Nutze als Komma einen Punkt, z.B. 1.5")
+                    modulegradehint.grid()
 
             modulegradeframe = tk.Toplevel(moduloverview)
             modulegrade_label = tk.Label(modulegradeframe, text=f"Gib deine Note für {self.modulename} ein: ")

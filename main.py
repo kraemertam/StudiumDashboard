@@ -1,13 +1,12 @@
-# Hauptprogramm
+# Mainprogramm --------------------------------------------------------------------------------------------------------
 from ui.registrationframe import start_gui
 
 
-# def main() definiert die Hauptfunktion, in der das Projekt startet.
+# "def main()" defines the Mainfunction with which the Project starts. ------------------------------------------------
 def main():
     start_gui()
 
 
-
-# Sorgt dafür, dass main() nur ausgeführt wird, wenn das Skript direkt startet und nicht bereits beim Import.
+# Ensures that main() is only executed when the script starts directly and not during import.--------------------------
 if __name__ == "__main__":
     main()

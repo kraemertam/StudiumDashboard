@@ -13,6 +13,7 @@ class Student:
     etcs: int = field(default=False)
     semester: int = field(default=False)
     modules: list[list] = field(default_factory=list)
+    gradetarget: float = field(default=False)
 
     def info_student(self):
         return f"{self.name} {self.lastname} studiert {self.course}"
@@ -30,8 +31,5 @@ class Student:
         else:
             return etc_per_semester
 
-
-    def change_modul_status(self, module_id):
-        pass
 
 

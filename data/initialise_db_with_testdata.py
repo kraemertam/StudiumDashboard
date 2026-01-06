@@ -1,6 +1,6 @@
 """This file can be used to initialise and import testdata for the database in order to test the application.
 For this remove the "#" from the corresponding lines."""
-
+from pathlib import Path
 from data.create_database import start_databank
 from data.student import new_student_db, enroll_course
 from data.module import new_modul_db
@@ -12,7 +12,9 @@ from data.course import new_course_db, add_modules_to_course
 
 def insert_moduledata_db():
     """ Initiale Daten für Module werden eingelesen."""
-    with open ("module.csv", "r", encoding="utf-8") as moduleliste:
+    base_path = Path(__file__).parent
+    file_path = base_path / "testdata" / "module.csv"
+    with open (file_path, "r", encoding="utf-8") as moduleliste:
         for line in moduleliste:
             module = line.strip().strip('"').split(", ")
             module_id = module[0]
@@ -24,7 +26,9 @@ def insert_moduledata_db():
 
 def insert_coursedata_db():
     """Initiale Daten für Course werden eingelesen."""
-    with open ("course.csv", "r", encoding="utf-8") as courselist:
+    base_path = Path(__file__).parent
+    file_path = base_path / "testdata" / "course.csv"
+    with open (file_path, "r", encoding="utf-8") as courselist:
         for line in courselist:
             course = line.strip().strip('"').split(", ")
             course_id = course[0]
@@ -37,7 +41,9 @@ def insert_coursedata_db():
 
 def initialize_course():
     """Initial wird ein Kurs mit Modulen verbunden"""
-    with open ("module.csv", "r", encoding="utf-8") as moduleliste:
+    base_path = Path(__file__).parent
+    file_path = base_path / "testdata" / "module.csv"
+    with open (file_path, "r", encoding="utf-8") as moduleliste:
         for line in moduleliste:
             module = line.strip().strip('"').split(", ")
             module_id = module[0]
@@ -58,8 +64,8 @@ def initialize_course():
 #new_student_db("S3", "Lisa", "Lotte")
 
 # --- ENROLL STUDENTS IN COURSE ---------------------------------------------------------------------------------------
-#enroll_course("S123", "FS-BAAKI-01", 8)
-#enroll_course("S11","FS-BAAKI-01", 6 )
+#enroll_course("S123", "FS-BAAKI-01", 8, 2.5)
+#enroll_course("S11","FS-BAAKI-01", 6, 3.1 )
 
 
 # --- PRINT DATABASE --------------------------------------------------------------------------------------------------

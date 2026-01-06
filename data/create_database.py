@@ -1,6 +1,5 @@
 """This file is for creating the database."""
 import sqlite3
-from data.add_to_database import new_modul_db, new_course_db, add_modules_to_course
 
 def start_databank():
     """The database is set up initially.
@@ -15,7 +14,8 @@ def start_databank():
                student_name TEXT NOT NULL,
                student_lastname TEXT NOT NULL,
                student_course TEXT REFERENCES course(course_id) ON DELETE RESTRICT,
-               student_semester INT
+               student_semester INT,
+               student_gradetarget FLOAT
             )
            """)
 
@@ -56,3 +56,4 @@ def start_databank():
 
     connection.commit()
     connection.close()
+

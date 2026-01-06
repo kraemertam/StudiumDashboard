@@ -20,18 +20,18 @@ def overview_frame(student_id, dashboardframe):
     student = create_student(student_id)
 
     overview = tk.Toplevel(dashboardframe)
-    overview.geometry("1000x900")
+    overview.geometry("1500x900")
     overview.columnconfigure(0, weight=1)
     overview.rowconfigure(0, weight=1)
 
     header = ttk.Label(overview, text=f"Dashboard für dein Studium {student.name}", anchor="center")
     header.config(font=("Arial", 20))
-    header.grid(row=0, sticky="nsew", padx=5, pady=5)
+    header.grid(row=0, padx=0, pady=0)
 
 
 
 # --- KEYFRAME --------------------------------------------------------------------------------------------------------
-    keyframe = tk.Frame(overview, bg="blue")
+    keyframe = tk.Frame(overview)
     keyframe.grid(row=1, sticky="nsew", padx=5, pady=5)
     keyframe.columnconfigure(0, weight=1)
     keyframe.columnconfigure(1, weight=1)
@@ -43,38 +43,36 @@ def overview_frame(student_id, dashboardframe):
 
 # --- WELCOME & GRADES ----------------------------------------------------------------------------------------------------------
 
-    gradeframe = tk.Frame(keyframe, bg="green")
+    gradeframe = tk.Frame(keyframe)
     gradeframe.grid(row=0, column=0,  sticky="nsew", padx=5, pady=5)
     gradeframe.rowconfigure(0, weight=1)
     gradeframe.rowconfigure(1, weight=1)
     gradeframe.rowconfigure(2, weight=1)
     gradeframe.columnconfigure(0, weight=1)
 
-    welcome_label = tk.Label(gradeframe, text=f"Willkommen {student.name}, \n hier findest du eine Übersicht für dein Studium.",
-                             font=("arial", 15, "bold"))
+    welcome_label = tk.Label(gradeframe, text=f"Willkommen {student.name}!",font=("arial", 20, "bold"))
     welcome_label.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
 
     grade_info = grade_point_average(student_id)
     actual_grade_point_average = grade_info[0]
     gradecolor = grade_info[1]
     gradetargettext = grade_info[2]
-    grade_point_average_text = tk.Label(gradeframe, text=f"Notendurchschnitt:\n{actual_grade_point_average} ",
-                                        fg=gradecolor, justify="center", anchor="center", font=("arial", 15, "bold"))
-    gradetarget_info = tk.Label(gradeframe, text=gradetargettext, font=("arial", 8))
+    grade_point_average_text = tk.Label(gradeframe, text=f"Dein aktueller Notendurchschnitt:\n{actual_grade_point_average} ",
+                                        fg=gradecolor, justify="center", anchor="center", font=("arial", 12, "bold"))
+    gradetarget_info = tk.Label(gradeframe, text=gradetargettext, font=("arial", 10))
     grade_point_average_text.grid(row=1, column=0, sticky="nsew", padx=5, pady=0)
     gradetarget_info.grid(row=2, column=0, sticky="nsew", padx=5, pady=0)
 
-    ttk.Separator(overview, orient="horizontal").grid(sticky="ew")
-
+    ttk.Separator(overview, orient="horizontal").grid(row=3, sticky="ew")
 
 
 # ----- MODULEFRAME -----------------------------------------------------------------------------------------------------
-    moduloverview = ttk.Frame(overview)
-    moduloverview.config(width=900, height=700)
+    moduloverview = tk.Frame(overview)
+    moduloverview.config(width=900, height=750)
     moduloverview.grid_propagate(False)
-    header = ttk.Label(moduloverview, text="Modulübersicht", anchor="center")
+    header = tk.Label(moduloverview, text="Modulübersicht", anchor="center")
     header.config(font=("Arial", 20))
-    header.grid(row=0, columnspan=2, sticky="ew", padx=0, pady=0)
+    header.grid(row=0, columnspan=2, sticky="ew", padx=5, pady=5)
 
     moduloverview.columnconfigure(0, weight=1, uniform="cols", pad=5)
     moduloverview.columnconfigure(1, weight=1, uniform="cols", pad=5)
@@ -88,7 +86,7 @@ def overview_frame(student_id, dashboardframe):
     for x, semester in enumerate(range((student.semester +1 ))):
         reihe = x // 2 + 1
         spalte = x % 2
-        semester = tk.Frame(moduloverview, bg="lightgrey")
+        semester = tk.Frame(moduloverview)
         semester.grid(row=reihe, column=spalte, sticky="nsew", padx=10, pady=10)
         semesters.append(semester)
 
@@ -104,28 +102,40 @@ def overview_frame(student_id, dashboardframe):
             self.container = container
             self.student_id = student_id
 
-            # --- Backgroundcolor configuration -------------------------------------------------------------------
-            if module.status == "offen":
+            # --- Backgroundcolor configuration -----------------------------------------------------------------------
+            if self.modulestatus == "offen":
                 bgc = "lightblue"
-            if module.status == "in Bearbeitung":
+            if self.modulestatus == "in Bearbeitung":
                 bgc = "orange"
-            if module.status == "abgeschlossen":
+            if self.modulestatus == "abgeschlossen":
                 bgc = "lightgreen"
 
-            # --- Modulframe --------------------------------------------------------------------------------------
+            # --- STRUCTURE & ELEMENTS MODULEFRAME --------------------------------------------------------------------
 
             self.frame = tk.Frame(self.container, bg=bgc, borderwidth=1, relief="solid")
             self.frame.columnconfigure(0, weight=1, uniform="cols", pad=5)
-            self.modulename_label = tk.Label(self.frame, text=f"{self.modulename}", wraplength=150, bg=bgc, font=("arial", 6, "bold"),
+            for r in range(4):
+                self.frame.rowconfigure(r, weight=1)
+
+            self.modulename_label = tk.Label(self.frame, text=f"{self.modulename}", wraplength=170, bg=bgc, font=("arial", 7, "bold"),
                                              anchor="center")
             self.modulestatus_label = tk.Label(self.frame, text=f"{self.modulestatus}", bg=bgc,
-                                               font=("arial", 5, "bold"))
-            self.modulestatus_button = tk.Button(self.frame, text="Status ändern", bg=bgc, font=("arial", 5, "bold"),
+                                               font=("arial", 6, "bold"))
+            self.modulestatus_button = tk.Button(self.frame, text="Status ändern", bg=bgc, font=("arial", 6, "bold"),
                                                  command=self.change_modulestatus)
-            self.modulename_label.grid(sticky="nswe", padx=5, pady=5)
-            self.modulestatus_label.grid(sticky="nswe", padx=5, pady=5)
-            self.modulestatus_button.grid(sticky="nswe", padx=5, pady=5)
-            self.frame.grid(row=1, column=i, sticky="nswe", padx=5, pady=5)
+            self.gradelabel = tk.Label(self.frame, bg=bgc, text=f"Note: {self.modulegrade}", wraplength=170,
+                                       font=("arial", 7, "bold"))
+
+            self.modulename_label.grid(sticky="nswe", padx=1, pady=2)
+            self.modulestatus_label.grid(sticky="nswe", padx=1, pady=1)
+            self.modulestatus_button.grid(sticky="s", padx=1, pady=1)
+            self.frame.grid(row=1, column=i, sticky="nswe", padx=1, pady=1)
+
+            if self.modulestatus == "abgeschlossen":
+                self.modulestatus_label.destroy()
+                self.modulestatus_button.destroy()
+                self.gradelabel.grid(sticky="nswe", padx=5, pady=5)
+
 
         def set_modulegrade_entry(self):
             modulegrade = tk.StringVar()
@@ -137,6 +147,11 @@ def overview_frame(student_id, dashboardframe):
                     print(type(grade))
                     self.module.set_grade(self.student_id, grade)
                     modulegradeframe.destroy()
+                    self.modulestatus_label.destroy()
+                    self.modulestatus_button.destroy()
+                    self.gradelabel = tk.Label(self.frame, bg= "lightgreen", text=f"Note: {grade}", wraplength=150, font=("arial", 7, "bold"))
+                    self.gradelabel.grid(sticky="nswe", padx=5, pady=5)
+
                     return grade
                 except ValueError:
                     modulegradehint = tk.Label(modulegradeframe, text="Deine Note muss eine Nachstelle haben. Nutze als Komma einen Punkt, z.B. 1.5")
@@ -177,8 +192,11 @@ def overview_frame(student_id, dashboardframe):
                 self.modulename_label.configure(bg=color)
                 self.modulestatus_label.configure(bg=color)
                 self.modulestatus_button.configure(bg=color)
-
                 self.modulegrade = self.set_modulegrade_entry()
+
+
+
+
 
             if self.modulestatus == "failed":
                 color = "red"
@@ -196,6 +214,6 @@ def overview_frame(student_id, dashboardframe):
         m = semester_divide[s]
         i=0
         for module in m:
-            s.columnconfigure(i, weight=1)
+            s.columnconfigure(i, weight=1, uniform="modules")
             Moduleview(module, student_id, s, i)
             i += 1

@@ -23,7 +23,7 @@ def pie_chart(student_id):
     fig.subplots_adjust(right=0.70)
     ax = fig.add_subplot(111)
 
-    wedges, *_ = ax.pie(sizes, autopct="%1.1f%%", startangle=90)
+    wedges, *_ = ax.pie(sizes, colors=["lightblue", "orange", "lightgreen"], autopct="%1.1f%%", startangle=90)
 
     ax.legend(wedges, labels, title="Status", loc="center left", bbox_to_anchor=(1, 0.5))
 

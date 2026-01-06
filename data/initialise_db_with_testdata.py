@@ -1,4 +1,4 @@
-"""This file can be used to initialise and import testdata for the database in order to test the application.
+"""This file can be used to initialise the database and import testdata for the database in order to test the application.
 For this remove the "#" from the corresponding lines."""
 from pathlib import Path
 from data.create_database import start_databank

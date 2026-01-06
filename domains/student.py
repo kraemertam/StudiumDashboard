@@ -1,7 +1,7 @@
 # --- Definition of Class "Student" ---
 from dataclasses import dataclass, field
 import math
-from data.enroll_course_db import enroll_course
+from data.student import enroll_course
 
 @ dataclass
 class Student:

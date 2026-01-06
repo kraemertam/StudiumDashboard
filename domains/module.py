@@ -1,6 +1,6 @@
 # --- Definition of Class "Module" ---
 from dataclasses import dataclass, field
-from data.save_changes_db import save_modules_changes, save_grade_changes
+from data.student import save_modules_changes, save_grade_changes
 
 
 @dataclass

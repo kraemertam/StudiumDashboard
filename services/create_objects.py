@@ -1,6 +1,7 @@
-from data.add_to_database import new_student_db
-from data.query_db import get_student, get_overview_data
-from domains.models import Student, Module
+from data.student import new_student_db, get_student, get_overview_data
+from domains.student import Student
+from domains.module import Module
+
 
 def create_modulliste(student_id:str) ->list:
     modulliste = get_overview_data(student_id)

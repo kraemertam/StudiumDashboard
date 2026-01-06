@@ -1,17 +1,11 @@
+"""This file creates the GUI for the dashboard for the course overview."""
 import tkinter as tk
 from tkinter import ttk
-from PIL import Image, ImageTk
-import tkinter.font as font
-from pathlib import Path
-import math
-from itertools import cycle
-
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 import services.semesterassigment
 from services.create_objects import create_modulliste, create_student
 from services.key_figures import pie_chart, grade_point_average
-from domains.models import Module
 
 try:
     from ctypes import windll

@@ -1,19 +1,21 @@
+"""This file is for the GUI of the registration to come to the Overview."""
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
 import tkinter.font as font
 from pathlib import Path
 
-
-from services.create_objects import create_modulliste, create_student, create_new_student
-from services.registration import login_student
-from ui.overviewframe import overview_frame
-
 try:
     from ctypes import windll
     windll.shcore.SetProcessDpiAwareness(1)
 except:
     pass
+
+from services.create_objects import create_student, create_new_student
+from services.registration import login_student
+from ui.overviewframe import overview_frame
+
+
 
 def start_gui():
     dashboardframe = tk.Tk()

@@ -12,7 +12,6 @@ class Module:
     grade: int = field(default=None, init=True)
 
     def change_status(self, student_id):
-        print(self)
         if self.status == "offen":
             self.status = "in Bearbeitung"
         elif self.status == "done":
@@ -26,6 +25,11 @@ class Module:
     def set_grade(self, student_id, grade):
         self.grade = grade
         save_grade_changes(student_id, self.id, self.grade)
+        if self.grade > 4:
+            self.status = "nicht bestanden"
+        else:
+            self.status = "abgeschlossen"
+        save_modules_changes(student_id, self.id, self.status)
         print(f"Note {self.grade} für {self.name} wurde eingetragen.")
 
 

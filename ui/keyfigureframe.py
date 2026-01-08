@@ -1,9 +1,6 @@
+"""This file contains the class keyfigureframe, including the keyfigures gradetarget and piechart."""
 import tkinter as tk
-from tkinter import ttk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-
-import services.semesterassigment
-from services.create_objects import create_modulliste, create_student
 from services.keyfigures import pie_chart, grade_point_average
 
 try:
@@ -14,7 +11,7 @@ except:
 
 # --- KEYFIGUREFRAME --------------------------------------------------------------------------------------------------
 
-class keyfigureframe():
+class Keyfigureframe():
     def __init__(self, student_id, container, *args, **kwargs):
         self.student_id = student_id
         self.container = container

@@ -51,8 +51,10 @@ def overview_frame(student_id, dashboardframe):
 
     moduloverview.columnconfigure(0, weight=1, uniform="cols", pad=5)
     moduloverview.columnconfigure(1, weight=1, uniform="cols", pad=5)
-
     moduloverview.grid(row=3, sticky="nsew", padx=10, pady=10)
+
+    change_moduleinformation_button = tk.Button(moduloverview, text="Modulinfo anpassen", font=("arial", 8))
+    change_moduleinformation_button.grid(row=0, column=1, sticky="e", padx=5, pady=5)
 
     semesters = []
     for x, semester in enumerate(range((student.semester +1 ))):

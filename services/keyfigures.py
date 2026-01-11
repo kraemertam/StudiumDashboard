@@ -26,7 +26,7 @@ def pie_chart(student_id):
     share_nicht_bestanden = round(((sizes[3]/sum(sizes))*100),2)
 
 
-    labels = [f"offen: {share_offen}",
+    labels = [f"offen: {share_offen}%",
               f"in Bearbeitung: {share_bearbeitung}%",
               f"abgeschlossen: {share_abgeschlossen}%",
               f"nicht bestanden: {share_nicht_bestanden}%"]

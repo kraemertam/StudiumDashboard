@@ -15,6 +15,10 @@ def create_modulliste(student_id:str) ->list:
         grade = m[4]
         module = Module(id, name, etc, status, grade)
         module_liste.append(module)
+
+    status_order = {"abgeschlossen": 0, "in Bearbeitung": 1, "nicht bestanden": 2, "offen": 3}
+    module_liste.sort(key=lambda m: status_order.get(m.status, 99))
+
     return module_liste
 
 def create_student(student_id: str) -> Student:

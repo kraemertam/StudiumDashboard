@@ -42,9 +42,6 @@ class Module:
         #else:
            # print("Modul bereits vorhanden")
 
-
     #def __delete__(self, instance):
         #print(f"Das Modul {instance} wurde gelöscht.")
         #pass
-
-

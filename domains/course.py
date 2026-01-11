@@ -7,8 +7,9 @@ class Course:
     id: str
     name: str
     etc: int
-    students: list[str] = field(default_factory=list)
     modules: list[Module] = field(default_factory=list)
+    students: list[str] = field(default_factory=list)
+
 
     def add_module(self, module: Module):
         self.modules.append(module)

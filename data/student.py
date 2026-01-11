@@ -127,7 +127,6 @@ def get_gradetarget(student_id: str) -> float:
     return student_gradetarget
 
 
-
 # --- ENROLL STUDENT IN COURSE ----------------------------------------------------------------------------------------
 def enroll_course(student_id: str, course_id: str, student_semester: int, student_gradetarget: float):
     db_path = Path(__file__).resolve().parent / "databank.db"

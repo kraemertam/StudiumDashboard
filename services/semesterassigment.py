@@ -19,6 +19,5 @@ def semester_assign(student, modulliste) -> list:
             i += 1
         modules_per_semester.append(semestermodule)
 
-
     print(f"Anzahl der Semester mit Modulen: {len(modules_per_semester)}")
     return modules_per_semester

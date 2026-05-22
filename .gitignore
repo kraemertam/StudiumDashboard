@@ -1,0 +1,23 @@
+# Virtuelle Umgebung
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# JetBrains / PyCharm
+.idea/
+*.iml
+
+# Datenbanken
+*.sqlite
+*.sqlite3
+*.db
+
+# Umgebungsvariablen / Secrets
+.env
+.env.local

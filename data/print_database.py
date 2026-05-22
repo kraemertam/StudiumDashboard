@@ -31,3 +31,5 @@ def print_databank():
         print(row)
 
     connection.close()
+
+print_databank()

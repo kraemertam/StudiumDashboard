@@ -33,10 +33,9 @@ def overview_frame(student_id, dashboardframe):
     overview.lift()
 
 # --- KEYFIGURE FRAME -------------------------------------------------------------------------------------------------
-    keyfigureview = Keyfigureframe(student_id, overview)
+    keyfigureview = Keyfigureframe(student, overview)
     keyfigureview.get_pie_chart()
     keyfigureview.get_gradeframe()
-
 
     ttk.Separator(overview, orient="horizontal").grid(row=2, sticky="ew")
 
@@ -52,6 +51,9 @@ def overview_frame(student_id, dashboardframe):
     moduloverview.columnconfigure(0, weight=1, uniform="cols", pad=5)
     moduloverview.columnconfigure(1, weight=1, uniform="cols", pad=5)
     moduloverview.grid(row=3, sticky="nsew", padx=10, pady=10)
+
+    def change_moduleinformation():
+        pass
 
     change_moduleinformation_button = tk.Button(moduloverview, text="Modulinfo anpassen", font=("arial", 8))
     change_moduleinformation_button.grid(row=0, column=1, sticky="e", padx=5, pady=5)

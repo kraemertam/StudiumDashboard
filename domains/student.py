@@ -18,10 +18,11 @@ class Student:
     def info_student(self):
         return f"{self.name} {self.lastname} studiert {self.course}"
 
-    def enroll_course(self, course_id, semester):
+    def enroll_course(self, course_id, semester, gradetarget):
         self.course = course_id
         self.semester = int(semester)
-        enroll_course(self.id, self.course, self.semester)
+        self.gradetarget = float(gradetarget)
+        enroll_course(self.id, self.course, self.semester, self.gradetarget)
 
     def calc_etc_per_semesters(self) -> int:
         etc_per_semester = self.etcs / self.semester

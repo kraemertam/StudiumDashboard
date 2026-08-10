@@ -22,3 +22,17 @@ def add_modules_to_course(course_id: str, module_id: str):
     connection.commit()
     connection.close()
     print("Das Modul wurde dem Kurs hinzugefügt.")
+
+
+def get_all_courses() -> list:
+    db_path = Path(__file__).resolve().parent / "databank.db"
+    connection = sqlite3.connect(db_path)
+    connection.execute("PRAGMA foreign_keys = ON")
+    cursor = connection.cursor()
+    cursor.execute("SELECT * from course")
+    list_of_courses = []
+    for row in cursor.fetchall():
+        list_of_courses.append(row)
+    connection.commit()
+    connection.close()
+    return list_of_courses

@@ -11,15 +11,10 @@ class Module:
     status: str = field(default="open", init=True)
     grade: int = field(default=None, init=True)
 
-    def change_status(self, student_id):
-        if self.status == "offen":
-            self.status = "in Bearbeitung"
-        elif self.status == "done":
-            self.status = "offen"
-        elif self.status == "in Bearbeitung":
-            self.status = "abgeschlossen"
+    def change_status(self, student_id, new_status):
+        self.status = new_status
         save_modules_changes(student_id, self.id, self.status)
-        print(f"Modulstatus {self.name} geändert.")
+        print(f"Modulstatus {self.name} in {self.status} geändert.")
         return self.status
 
     def set_grade(self, student_id, grade):

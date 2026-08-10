@@ -1,11 +1,13 @@
 """This file is for creating the database."""
 import sqlite3
+from pathlib import Path
 
 def start_databank():
     """The database is set up initially.
     The tables student, course, module, course_modules and studentoverview are created."""
-
-    connection = sqlite3.connect("databank.db")
+    
+    db_path = Path(__file__).resolve().parent / "databank.db"
+    connection = sqlite3.connect(db_path)
     connection.execute("PRAGMA foreign_keys = ON")
     cursor = connection.cursor()
     cursor.execute(f"""

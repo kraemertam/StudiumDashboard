@@ -1,10 +1,10 @@
 """This file can be used to initialise the database and import testdata for the database in order to test the application.
 For this remove the "#" from the corresponding lines."""
 from pathlib import Path
-from data.create_database import start_databank
-from data.student import new_student_db, enroll_course
-from data.module import new_modul_db
-from data.course import new_course_db, add_modules_to_course
+from create_database import start_databank
+from student import new_student_db, enroll_course
+from module import new_modul_db
+from course import new_course_db, add_modules_to_course
 
 
 
@@ -67,8 +67,5 @@ new_student_db("S3", "Lisa", "Lotte")
 enroll_course("S123", "FS-BAAKI-01", 8, 2.5)
 enroll_course("S11","FS-BAAKI-01", 6, 3.1 )
 
-
-# --- PRINT DATABASE --------------------------------------------------------------------------------------------------
-#print_databank()
 
 

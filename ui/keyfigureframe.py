@@ -1,7 +1,8 @@
 """This file contains the class keyfigureframe, including the keyfigures gradetarget and piechart."""
 import tkinter as tk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from services.keyfigures import pie_chart, grade_point_average
+from services.keyfigures import pie_chart, grade_point_average, calc_achieved_etcs
+from ui.theme import GRADEFRAME_BG, FRAME_BG, FONT_TITLE, FONT_SUBTITLE, FONT_TEXT
 
 try:
     from ctypes import windll
@@ -9,25 +10,27 @@ try:
 except:
     pass
 
+# --- 
 # --- KEYFIGUREFRAME --------------------------------------------------------------------------------------------------
 
-class Keyfigureframe():
-    def __init__(self, student_id, container, *args, **kwargs):
-        self.student_id = student_id
+class Keyfigureframe:
+    def __init__(self, student, container, *args, **kwargs):
+        self.student = student
+        self.student_id = student.id
         self.container = container
 
-        self.frame = tk.Frame(self.container, bg="white")
+        self.frame = tk.Frame(self.container, bg=FRAME_BG)
         self.frame.grid(row=1, sticky="nsew", padx=5, pady=5)
         self.frame.columnconfigure(0, weight=0, uniform="keycols", minsize=300)
         self.frame.columnconfigure(1, weight=0, uniform="keycols")
         self.frame.columnconfigure(2, weight=1, uniform="keycols")
         self.frame.rowconfigure(0, weight=1)
+        #self.frame.rowconfigure(1, weight=1)
         self.frame.grid_propagate(False)
         self.frame.configure(height=300)
 
-
     def get_pie_chart(self):
-        self.pieframe = tk.Frame(self.frame, bg="white")
+        self.pieframe = tk.Frame(self.frame, bg=FRAME_BG)
         self.pieframe.grid(row=0, column=1, columnspan=2, sticky="nsew", padx=5, pady=5)
         self.pieframe.grid_propagate(False)
         self.pieframe.rowconfigure(0, weight=1)
@@ -56,12 +59,11 @@ class Keyfigureframe():
         self.pieframe.bind("<Configure>", lambda e: _resize_to_frame())
         self.pieframe.after_idle(_resize_to_frame)
 
-
     def get_gradeframe(self):
-        self.gradeframe = tk.Frame(self.frame, bg="white")
+        self.gradeframe = tk.Frame(self.frame, bg=FRAME_BG)
         self.gradeframe.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
-        for r in range(4):
-            self.gradeframe.rowconfigure(r, weight=0)
+        #for r in range(6):
+        #    self.gradeframe.rowconfigure(r, weight=0)
         self.gradeframe.columnconfigure(0, weight=1)
 
         grade_info = grade_point_average(self.student_id)
@@ -69,21 +71,33 @@ class Keyfigureframe():
         gradetarget = grade_info[1]
         gradecolor = grade_info[2]
         gradetargettext = grade_info[3]
+        etcs_info = calc_achieved_etcs(self.student_id)
+        all_etcs = etcs_info[0]
+        achieved_etcs = etcs_info[1]
 
-        gradetarget_title_label = tk.Label(self.gradeframe, bg="white", text="Deine Notenübersicht:",
-                                           font=("arial", 15, "bold"))
-        gradetargetlabel = tk.Label(self.gradeframe, bg="white", text=f"Ziel für den Notendurschnitt: {gradetarget}",
-                                    font=("arial", 11, "bold"))
-        grade_point_average_text = tk.Label(self.gradeframe, bg="white",
+        infoframe = tk.Frame(self.gradeframe, bg=GRADEFRAME_BG)
+        infoframe.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
+        course_label = tk.Label(infoframe, bg=GRADEFRAME_BG, text=f"Studiengang: {self.student.course_name}", font=FONT_SUBTITLE)
+        etcs_label = tk.Label(infoframe, bg=GRADEFRAME_BG, text=f"Erreichte ETCS-Punkte: {achieved_etcs} / {all_etcs}", font=FONT_SUBTITLE)
+        course_label.grid(row=0, column=0, sticky="w", padx=15, pady=5)
+        etcs_label.grid(row=1, column=0, sticky="w", padx=15, pady=5)
+
+        gradetargetframe = tk.Frame(self.gradeframe, bg=GRADEFRAME_BG)
+        gradetargetframe.grid(row=1, column=0, sticky="nsew", padx=5, pady=5)
+
+        gradetarget_title_label = tk.Label(gradetargetframe, bg=GRADEFRAME_BG, text="Deine Notenübersicht:",
+                                           font=FONT_TITLE)
+        gradetargetlabel = tk.Label(gradetargetframe, bg=GRADEFRAME_BG, text=f"Dein Notenziel (durchschnittlich): {gradetarget}",
+                                    font=FONT_SUBTITLE)
+        grade_point_average_text = tk.Label(gradetargetframe, bg=GRADEFRAME_BG,
                                             text=f"Aktueller Notendurchschnitt: {actual_grade_point_average} ",
-                                            font=("arial", 11, "bold"))
-        gradetarget_info = tk.Label(self.gradeframe, bg="white", text=f"Fazit: {gradetargettext}", fg=gradecolor, font=("arial", 11))
+                                            font=FONT_SUBTITLE)
+        gradetarget_info = tk.Label(gradetargetframe, bg=GRADEFRAME_BG, text=f"Fazit: {gradetargettext}", fg=gradecolor, font=FONT_TEXT, justify="left")
 
-        gradetarget_title_label.grid(row=0, column=0, sticky="w", padx=30, pady=15)
-        gradetargetlabel.grid(row=1, column=0, sticky="w", padx=30, pady=15)
-        grade_point_average_text.grid(row=2, column=0, sticky="w", padx=30, pady=15)
-        gradetarget_info.grid(row=3, column=0, sticky="nswe", padx=30, pady=15)
-
+        gradetarget_title_label.grid(row=2, column=0, sticky="w", padx=15, pady=5)
+        gradetargetlabel.grid(row=3, column=0, sticky="w", padx=15, pady=5)
+        grade_point_average_text.grid(row=4, column=0, sticky="w", padx=15, pady=5)
+        gradetarget_info.grid(row=5, column=0, sticky="w", padx=15, pady=5)
 
     def keyfigureframe_refresh(self):
         for w in self.frame.winfo_children():

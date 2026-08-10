@@ -12,7 +12,7 @@ except:
     pass
 
 from services.create_objects import create_student, create_new_student
-from services.registration import login_student
+from services.registration import login_student, get_available_courses
 from ui.overviewframe import overview_frame
 
 
@@ -82,7 +82,6 @@ def start_gui():
 # ---ENROLL COURSE FRAME----------------------------------------------------------------------------------------------
     def enroll_course_frame(student_id):
         student = create_student(student_id)
-
         enrollment_course = tk.Frame(dashboardframe)
 
         font.nametofont("TkDefaultFont").configure(size=10)
@@ -91,35 +90,46 @@ def start_gui():
         header.grid(padx=50, pady=10, sticky="ew")
         enrollment_course.grid(pady=5, padx=5, sticky="")
 
-        course_id = tk.StringVar()
+        course = tk.StringVar()
         semester = tk.StringVar()
+        gradetarget = tk.StringVar()
+        course = tk.StringVar()
 
         def start_enrollment():
-            student.enroll_course(course_id.get(), semester.get())
+            course_id = course.get().split(" - ")[0]
+            print("Du wurdest im Kurs eingeschrieben.")
+            student.enroll_course(course_id, semester.get(), gradetarget.get())
             done_label = tk.Label(enrollment_course, text="Du wurdest erfolgreich eingeschrieben.")
-            done_label.grid(row=8, padx=50, pady=5, sticky="ew")
+            done_label.grid(row=10, padx=50, pady=5, sticky="ew")
             print("Du wurdest erfolgreich angemeldet")
 
             overview_frame(student_id, dashboardframe)
             enrollment_course.destroy()
             dashboardframe.withdraw()
 
+        course_list = get_available_courses()
+        course_selection = [f"{course[0]} - {course[1]} ({course[2]})" for course in course_list]
+
         explain_label = ttk.Label(enrollment_course, text="Aktuell liegen uns zu deinem Account noch keine Kursdaten vor. \nStarten wir also damit, dich in einen Kurs einzuschreiben.")
         enrollment_label = ttk.Label(enrollment_course, text="In welchen Kurs möchtest du dich einschreiben?", font=("Arial", (12), "bold"))
-        enrollment_hint = tk.Label(enrollment_course, text="(Hinweis: Gib hier die Kurs-ID ein.)", font=("Arial", (8)))
-        enrollment_entry = tk.Entry(enrollment_course, textvariable=course_id)
-        enrollment_entry.focus()
+        enrollment_hint = tk.Label(enrollment_course, text="(Hinweis: Wähle einen Kurs aus.)", font=("Arial", (8)))
+        course_dropdown = ttk.Combobox(enrollment_course, textvariable=course, values=course_selection, state="readonly")
+        course_dropdown.focus()
         entrollment_semester = tk.Label(enrollment_course, text="Wieviele Semester studierst du?", font=("Arial", (12), "bold"),anchor="center")
         semester_entry = tk.Entry(enrollment_course, textvariable=semester)
+        gradetarget_label = tk.Label(enrollment_course, text="Welches Notenziel (Durchschnittsnote) möchtest du erreichen?", font=("Arial", (12), "bold"))
+        gradetarget_entry = tk.Entry(enrollment_course, textvariable=gradetarget)
         enrollment_button = tk.Button(enrollment_course, text="In Kurs einschreiben!", anchor="center", command=start_enrollment)
 
         explain_label.grid(row=1, padx=50, pady=5, sticky="w")
         enrollment_label.grid(row=2, padx=50, pady=5, sticky="w")
         enrollment_hint.grid(row=3, padx=50, sticky="w")
-        enrollment_entry.grid(row=4, padx=50, pady=10, sticky="ew")
+        course_dropdown.grid(row=4, padx=50, pady=10, sticky="ew")
         entrollment_semester.grid(row=5, padx=50, pady=5, sticky="w")
         semester_entry.grid(row=6, padx=50, pady=5, sticky="ew")
-        enrollment_button.grid(row=7, padx=50, pady=5, sticky="ew")
+        gradetarget_label.grid(row=7, padx=50, pady=5, sticky="w")
+        gradetarget_entry.grid(row=8, padx=50, pady=5, sticky="ew")
+        enrollment_button.grid(row=9, padx=50, pady=5, sticky="ew")
 
 # --- ENROLL STUDENT FRAME ---------------------------------------------------------------------------------------------
     def enroll_student_frame():
@@ -137,21 +147,28 @@ def start_gui():
         student_id = tk.StringVar()
         student_name = tk.StringVar()
         student_lastname = tk.StringVar()
-        course_id = tk.StringVar()
+        course = tk.StringVar()
         semester = tk.StringVar()
         gradetarget = tk.StringVar()
 
         def start_enrollment():
+            course_id = course.get().split(" - ")[0]
             print("Wir legen dich als Student an.")
-            student = create_new_student(student_id.get(), student_name.get(), student_lastname.get(), gradetarget.get())
+            student = create_new_student(student_id.get(), student_name.get(), student_lastname.get())
             print("Du wurdest im Kurs eingeschrieben.")
-            student.enroll_course(course_id.get(), semester.get())
+            student.enroll_course(course_id, semester.get(), gradetarget.get())
             done_label = tk.Label(enrollment_student, text="Du wurdest erfolgreich eingeschrieben.")
             done_label.grid(row=11, padx=50, pady=5, sticky="ew")
 
             overview_frame(student_id.get(), dashboardframe)
             enrollment_student.destroy()
             dashboardframe.withdraw()
+
+        course_list = get_available_courses()
+        print(course_list)
+        course_selection = [f"{course[0]} - {course[1]} ({course[2]})" for course in course_list]
+
+        course_dropdown = ttk.Combobox(enrollment_student, textvariable=course, values=course_selection, state="readonly")
 
 
         explain_label = tk.Label(enrollment_student,
@@ -166,8 +183,8 @@ def start_gui():
         student_lastname_entry = ttk.Entry(enrollment_student, textvariable=student_lastname)
         enrollment_label = ttk.Label(enrollment_student, text="In welchen Kurs möchtest du dich einschreiben?",
                                      font=("Arial", (12), "bold"))
-        enrollment_hint = tk.Label(enrollment_student, text="(Hinweis: Gib hier die Kurs-ID ein.)", font=("Arial", (8)))
-        enrollment_entry = tk.Entry(enrollment_student, textvariable=course_id)
+        enrollment_hint = tk.Label(enrollment_student, text="(Hinweis: Wähle einen Kurs aus.)", font=("Arial", (8)))
+        course_dropdown = ttk.Combobox(enrollment_student, textvariable=course, values=course_selection, state="readonly")
         entrollment_semester = tk.Label(enrollment_student,
                                         text="Wieviele Semester studierst du?",
                                         font=("Arial", (12), "bold"))
@@ -187,7 +204,7 @@ def start_gui():
         student_lastname_entry.grid(row=4, column= 1, padx=5, pady=5, sticky="ew")
         enrollment_label.grid(row=5, columnspan=4, padx=50, pady=5, sticky="w")
         enrollment_hint.grid(row=6, columnspan=4, padx=50, sticky="w")
-        enrollment_entry.grid(row=7, columnspan=4, padx=50, pady=10, sticky="ew")
+        course_dropdown.grid(row=7, columnspan=4,padx=50, pady=10, sticky="ew")
         entrollment_semester.grid(row=8, columnspan=4, padx=50, pady=5, sticky="w")
         semester_entry.grid(row=9, columnspan=4, padx=50, pady=5, sticky="ew")
         gradetarget_label.grid(row=10, columnspan=4, padx=50, pady=5, sticky="w")

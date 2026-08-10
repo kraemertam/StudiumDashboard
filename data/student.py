@@ -127,7 +127,7 @@ def get_gradetarget(student_id: str) -> float:
     return student_gradetarget
 
 
-# --- ENROLL STUDENT IN COURSE ----------------------------------------------------------------------------------------
+# --- DB: ENROLL STUDENT IN COURSE ----------------------------------------------------------------------------------------
 def enroll_course(student_id: str, course_id: str, student_semester: int, student_gradetarget: float):
     db_path = Path(__file__).resolve().parent / "databank.db"
     connection = sqlite3.connect(db_path)
@@ -147,7 +147,7 @@ def enroll_course(student_id: str, course_id: str, student_semester: int, studen
     print(f"{student_id} wurde in den Kurs {course_id} eingeschrieben.")
 
 
-# --- DB: Save changes while session -----------------------------------------------------------------------------------
+# --- DB: SAVE CHANGES WHILE SESSION  -----------------------------------------------------------------------------------
 def save_modules_changes(student_id: str, module_id: str, module_status: str):
     db_path = Path(__file__).resolve().parent / "databank.db"
     connection = sqlite3.connect(db_path)

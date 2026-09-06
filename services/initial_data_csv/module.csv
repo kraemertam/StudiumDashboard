@@ -1,0 +1,30 @@
+DLBDSEAIS1-01_D, Artificial Intelligence, 5;FS-BAAKI-01
+DLBDSIPWP_D, Einführung in die Programmierung mit Python, 5;FS-BAAKI-01
+DLBBIMD, Mathematik: Analysis, 5;FS-BAAKI-01
+DLBWIRITT, Einführung in das wissenschaftliche Arbeiten für IT und Technik, 5;FS-BAAKI-01
+DLBDSOOFPP_D, Projekt: Objektorientierte und funktionale Programmierung mit Python, 5;FS-BAAKI-01
+DLBBIM, Mathematik: Lineare Algebra, 5;FS-BAAKI-01
+DLBDSSPDS_D, Statistik - Wahrscheinlichkeit und deskriptive Statistik, 5;FS-BAAKI-01
+DLBDSSIS1_D, Statistik - Induktive Statistik, 5;FS-BAAKI-01
+DLBDSCC-01_D, Cloud Computing, 5;FS-BAAKI-01
+DLBSEPCP_D, Projekt: Cloud Programming, 5 ;FS-BAAKI-01
+DLBDSMLSL_D, Maschinelles Lernen - Supervised Learning, 5;FS-BAAKI-01
+DLBDSMLUSL_D, Maschinelles Lernen - Unsupervised Learning und Feature Engineering, 5;FS-BAAKI-01
+DLBDSNNDL-01_D, Neuronale Netze und Deep Learning, 5;FS-BAAKI-01
+DLBAIICV_D, Einführung in Computer Vision , 5;FS-BAAKI-01
+DLBAIPCV_D, Projekt: Computer Vision, 5;FS-BAAKI-01
+DLBAIIRL_D, Einführung in das Reinforcement Learning, 5;FS-BAAKI-01
+DLBINGEDS, Einführung in Datenschutz und IT-Sicherheit, 5;FS-BAAKI-01
+DLBAIBEELAAI_D, Ethische und rechtliche Aspekte in der KI, 5;FS-BAAKI-01
+DLBAIINLP_D, Einführung in NLP, 5;FS-BAAKI-01
+DLBAIPNLP_D, Projekt: NLP, 5;FS-BAAKI-01
+DLBAIPEAI_D, Projekt: Edge AI, 5;FS-BAAKI-01
+DLBAIBESEI_D, Seminar: Ethische Innovation, 5;FS-BAAKI-01
+$WPF,5,1, Wahlpflichtmodule A, 5;FS-BAAKI-01
+$WPF,5,2, Wahlpflichtmodule B, 10;FS-BAAKI-01
+DLBDSME_D, Model Engineering, 5;FS-BAAKI-01
+BBAK, Bachelorarbeit, 10;FS-BAAKI-01
+$WPF,6,2, Wahlpflichtmodule C, 10;FS-BAAKI-01
+$WPF,0,10, Wahlpflichtmodule D0, 10;FS-BAAKI-01
+$WPF,1,10, Wahlpflichtmodule D1, 10;FS-BAAKI-01
+$WPF,2,10, Wahlpflichtmodule D2, 10;FS-BAAKI-01

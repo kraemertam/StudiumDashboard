@@ -34,12 +34,13 @@ class Moduleview:
         if self.modulestatus == STATUS_FAILED:
             bgc = STATUS_COLORS[STATUS_FAILED]
 
-        # --- STRUCTURE & ELEMENTS MODULEFRAME --------------------------------------------------------------------
+        # --- STRUCTURE & ELEMENTS OF MODULEFRAME --------------------------------------------------------------------
 
         self.frame = tk.Frame(self.container, bg=bgc, borderwidth=1, relief="solid")
         self.frame.columnconfigure(0, weight=1, uniform="cols", pad=5)
         for r in range(4):
             self.frame.rowconfigure(r, weight=1)
+
 
         self.modulename_label = tk.Label(self.frame, text=f"{self.modulename}", wraplength=170, bg=bgc,
                                          font=FONT_MODULE, anchor="center")
@@ -52,19 +53,20 @@ class Moduleview:
 
         self.modulename_label.grid(sticky="nswe", padx=1, pady=2)
         self.modulestatus_label.grid(sticky="nswe", padx=1, pady=1)
+        self.gradelabel.grid(sticky="nswe", padx=5, pady=5)
         self.modulestatus_button.grid(sticky="s", padx=1, pady=1)
         self.frame.grid(row=1, column=i, sticky="nswe", padx=1, pady=1)
 
+        if self.modulestatus == STATUS_OPEN:
+            self.gradelabel.grid_remove()
+        if self.modulestatus == STATUS_IN_PROGRESS:
+            self.gradelabel.grid_remove()
         if self.modulestatus == STATUS_COMPLETED:
-            self.modulestatus_label.destroy()
-            self.modulestatus_button.destroy()
-            self.gradelabel.grid(sticky="nswe", padx=5, pady=5)
-
+            self.modulestatus_label.grid_remove()
         if self.modulestatus == STATUS_FAILED:
-            self.modulestatus_label.destroy()
-            self.gradelabel.grid(sticky="nswe", padx=5, pady=5)
+            self.modulestatus_label.grid_remove()
 
-
+# --- FUNCTION TO CHANGE THE STATUS OF A MODULE -------------------------------------------------------------------
     def change_modulestatus(self):
         new_modulestatus = tk.StringVar(value = self.modulestatus)
         new_modulegrade = tk.StringVar(value = self.modulegrade)
@@ -95,6 +97,46 @@ class Moduleview:
                                             text="Deine Note muss eine Nachstelle haben. Nutze als Komma einen Punkt, z.B. 1.5")
                 modulegradehint.grid()
 
+        def change_modulestatus_frame():
+                self.modulestatus_label.configure(text=f"{self.modulestatus}")
+        
+                if self.modulestatus == STATUS_OPEN:
+                    color = STATUS_COLORS[STATUS_OPEN]
+                    self.frame.configure(bg=color)
+                    self.modulename_label.configure(bg=color)
+                    self.modulestatus_label.configure(bg=color)
+                    self.modulestatus_button.configure(bg=color)
+        
+                if self.modulestatus == STATUS_IN_PROGRESS:
+                    color = STATUS_COLORS[STATUS_IN_PROGRESS]
+                    self.frame.configure(bg=color)
+                    self.modulename_label.configure(bg=color)
+                    self.modulestatus_label.configure(bg=color)
+                    self.modulestatus_button.configure(bg=color)
+        
+                if self.modulestatus == STATUS_COMPLETED:
+                   color = STATUS_COLORS[STATUS_COMPLETED]
+                   self.frame.configure(bg=color)
+                   self.modulename_label.configure(bg=color)
+                   self.modulestatus_label.destroy()
+                   self.modulestatus_button.configure(bg=color)
+                   self.gradelabel.configure(bg=color, text=f"Note: {self.modulegrade}")
+                   self.gradelabel.grid(sticky="nswe", padx=5, pady=5)
+    
+
+                if self.modulestatus == STATUS_FAILED:
+                    color = STATUS_COLORS[STATUS_FAILED]
+                    self.frame.configure(bg=color)
+                    self.modulename_label.configure(bg=color)
+                    self.modulestatus_label.configure(bg=color)
+                    self.modulestatus_button.configure(bg=color)
+                    self.gradelabel.configure(bg=color)
+                    self.gradelabel.configure(text=f"Note: {self.modulegrade}")
+                    self.modulestatus_label.destroy()
+                    self.gradelabel.grid(sticky="nswe", padx=5, pady=5)
+                    self.modulestatus_label.destroy()
+
+
         def check_new_status(event):
             new_status = new_modulestatus.get()
             if new_status == STATUS_COMPLETED:
@@ -104,15 +146,18 @@ class Moduleview:
                 modulegrade_entry.grid(row=3, column=0, padx=5, pady=5)
                 change_status_frame.after_idle(lambda: (modulegrade_entry.focus_set(), modulegrade_entry.icursor("end")))
 
-
         def save_new_status():
             new_status = new_modulestatus.get()
-            modulegrade = new_modulegrade.get()
-            if modulegrade == "NONE":
+            modulegrade = new_modulegrade.get().strip()
+            if new_status != STATUS_COMPLETED:
                 self.module.change_status(self.student_id, new_status)
             else:
-                self.module.set_grade(self.student_id, modulegrade.get())
+                modulegrade = float(modulegrade.replace(",", "."))
+                self.module.set_grade(self.student_id, modulegrade)
                 self.module.change_status(self.student_id, new_status)
+            self.modulestatus = new_status 
+            change_modulestatus_frame()
+            change_status_frame.destroy()  
             print(f"Neuer Status {new_status} wurde gespeichert.")
 
 
@@ -125,49 +170,9 @@ class Moduleview:
 
         modulestatus_combobox.bind("<<ComboboxSelected>>", check_new_status)
         check_new_status(None)
-        
-
-        #modulegrade_button = tk.Button(change_status_frame, text="Note eintragen", command= lambda: (set_modulegrade()))
 
         change_status_label.grid(row=0, column=0, padx=5, pady=5)
         modulestatus_combobox.grid(row=1, column=0, padx=5, pady=5)
         save_button.grid(row=5, column=0, padx=5, pady=5)
-
-
-        def set_modulegrade():
-            if new_modulestatus.get() == STATUS_COMPLETED:
-                modulegrade_label.grid(row=2, column=0, padx=5, pady=5)
-                modulegrade_entry.grid(row=3, column=0, padx=5, pady=5)
-                change_status_frame.after_idle(lambda: (modulegrade_entry.focus_set(), modulegrade_entry.icursor("end")))
-
-            return modulegrade.get()
-
-        
-
-    #def change_modulestatus(self):
-    #    self.modulestatus = self.module.change_status(self.student_id)
-    #    self.modulestatus_label.configure(text=f"{self.modulestatus}")
-
-    #    if self.modulestatus == STATUS_OPEN:
-    #        color = STATUS_COLORS[STATUS_OPEN]
-    #        self.frame.configure(bg=color)
-    #        self.modulename_label.configure(bg=color)
-    #        self.modulestatus_label.configure(bg=color)
-    #        self.modulestatus_button.configure(bg=color)
-
-     #   if self.modulestatus == STATUS_IN_PROGRESS:
-     #       color = STATUS_COLORS[STATUS_IN_PROGRESS]
-     #       self.frame.configure(bg=color)
-     #       self.modulename_label.configure(bg=color)
-     #       self.modulestatus_label.configure(bg=color)
-     #       self.modulestatus_button.configure(bg=color)
-
-    #    if self.modulestatus == STATUS_COMPLETED:
-    #       color = STATUS_COLORS[STATUS_COMPLETED]
-    #       self.frame.configure(bg=color)
-    #       self.modulename_label.configure(bg=color)
-    #       self.modulestatus_label.configure(bg=color)
-    #       self.modulestatus_button.configure(bg=color)
-    #       self.modulegrade = self.set_modulegrade_entry()
 
         self.keyfigureview.pie_chart_frame_refresh()

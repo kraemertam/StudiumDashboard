@@ -1,4 +1,5 @@
 from data.student import check_student, get_overview_data, get_student, check_course
+from data.moduleprogress import get_grade_data
 from data.course import get_all_courses
 
 def login_student(student_id: str) -> bool:

@@ -25,7 +25,7 @@ def print_databank():
     print("Zuordnung:")
     for row in cursor.fetchall():
         print(row)
-    cursor.execute("SELECT * FROM studentoverview")
+    cursor.execute("SELECT * FROM moduleprogress")
     print("Übersicht Studenten:")
     for row in cursor.fetchall():
         print(row)

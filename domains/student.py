@@ -29,5 +29,3 @@ class Student:
             raise ValueError("Das Ziel-Notendurchschnitt muss zwischen 1.0 und 4.0 liegen.")
         self.course_id = course_id
         self.gradetarget =gradetarget
-
-

@@ -18,6 +18,20 @@ def new_student_db(student_id: str, student_name: str, student_lastname: str):
     finally:
         connection.close()
 
+# --- GET STUDENT DATA ----------------------------------------------------------------------------------------------
+def get_student_db(student_id: str):
+    db_path = Path(__file__).resolve().parent / "databank.db"
+    connection = sqlite3.connect(db_path)
+    try:
+        connection.execute("PRAGMA foreign_keys = ON")
+        cursor = connection.cursor()
+        cursor.execute("SELECT * from student WHERE student_id = ?", (student_id,))
+        student = cursor.fetchone()
+        connection.commit()
+        return student
+    finally:
+        connection.close()
+
 # --- CHECKS FOR STUDENT REGISTRATION ---------------------------------------------------------------------------------
 def select_all_students_db()->list:
     connection = sqlite3.connect("databank.db")
@@ -57,32 +71,7 @@ def check_course_db(student_id: str) -> bool:
     else:
         return True
 
-# --- GET OVERVIEW DATA -----------------------------------------------------------------------------------------------
-def get_student_db(student_id: str):
-    db_path = Path(__file__).resolve().parent / "databank.db"
-    connection = sqlite3.connect(db_path)
-    connection.execute("PRAGMA foreign_keys = ON")
-    cursor = connection.cursor()
-    cursor.execute("SELECT * from student WHERE student_id = ?", (student_id,))
-    student = cursor.fetchone()
-    student_id = student[0]
-    student_name = student[1]
-    student_lastname = student[2]
-    student_course = student[3]
-    student_gradetarget = student[5]
-    if student[3] == None:
-        student_gradetarget = None
-    else:
-        cursor.execute("SELECT course_name, course_etc from course WHERE course_id = ?", (student[3],))
-        course_info = cursor.fetchone()
-        course_name = course_info[0]
-        course_etc = course_info[1]
-    connection.close()
-    print(student_id, student_name, student_lastname, student_course, course_name, course_etc, student_gradetarget)
-    return student_id, student_name, student_lastname, student_course, course_name, course_etc, student_gradetarget
-
-
-def get_gradetarget(student_id: str) -> float:
+def get_gradetarget_db(student_id: str) -> float:
     db_path = Path(__file__).resolve().parent / "databank.db"
     connection = sqlite3.connect(db_path)
     connection.execute("PRAGMA foreign_keys = ON")
@@ -94,12 +83,17 @@ def get_gradetarget(student_id: str) -> float:
 
 
 # --- DB: ENROLL STUDENT IN COURSE ----------------------------------------------------------------------------------------
-def enroll_course(student_id: str, course_id: str, student_gradetarget: float):
+def enroll_student_in_course_db(student_id: str, course_id: str, student_gradetarget: float):
     db_path = Path(__file__).resolve().parent / "databank.db"
     connection = sqlite3.connect(db_path)
-    connection.execute("PRAGMA foreign_keys = ON")
-    cursor = connection.cursor()
-    cursor.execute("UPDATE student SET student_course = ?, student_gradetarget=? WHERE student_id = ?", (course_id, student_semester, student_gradetarget, student_id))
-    connection.commit()
-    connection.close()
-    print(f"{student_id} wurde in den Kurs {course_id} eingeschrieben.")
+    try: 
+        connection.execute("PRAGMA foreign_keys = ON")
+        cursor = connection.cursor()
+        cursor.execute("SELECT 1 FROM course WHERE course_id = ?", (course_id,))
+        course = cursor.fetchone()
+        if course is None:
+            raise ValueError(f"Der Kurs {course_id} existiert nicht.")
+        cursor.execute("UPDATE student SET student_course = ?, student_gradetarget=? WHERE student_id = ?", (course_id, student_gradetarget, student_id))
+        connection.commit()
+    finally:
+        connection.close()

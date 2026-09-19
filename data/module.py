@@ -1,13 +1,13 @@
 import sqlite3
 from pathlib import Path
 
-def new_module_db(module_id: str, module_name: str, module_etc: int):
+def new_module_db(module_id: str, module_name: str, module_ects: int):
     db_path = Path(__file__).resolve().parent / "databank.db"
     connection = sqlite3.connect(db_path)
     try:
         connection.execute("PRAGMA foreign_keys = ON")
         cursor = connection.cursor()
-        cursor.execute("INSERT INTO modules (module_id, module_name, module_etc) VALUES (?,?,?)", (module_id, module_name, module_etc))
+        cursor.execute("INSERT INTO modules (module_id, module_name, module_ects) VALUES (?,?,?)", (module_id, module_name, module_ects))
         connection.commit()
     except sqlite3.IntegrityError:
         raise ValueError(f"Das Modul mit der ID {module_id} existiert bereits unter dem Namen {module_name}.")

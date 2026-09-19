@@ -1,7 +1,8 @@
 """This file contains the class keyfigureframe, including the keyfigures gradetarget and piechart."""
 import tkinter as tk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from services.keyfigures import pie_chart, grade_point_average, calc_achieved_etcs
+from services.course_service import get_course
+from services.keyfigures_service import pie_chart, grade_point_average, calc_achieved_ects
 from ui.theme import GRADEFRAME_BG, FRAME_BG, FONT_TITLE, FONT_SUBTITLE, FONT_TEXT
 
 try:
@@ -36,7 +37,7 @@ class Keyfigureframe:
         self.pieframe.rowconfigure(0, weight=1)
         self.pieframe.columnconfigure(0, weight=1)
 
-        self.pie = pie_chart(self.student_id)
+        self.pie = pie_chart(self.student)
         self.pie_canvas = FigureCanvasTkAgg(self.pie, master=self.pieframe)
         w = self.pie_canvas.get_tk_widget()
         w.grid(row=0, column=0, sticky="nsew",padx=15, pady=5)
@@ -66,21 +67,22 @@ class Keyfigureframe:
         #    self.gradeframe.rowconfigure(r, weight=0)
         self.gradeframe.columnconfigure(0, weight=1)
 
-        grade_info = grade_point_average(self.student_id)
+        grade_info = grade_point_average(self.student)
         actual_grade_point_average = grade_info[0]
         gradetarget = grade_info[1]
         gradecolor = grade_info[2]
         gradetargettext = grade_info[3]
-        etcs_info = calc_achieved_etcs(self.student_id)
-        all_etcs = etcs_info[0]
-        achieved_etcs = etcs_info[1]
+        ects_info = calc_achieved_ects(self.student)
+        all_ects = ects_info[0]
+        achieved_ects = ects_info[1]
+        course = get_course(self.student.course_id)
 
         infoframe = tk.Frame(self.gradeframe, bg=GRADEFRAME_BG)
         infoframe.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
-        course_label = tk.Label(infoframe, bg=GRADEFRAME_BG, text=f"Studiengang: {self.student.course_name}", font=FONT_SUBTITLE)
-        etcs_label = tk.Label(infoframe, bg=GRADEFRAME_BG, text=f"Erreichte ETCS-Punkte: {achieved_etcs} / {all_etcs}", font=FONT_SUBTITLE)
+        course_label = tk.Label(infoframe, bg=GRADEFRAME_BG, text=f"Studiengang: {course.name}", font=FONT_SUBTITLE)
+        ects_label = tk.Label(infoframe, bg=GRADEFRAME_BG, text=f"Erreichte ECTS-Punkte: {achieved_ects} / {all_ects}", font=FONT_SUBTITLE)
         course_label.grid(row=0, column=0, sticky="w", padx=15, pady=5)
-        etcs_label.grid(row=1, column=0, sticky="w", padx=15, pady=5)
+        ects_label.grid(row=1, column=0, sticky="w", padx=15, pady=5)
 
         gradetargetframe = tk.Frame(self.gradeframe, bg=GRADEFRAME_BG)
         gradetargetframe.grid(row=1, column=0, sticky="nsew", padx=5, pady=5)
@@ -106,7 +108,6 @@ class Keyfigureframe:
         self.get_pie_chart()
 
     def pie_chart_frame_refresh(self):
-        for w in self.pieframe.winfo_children():
-            w.destroy()
+        self.pieframe.destroy() 
         self.get_pie_chart()
 

@@ -1,7 +1,11 @@
 """This file contains the Class for the little Frames for every single Module."""
 import tkinter as tk
 from tkinter import ttk
-from ui.theme import STATUS_OPEN, STATUS_IN_PROGRESS, STATUS_COMPLETED, STATUS_FAILED, STATUS_COLORS, FONT_MODULE
+from domains.moduleprogress import ModuleProgress
+from services.moduleprogress_service import update_moduleprogress
+from ui.theme import STATUS_COLORS, FONT_MODULE
+
+Status = ModuleProgress.Status
 
 try:
     from ctypes import windll
@@ -10,169 +14,123 @@ except:
     pass
 
 
-# --- FRAME FOR EVERY SINGLE MODULE -------------------------------------------------------------------------------------------------
+# --- FRAME FOR EVERY SINGLE MODULEPROGRESS --------------------------------------------------------------------------------------
 
 class Moduleview:
-    def __init__(self, module, student_id, container, i, keyfigureview, *args, **kwargs):
-        self.module = module
-        self.moduleid = module.id
-        self.modulename = module.name
-        self.moduleetc = module.etc
-        self.modulestatus = module.status
-        self.modulegrade = module.grade
+    def __init__(self, progress, container, on_change = None):
+        self.moduleprogress = progress
         self.container = container
-        self.student_id = student_id
-        self.keyfigureview = keyfigureview
+        self.on_change = on_change
 
         # --- Backgroundcolor configuration ---------------------------------------------------------------------------
-        if self.modulestatus == STATUS_OPEN:
-            bgc = STATUS_COLORS[STATUS_OPEN]
-        if self.modulestatus == STATUS_IN_PROGRESS:
-            bgc = STATUS_COLORS[STATUS_IN_PROGRESS]
-        if self.modulestatus == STATUS_COMPLETED:
-            bgc = STATUS_COLORS[STATUS_COMPLETED]
-        if self.modulestatus == STATUS_FAILED:
-            bgc = STATUS_COLORS[STATUS_FAILED]
+        if self.moduleprogress.status == Status.OPEN:
+            bgc = STATUS_COLORS[Status.OPEN]
+        if self.moduleprogress.status == Status.IN_PROGRESS:
+            bgc = STATUS_COLORS[Status.IN_PROGRESS]
+        if self.moduleprogress.status == Status.COMPLETED:
+            bgc = STATUS_COLORS[Status.COMPLETED]
+        if self.moduleprogress.status == Status.FAILED:
+            bgc = STATUS_COLORS[Status.FAILED]
 
         # --- STRUCTURE & ELEMENTS OF MODULEFRAME --------------------------------------------------------------------
 
         self.frame = tk.Frame(self.container, bg=bgc, borderwidth=1, relief="solid")
         self.frame.columnconfigure(0, weight=1, uniform="cols", pad=5)
-        for r in range(4):
+        for r in range(5):
             self.frame.rowconfigure(r, weight=1)
 
 
-        self.modulename_label = tk.Label(self.frame, text=f"{self.modulename}", wraplength=170, bg=bgc,
+        self.modulename_label = tk.Label(self.frame, text=f"{self.moduleprogress.module.name}", wraplength=170, bg=bgc,
                                          font=FONT_MODULE, anchor="center")
-        self.modulestatus_label = tk.Label(self.frame, text=f"{self.modulestatus}", bg=bgc,
+        self.ects_label = tk.Label(self.frame, text=f"{self.moduleprogress.module.ects} ECTS-Punkte", bg=bgc, font=FONT_MODULE)
+        self.status_label = tk.Label(self.frame, text=f"{self.moduleprogress.status}", bg=bgc,
                                            font=FONT_MODULE)
-        self.modulestatus_button = tk.Button(self.frame, text="Status ändern", bg=bgc, font=FONT_MODULE,
-                                             command=self.change_modulestatus)
-        self.gradelabel = tk.Label(self.frame, bg=bgc, text=f"Note: {self.modulegrade}", wraplength=170,
+        self.status_button = tk.Button(self.frame, text="Status ändern", bg=bgc, font=FONT_MODULE,
+                                             command=self.open_status_dialog)
+        self.gradelabel = tk.Label(self.frame, bg=bgc, text=f"Note: {self.moduleprogress.grade}", wraplength=170,
                                    font=FONT_MODULE)
 
-        self.modulename_label.grid(sticky="nswe", padx=1, pady=2)
-        self.modulestatus_label.grid(sticky="nswe", padx=1, pady=1)
-        self.gradelabel.grid(sticky="nswe", padx=5, pady=5)
-        self.modulestatus_button.grid(sticky="s", padx=1, pady=1)
-        self.frame.grid(row=1, column=i, sticky="nswe", padx=1, pady=1)
+        self.modulename_label.grid(row=0, sticky="nswe", padx=1, pady=2)
+        self.ects_label.grid(row=1,sticky="nswe", padx=1, pady=2 )
+        self.status_label.grid(row=2, sticky="nswe", padx=1, pady=1)
+        self.gradelabel.grid(row=3, sticky="nswe", padx=5, pady=5)
+        self.status_button.grid(row=4, sticky="s", padx=1, pady=1)
 
-        if self.modulestatus == STATUS_OPEN:
+        self.render()
+    # --- DRAWS THE TILE ACCORDING TO THE CURRENT PROGRESS --------------------------------------------------------------------
+    def render(self):
+        """Updates colors, labels and visibility to match the current module progress."""
+        color = STATUS_COLORS[self.moduleprogress.status]
+        for widget in (self.frame, self.modulename_label, self.ects_label, self.status_label, self.gradelabel, self.status_button):
+            widget.configure(bg=color)
+
+        self.modulename_label.configure(text=self.moduleprogress.module.name)
+        self.status_label.configure(text=self.moduleprogress.status)
+
+        if self.moduleprogress.grade is None:
             self.gradelabel.grid_remove()
-        if self.modulestatus == STATUS_IN_PROGRESS:
-            self.gradelabel.grid_remove()
-        if self.modulestatus == STATUS_COMPLETED:
-            self.modulestatus_label.grid_remove()
-        if self.modulestatus == STATUS_FAILED:
-            self.modulestatus_label.grid_remove()
-
-# --- FUNCTION TO CHANGE THE STATUS OF A MODULE -------------------------------------------------------------------
-    def change_modulestatus(self):
-        new_modulestatus = tk.StringVar(value = self.modulestatus)
-        new_modulegrade = tk.StringVar(value = self.modulegrade)
-
-        def set_modulegrade():
-            try:
-                grade = float(modulegrade.get())
-                self.module.set_grade(self.student_id, grade)
-                change_status_frame.destroy()
-                self.modulestatus_label.destroy()
-                self.modulestatus_button.destroy()
-                if grade > 4:
-                    self.gradelabel = tk.Label(self.frame, bg=STATUS_COLORS[STATUS_FAILED], text=f"Note: {grade}", wraplength=150,
-                                                font=FONT_MODULE)
-                    self.modulestatus = STATUS_FAILED
-                    color = STATUS_COLORS[STATUS_FAILED]
-                    self.frame.configure(bg=color)
-                    self.modulename_label.configure(bg=color)
-                else:
-                    self.gradelabel = tk.Label(self.frame, bg=STATUS_COLORS[STATUS_COMPLETED], text=f"Note: {grade}", wraplength=150,
-                                                font=FONT_MODULE)
-                self.gradelabel.grid(sticky="nswe", padx=5, pady=5)
-                self.keyfigureview.keyfigureframe_refresh()
-                return grade
-
-            except ValueError:
-                modulegradehint = tk.Label(change_status_frame,
-                                            text="Deine Note muss eine Nachstelle haben. Nutze als Komma einen Punkt, z.B. 1.5")
-                modulegradehint.grid()
-
-        def change_modulestatus_frame():
-                self.modulestatus_label.configure(text=f"{self.modulestatus}")
-        
-                if self.modulestatus == STATUS_OPEN:
-                    color = STATUS_COLORS[STATUS_OPEN]
-                    self.frame.configure(bg=color)
-                    self.modulename_label.configure(bg=color)
-                    self.modulestatus_label.configure(bg=color)
-                    self.modulestatus_button.configure(bg=color)
-        
-                if self.modulestatus == STATUS_IN_PROGRESS:
-                    color = STATUS_COLORS[STATUS_IN_PROGRESS]
-                    self.frame.configure(bg=color)
-                    self.modulename_label.configure(bg=color)
-                    self.modulestatus_label.configure(bg=color)
-                    self.modulestatus_button.configure(bg=color)
-        
-                if self.modulestatus == STATUS_COMPLETED:
-                   color = STATUS_COLORS[STATUS_COMPLETED]
-                   self.frame.configure(bg=color)
-                   self.modulename_label.configure(bg=color)
-                   self.modulestatus_label.destroy()
-                   self.modulestatus_button.configure(bg=color)
-                   self.gradelabel.configure(bg=color, text=f"Note: {self.modulegrade}")
-                   self.gradelabel.grid(sticky="nswe", padx=5, pady=5)
-    
-
-                if self.modulestatus == STATUS_FAILED:
-                    color = STATUS_COLORS[STATUS_FAILED]
-                    self.frame.configure(bg=color)
-                    self.modulename_label.configure(bg=color)
-                    self.modulestatus_label.configure(bg=color)
-                    self.modulestatus_button.configure(bg=color)
-                    self.gradelabel.configure(bg=color)
-                    self.gradelabel.configure(text=f"Note: {self.modulegrade}")
-                    self.modulestatus_label.destroy()
-                    self.gradelabel.grid(sticky="nswe", padx=5, pady=5)
-                    self.modulestatus_label.destroy()
+            self.status_label.grid()
+        else:
+            self.gradelabel.configure(text=f"Note: {self.moduleprogress.grade}")
+            self.gradelabel.grid()
+            self.status_label.grid_remove()
 
 
-        def check_new_status(event):
-            new_status = new_modulestatus.get()
-            if new_status == STATUS_COMPLETED:
-                modulegrade_label = tk.Label(change_status_frame, text=f"Gib deine Note für {self.modulename} ein: ")
-                modulegrade_entry = tk.Entry(change_status_frame, textvariable=new_modulegrade)
-                modulegrade_label.grid(row=2, column=0, padx=5, pady=5)
-                modulegrade_entry.grid(row=3, column=0, padx=5, pady=5)
-                change_status_frame.after_idle(lambda: (modulegrade_entry.focus_set(), modulegrade_entry.icursor("end")))
+# --- CHANGE THE STATUS OF A MODULE -------------------------------------------------------------------
+    def open_status_dialog(self):
+        dialog_status_change = tk.Toplevel(self.container)
+        dialog_status_change.title(self.moduleprogress.module.name)
 
-        def save_new_status():
-            new_status = new_modulestatus.get()
-            modulegrade = new_modulegrade.get().strip()
-            if new_status != STATUS_COMPLETED:
-                self.module.change_status(self.student_id, new_status)
-            else:
-                modulegrade = float(modulegrade.replace(",", "."))
-                self.module.set_grade(self.student_id, modulegrade)
-                self.module.change_status(self.student_id, new_status)
-            self.modulestatus = new_status 
-            change_modulestatus_frame()
-            change_status_frame.destroy()  
-            print(f"Neuer Status {new_status} wurde gespeichert.")
+        new_moduleprogress = tk.StringVar(value = self.moduleprogress.status)
+        new_modulegrade = tk.StringVar(value = self.moduleprogress.grade)
 
-
-        change_status_frame = tk.Toplevel(self.container)
-        change_status_label = tk.Label(change_status_frame, text=f"Ändere den Status für {self.modulename}:")
-        modulestatus_combobox = ttk.Combobox(change_status_frame, textvariable=new_modulestatus, 
-                                             values=[STATUS_OPEN, STATUS_IN_PROGRESS, STATUS_COMPLETED, STATUS_FAILED],
+        dialog_label = tk.Label(dialog_status_change, text=f"Ändere den Status für {self.moduleprogress.module.name}:")
+        moduleprogress_combobox = ttk.Combobox(dialog_status_change, textvariable=new_moduleprogress, 
+                                             values=[Status.OPEN, Status.IN_PROGRESS, Status.COMPLETED, Status.FAILED],
                                              state="readonly")
-        save_button = tk.Button(change_status_frame, text="speichern", command=save_new_status)
+        grade_label = tk.Label(dialog_status_change, text="Note (z.B. 1.5):")
+        grade_entry = tk.Entry(dialog_status_change, textvariable=new_modulegrade)
+        hint = tk.Label(dialog_status_change, fg="red", wraplength=250)
+        
+        dialog_label.grid(row=0, column=0, padx=5, pady=5)
+        moduleprogress_combobox.grid(row=1, column=0, padx=5, pady=5)
 
-        modulestatus_combobox.bind("<<ComboboxSelected>>", check_new_status)
-        check_new_status(None)
 
-        change_status_label.grid(row=0, column=0, padx=5, pady=5)
-        modulestatus_combobox.grid(row=1, column=0, padx=5, pady=5)
+        def toggle_grade_field(event=None):
+            if new_moduleprogress.get() == Status.COMPLETED:
+                grade_label.grid(row=2, column=0, padx=5, pady=5)
+                grade_entry.grid(row=3, column=0, padx=5, pady=5)
+                grade_entry.focus_set()
+            else:
+                grade_label.grid_remove()
+                grade_entry.grid_remove()
+
+        def save():
+            status = Status(new_moduleprogress.get())
+            grade = None
+            if status == Status.COMPLETED:
+                try:
+                    grade = float(new_modulegrade.get().strip().replace(",", "."))
+                except ValueError:
+                    hint.configure(text="Nutze als Komma einen Punkt, z.B. 1.5")
+                    hint.grid(row=4, column=0, padx=5, pady=5)
+                    return
+            try:
+                update_moduleprogress(self.moduleprogress, status, grade)
+            except ValueError as e:
+                hint.configure(text=str(e))
+                hint.grid(row=4, column=0, padx=5, pady=5)
+                return
+
+            self.render()
+            if self.on_change is not None:
+                self.on_change()
+            dialog_status_change.destroy()
+
+        save_button = tk.Button(dialog_status_change, text="speichern", command=save
+                  )
         save_button.grid(row=5, column=0, padx=5, pady=5)
 
-        self.keyfigureview.pie_chart_frame_refresh()
+        moduleprogress_combobox.bind("<<ComboboxSelected>>", toggle_grade_field)
+        toggle_grade_field()
+                

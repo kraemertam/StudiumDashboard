@@ -1,27 +1,33 @@
 from dataclasses import dataclass
-from data.moduleprogress import save_modules_changes, save_grade_changes
+from enum import StrEnum
 from domains.module import Module
-from ui.theme import STATUS_OPEN, STATUS_IN_PROGRESS, STATUS_COMPLETED, STATUS_FAILED, STATUS_COLORS
 
 @dataclass
 class ModuleProgress:
+    class Status(StrEnum):
+        OPEN = "Offen"
+        IN_PROGRESS = "In Bearbeitung"
+        COMPLETED = "Bestanden"
+        FAILED = "Nicht bestanden"
+
     student_id: str
     module: Module
-    status: str = STATUS_OPEN
-    grade: float = None
+    status: Status = Status.OPEN
+    grade: float | None = None
 
-    def change_status(self, student_id: str, new_status: str):
+    def change_status(self, new_status: Status):
+        if new_status in (self.Status.OPEN, self.Status.IN_PROGRESS):
+            self.grade = None
         self.status = new_status
-        save_modules_changes(student_id, self.module.id, new_status)
-        print(f"Status für Modul {self.module.name} wurde auf {new_status} geändert.")
 
-    def set_grade(self, student_id: str, grade: float):
+    def set_grade(self, grade: float):
+        if not (1.0 <= grade <= 5.0):
+            raise ValueError("Eine Note muss zwischen 1.0 und 5.0 liegen.")
         self.grade = grade
-        save_grade_changes(student_id, self.module.id, grade)
-        print(f"Note für Modul {self.module.name} wurde auf {grade} gesetzt.")
         if self.grade > 4:
-            self.change_status(student_id, STATUS_FAILED)
+            self.change_status(self.Status.FAILED)
         else:
-            self.change_status(student_id, STATUS_COMPLETED)
+            self.change_status(self.Status.COMPLETED)
 
 
+        

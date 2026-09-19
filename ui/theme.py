@@ -1,4 +1,5 @@
 """Centrale color and font definitions for the entire app."""
+from domains.moduleprogress import ModuleProgress
 
 # --- COLORS -----------------------------------------------------
 
@@ -8,17 +9,13 @@ LABEL_BG = "#f0eeee"
 GRADEFRAME_BG = "#e0dbdb"
 
 # --- STATUS NAMES & COLORS ------------------------------------------
-
-STATUS_OPEN = "offen"
-STATUS_IN_PROGRESS = "in Bearbeitung"
-STATUS_COMPLETED = "abgeschlossen"
-STATUS_FAILED = "nicht bestanden"
+Status = ModuleProgress.Status
 
 STATUS_COLORS = {
-    STATUS_OPEN: "#c4e8f1",
-    STATUS_IN_PROGRESS: "#f8f690",
-    STATUS_COMPLETED: "#9af7b6",
-    STATUS_FAILED: "#EB6274",
+    Status.OPEN: "#c4e8f1",
+    Status.IN_PROGRESS: "#f8f690",
+    Status.COMPLETED: "#9af7b6",
+    Status.FAILED: "#EB6274",
 }
 
 # --- Fonts ----------------------------------------------------

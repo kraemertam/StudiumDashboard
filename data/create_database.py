@@ -25,7 +25,7 @@ def start_databank():
                course_id TEXT PRIMARY KEY NOT NULL,
                course_name TEXT NOT NULL,
                course_title TEXT NOT NULL,
-               course_etc INTEGER NOT NULL
+               course_ects INTEGER NOT NULL
             )
             """)
 
@@ -33,7 +33,7 @@ def start_databank():
              CREATE TABLE IF NOT EXISTS modules (
                 module_id TEXT PRIMARY KEY NOT NULL,
                 module_name TEXT NOT NULL UNIQUE,
-                module_etc INT NOT NULL
+                module_ects INT NOT NULL
              )
              """)
     cursor.execute("""

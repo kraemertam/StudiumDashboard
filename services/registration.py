@@ -1,12 +1,12 @@
-from data.student import check_student, get_overview_data, get_student, check_course
-from data.moduleprogress import get_grade_data
-from data.course import get_all_courses
+from data.student import check_student_db, get_student_db, check_course_db
+from data.moduleprogress import get_grade_data_db
+from data.course import get_all_courses_db
 
-def login_student(student_id: str) -> bool:
-    student_status = check_student(student_id)
-    course_status = check_course(student_id)
+def login_student(student_id: str) -> tuple[bool, bool]:
+    student_status = check_student_db(student_id)
+    course_status = check_course_db(student_id)
     return student_status, course_status
 
 def get_available_courses() -> list:
-    all_available_courses = get_all_courses()
+    all_available_courses = get_all_courses_db()
     return all_available_courses

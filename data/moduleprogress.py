@@ -5,42 +5,41 @@ import sqlite3
 from pathlib import Path
 
 # ------- CREATE NEW MODULEPROGRESS ---------------------------------------------------------------------------------------
-def create_moduleprogress_entries(student_id: str, course_id: str):
+def create_moduleprogress_entries_db(moduleprogress_rows: list[tuple]):
     db_path = Path(__file__).resolve().parent / "databank.db"
     connection = sqlite3.connect(db_path)
-    connection.execute("PRAGMA foreign_keys = ON")
-    cursor = connection.cursor()
-    cursor.execute("SELECT * FROM course_modules WHERE course_id = ?", (course_id,))
-    moduleliste = cursor.fetchall()
-    for module in moduleliste:
-        module_id = module[1]
-        cursor.execute("INSERT INTO moduleprogress (student_id, module_id, module_status) VALUES (?,?,?)", (student_id, module_id, "offen"))
-    connection.commit()
-    connection.close()
+    try:
+        connection.execute("PRAGMA foreign_keys = ON")
+        cursor = connection.cursor()
+        cursor.executemany("INSERT INTO moduleprogress (student_id, module_id, module_status) VALUES (?,?,?)", moduleprogress_rows)
+        connection.commit()
+    finally:
+        connection.close()
+
 
 # --- QUERY MODULEPROGRESS ---------------------------------------------------------------------------------------------------
-def get_overview_data(student_id: str) -> list:
+def get_moduleprogress_data_db(student_id: str) -> list:
+    """All modules from student including status and grade.
+    Returns in tuple per module, sorted by module_id: 
+    (module_id, module_name, module_ects, module_status, module_grade)
+    module_grade is None as long as no grade has been set."""
+    
     db_path = Path(__file__).resolve().parent / "databank.db"
     connection = sqlite3.connect(db_path)
-    connection.execute("PRAGMA foreign_keys = ON")
-    cursor = connection.cursor()
-    cursor.execute("SELECT * FROM moduleprogress WHERE student_id = ?", (student_id,))
-    modules_db = cursor.fetchall()
-    modulelist = []
-    for m in modules_db:
-        module_id = m[1]
-        module_status = m[2]
-        module_grade = m[3]
-        cursor.execute("SELECT * FROM modules WHERE module_id = ?", (module_id,))
-        module_info = cursor.fetchone()
-        module_name = module_info[1]
-        module_etc = module_info[2]
-        module = (module_id, module_name, module_etc, module_status, module_grade)
-        modulelist.append(module)
-    connection.close()
-    return modulelist
+    try: 
+        connection.execute("PRAGMA foreign_keys = ON")
+        cursor = connection.cursor()
+        cursor.execute("""
+                SELECT m.module_id, m.module_name, m.module_ects, mp.module_status, mp.module_grade 
+                FROM moduleprogress mp
+                JOIN modules m ON m.module_id = mp.module_id
+                WHERE mp.student_id = ?
+                ORDER BY m.module_id""", (student_id,))
+        return cursor.fetchall()
+    finally:
+        connection.close()
 
-def get_grade_data(student_id: str) -> list:
+def get_grade_data_db(student_id: str) -> list:
     db_path = Path(__file__).resolve().parent / "databank.db"
     connection = sqlite3.connect(db_path)
     connection.execute("PRAGMA foreign_keys = ON")
@@ -52,7 +51,7 @@ def get_grade_data(student_id: str) -> list:
 
 
 # --- DB: SAVE MODULEPROGRESS-CHANGES WHILE SESSION  -----------------------------------------------------------------------------------
-def save_modules_changes(student_id: str, module_id: str, module_status: str):
+def save_modulestatus_changes_db(student_id: str, module_id: str, module_status: str):
     db_path = Path(__file__).resolve().parent / "databank.db"
     connection = sqlite3.connect(db_path)
     connection.execute("PRAGMA foreign_keys = ON")
@@ -62,7 +61,7 @@ def save_modules_changes(student_id: str, module_id: str, module_status: str):
     connection.close()
     print(f"Status wurde aktualisiert: {module_id}: {module_status}")
 
-def save_grade_changes(student_id: str, module_id: str, module_grade: float):
+def save_grade_changes_db(student_id: str, module_id: str, module_grade: float):
     db_path = Path(__file__).resolve().parent / "databank.db"
     connection = sqlite3.connect(db_path)
     connection.execute("PRAGMA foreign_keys = ON")

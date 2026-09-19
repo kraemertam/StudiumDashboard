@@ -6,5 +6,5 @@ from dataclasses import dataclass
 class Module:
     id: str
     name: str
-    etc: int
+    ects: int
 

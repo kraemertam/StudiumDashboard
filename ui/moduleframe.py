@@ -22,32 +22,23 @@ class Moduleview:
         self.container = container
         self.on_change = on_change
 
-        # --- Backgroundcolor configuration ---------------------------------------------------------------------------
-        if self.moduleprogress.status == Status.OPEN:
-            bgc = STATUS_COLORS[Status.OPEN]
-        if self.moduleprogress.status == Status.IN_PROGRESS:
-            bgc = STATUS_COLORS[Status.IN_PROGRESS]
-        if self.moduleprogress.status == Status.COMPLETED:
-            bgc = STATUS_COLORS[Status.COMPLETED]
-        if self.moduleprogress.status == Status.FAILED:
-            bgc = STATUS_COLORS[Status.FAILED]
 
         # --- STRUCTURE & ELEMENTS OF MODULEFRAME --------------------------------------------------------------------
 
-        self.frame = tk.Frame(self.container, bg=bgc, borderwidth=1, relief="solid")
+        self.frame = tk.Frame(self.container, borderwidth=1, relief="solid")
         self.frame.columnconfigure(0, weight=1, uniform="cols", pad=5)
         for r in range(5):
             self.frame.rowconfigure(r, weight=1)
 
 
-        self.modulename_label = tk.Label(self.frame, text=f"{self.moduleprogress.module.name}", wraplength=170, bg=bgc,
+        self.modulename_label = tk.Label(self.frame, text=f"{self.moduleprogress.module.name}", wraplength=170,
                                          font=FONT_MODULE, anchor="center")
-        self.ects_label = tk.Label(self.frame, text=f"{self.moduleprogress.module.ects} ECTS-Punkte", bg=bgc, font=FONT_MODULE)
-        self.status_label = tk.Label(self.frame, text=f"{self.moduleprogress.status}", bg=bgc,
+        self.ects_label = tk.Label(self.frame, text=f"{self.moduleprogress.module.ects} ECTS-Punkte", font=FONT_MODULE)
+        self.status_label = tk.Label(self.frame, text=f"{self.moduleprogress.status}",
                                            font=FONT_MODULE)
-        self.status_button = tk.Button(self.frame, text="Status ändern", bg=bgc, font=FONT_MODULE,
+        self.status_button = tk.Button(self.frame, text="Status ändern", font=FONT_MODULE,
                                              command=self.open_status_dialog)
-        self.gradelabel = tk.Label(self.frame, bg=bgc, text=f"Note: {self.moduleprogress.grade}", wraplength=170,
+        self.gradelabel = tk.Label(self.frame, text=f"Note: {self.moduleprogress.grade}", wraplength=170,
                                    font=FONT_MODULE)
 
         self.modulename_label.grid(row=0, sticky="nswe", padx=1, pady=2)

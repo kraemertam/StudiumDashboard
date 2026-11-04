@@ -2,11 +2,7 @@
 import tkinter as tk
 from tkinter import ttk
 
-from services.student_service import create_new_student
-from services.moduleprogress_service import get_all_moduleprogress
-from services.registration import get_available_courses
-from services.enrollment_service import enrollment_student_in_course
-from services.metrics_service import DashboardMetrics
+from controller.moduleprogress_controller import ModuleProgressController
 from ui.keyfigureframe import Keyfigureframe
 from ui.moduleframe import Moduleview
 
@@ -15,8 +11,9 @@ class DashboardView(ttk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent, padding=40)
         self.controller = controller
+        self.moduleprogress_controller = ModuleProgressController()
 
-        self.moduleprogress = get_all_moduleprogress(self.controller.student.id)
+        self.moduleprogress = self.moduleprogress_controller.get_all_moduleprogress(self.controller.student.id)
 
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=0)

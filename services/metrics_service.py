@@ -1,6 +1,6 @@
 from collections import Counter
 from dataclasses import dataclass
-from data.moduleprogress import get_moduleprogress_data_db, get_grade_data_db
+from data.moduleprogress_repository import get_moduleprogress_data_db, get_grade_data_db
 from domains.moduleprogress import ModuleProgress
 
 Status = ModuleProgress.Status

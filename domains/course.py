@@ -38,7 +38,7 @@ class Course:
         remaining_ects = self.ects - self.current_ects()
         return remaining_ects
 
-    def add_module(self, module: Module):
+    def add_module(self, module: Module) -> None:
         if any(m.id == module.id for m in self.modules):
             raise ValueError(f"Modul {module.name} ist bereits im Kurs {self.name} enthalten.")
         if module.ects > self.remaining_ects():
@@ -46,12 +46,12 @@ class Course:
         print(f"Module {module.name} wurde {self.name} hinzugefügt.")
         self.modules.append(module)
 
-    def remove_module(self, module: Module):
+    def remove_module(self, module: Module) -> None:
         self.modules.remove(module)
 
-    def return_modules(self):
+    def return_modules(self) -> list[Module]:
         return self.modules
 
-    def return_ects(self):
+    def return_ects(self) -> int:
         return self.ects
 

@@ -1,8 +1,8 @@
 """This file contains the class keyfigureframe, including the keyfigures gradetarget and piechart."""
 import tkinter as tk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from services.course_service import get_course
-from services.keyfigures_service import pie_chart, grade_point_average, calc_achieved_ects
+from controller.course_controller import CourseController
+from ui.keyfigures import pie_chart, grade_point_average, calc_achieved_ects
 from ui.theme import GRADEFRAME_BG, FRAME_BG, FONT_TITLE, FONT_SUBTITLE, FONT_TEXT
 
 try:
@@ -19,7 +19,7 @@ class Keyfigureframe:
         self.student = student
         self.student_id = student.id
         self.container = container
-
+        self.course_controller = CourseController()
         self.frame = tk.Frame(self.container, bg=FRAME_BG)
         self.frame.grid(row=1, sticky="nsew", padx=5, pady=5)
         self.frame.columnconfigure(0, weight=0, uniform="keycols", minsize=300)
@@ -75,7 +75,7 @@ class Keyfigureframe:
         ects_info = calc_achieved_ects(self.student)
         all_ects = ects_info[0]
         achieved_ects = ects_info[1]
-        course = get_course(self.student.course_id)
+        course = self.course_controller.get_course(self.student.course_id)
 
         infoframe = tk.Frame(self.gradeframe, bg=GRADEFRAME_BG)
         infoframe.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)

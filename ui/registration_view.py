@@ -1,11 +1,8 @@
 # ui/register_view.py
 import tkinter as tk
 from tkinter import ttk
-
-from services.student_service import create_new_student
-from services.registration import get_available_courses
-from services.enrollment_service import enrollment_student_in_course
-
+from controller.student_controller import StudentController
+from controller.course_controller import CourseController
 from ui.dashboard_view import DashboardView
 
 
@@ -13,6 +10,8 @@ class RegisterView(ttk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent, padding=40)
         self.controller = controller
+        self.student_controller = StudentController()
+        self.course_controller = CourseController()
 
         # Header
         ttk.Label(self, text="Registrierung", font=("Arial", 20)).grid(row=0, padx= 10, pady=10, sticky="nswe")
@@ -40,8 +39,8 @@ class RegisterView(ttk.Frame):
 
         self.step2 = ttk.Frame(self)
 
-        course_list = get_available_courses()
-        course_selection = [f"{course[0]} - {course[1]} ({course[2]})" for course in course_list]
+        course_list = self.course_controller.get_all_courses()
+        course_selection = [f"{course.id} - {course.name} ({course.ects})" for course in course_list]
 
         enrollment_label = ttk.Label(self.step2, text="In welchen Kurs möchtest du dich einschreiben?",
              font=("Arial", (12), "bold"))
@@ -99,7 +98,7 @@ class RegisterView(ttk.Frame):
 
         # Student-Check
         try:
-            student = create_new_student(student_id, student_name, student_lastname)
+            student = self.student_controller.create_new_student(student_id, student_name, student_lastname)
         except ValueError as e:
             self.status.config(text=str(e))
             return
@@ -131,9 +130,10 @@ class RegisterView(ttk.Frame):
 
         # Enrollment Student in Course
         try:
-            enrollment_student_in_course(self.controller.student.id, course_id, gradetarget)
+            student = self.student_controller.enrollment_student_in_course(self.controller.student.id, course_id, gradetarget)
         except ValueError as e:
             self.status.config(text=str(e))
             return
+        self.controller.student = student
         self.status.config(text="In Kurs eingeschrieben!", foreground="green")
         self.controller.show(DashboardView)

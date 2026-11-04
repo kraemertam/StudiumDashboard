@@ -3,10 +3,15 @@ This is useful for using or testing the application without having to enter all 
 For this remove the "#" from the corresponding lines."""
 
 from pathlib import Path
-from services.module_service import create_new_module
-from services.course_service import create_new_course, add_module_to_course
-from services.student_service import create_new_student
-from services.enrollment_service import enrollment_student_in_course
+from controller.module_controller import ModuleController
+from controller.course_controller import CourseController
+from controller.student_controller import StudentController
+
+# --- CREATE CONTROLLERS -------------------------------------------------------------------------------------------------
+
+module_controller = ModuleController()
+course_controller = CourseController()
+student_controller = StudentController()
 
 # --- DEFINITION OF THE FUNCTIONS FOR IMPORTING TESTDATA -------------------------------------------------------------------------------------------------
 
@@ -27,7 +32,7 @@ def insert_moduledata_db():
             module_name = module_info[1]
             module_ects = module_info[2]
 
-            create_new_module(module_id, module_name, module_ects)
+            module_controller.create_new_module(module_id, module_name, module_ects)
 
 
 def insert_coursedata_db():
@@ -41,7 +46,7 @@ def insert_coursedata_db():
             course_name = course[1]
             course_title = course[2]
             course_ects = int(course[3])
-            create_new_course(course_id, course_name, course_title, course_ects)
+            course_controller.create_new_course(course_id, course_name, course_title, course_ects)
 
 def initialize_course():
     """Initial test data for the course-module relationships is being loaded."""
@@ -61,7 +66,7 @@ def initialize_course():
             course_info = [c.strip() for c in course_info.split(",") if c.strip()]
 
             for course in course_info:
-                add_module_to_course(course_id=course, module_id=module_id)
+                course_controller.add_module_to_course(course_id=course, module_id=module_id)
             
 
 
@@ -73,14 +78,14 @@ insert_coursedata_db() # => (check: true)
 initialize_course() # => (check: true)
 
 # --- CREATE STUDENTS -------------------------------------------------------------------------------------------------
-create_new_student("IU1111", "Tim", "Tuer") # => (check:true)
-create_new_student("IU123", "Tamara", "Krämer") # => (check:true)
-create_new_student("IU3333", "Lisa", "Lotte") # => (check:true)
+student_controller.create_new_student("IU1111", "Tim", "Tuer") # => (check:true)
+student_controller.create_new_student("IU123", "Tamara", "Krämer") # => (check:true)
+student_controller.create_new_student("IU3333", "Lisa", "Lotte") # => (check:true)
 
 # --- ENROLL STUDENTS IN COURSE ---------------------------------------------------------------------------------------
-enrollment_student_in_course("IU1111", "FS-BAAKI-01", 2.5)
-enrollment_student_in_course("IU123","FS-BAAKI-01", 3.1 )
-enrollment_student_in_course("IU3333", "FS-BAAKI-01", 1.5)
+student_controller.enrollment_student_in_course("IU1111", "FS-BAAKI-01", 2.5)
+student_controller.enrollment_student_in_course("IU123","FS-BAAKI-01", 3.1 )
+student_controller.enrollment_student_in_course("IU3333", "FS-BAAKI-01", 1.5)
 
 
 

@@ -15,12 +15,12 @@ class ModuleProgress:
     status: Status = Status.OPEN
     grade: float | None = None
 
-    def change_status(self, new_status: Status):
+    def change_status(self, new_status: Status) -> None:
         if new_status in (self.Status.OPEN, self.Status.IN_PROGRESS):
             self.grade = None
         self.status = new_status
 
-    def set_grade(self, grade: float):
+    def set_grade(self, grade: float) -> None:
         if not (1.0 <= grade <= 5.0):
             raise ValueError("Eine Note muss zwischen 1.0 und 5.0 liegen.")
         self.grade = grade

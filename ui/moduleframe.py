@@ -2,7 +2,7 @@
 import tkinter as tk
 from tkinter import ttk
 from domains.moduleprogress import ModuleProgress
-from services.moduleprogress_service import update_moduleprogress
+from controller.moduleprogress_controller import ModuleProgressController
 from ui.theme import STATUS_COLORS, FONT_MODULE
 
 Status = ModuleProgress.Status
@@ -21,6 +21,7 @@ class Moduleview:
         self.moduleprogress = progress
         self.container = container
         self.on_change = on_change
+        self.moduleprogress_controller = ModuleProgressController()
 
 
         # --- STRUCTURE & ELEMENTS OF MODULEFRAME --------------------------------------------------------------------
@@ -107,7 +108,7 @@ class Moduleview:
                     hint.grid(row=4, column=0, padx=5, pady=5)
                     return
             try:
-                update_moduleprogress(self.moduleprogress, status, grade)
+                self.moduleprogress_controller.update_moduleprogress(self.moduleprogress, status, grade)
             except ValueError as e:
                 hint.configure(text=str(e))
                 hint.grid(row=4, column=0, padx=5, pady=5)

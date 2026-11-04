@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
 from pathlib import Path
-from services.student_service import get_student
+from controller.student_controller import StudentController
 from ui.registration_view import RegisterView
 from ui.dashboard_view import DashboardView
 
@@ -11,6 +11,7 @@ class LoginView(ttk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent, padding=40)
         self.controller = controller
+        self.student_controller = StudentController()
 
         # Header 
         header = ttk.Label(self, text="Dashboard - Übersicht fürs Studium")
@@ -50,10 +51,10 @@ class LoginView(ttk.Frame):
         if not student_id:
             self.status.config(text="Bitte gib deine Matrikelnummer ein.")
             return
-
-        student = get_student(student_id)
-        if student is None:
-            self.status.config(text=f"Kein Student mit der Nummer {student_id}.")
+        try:
+            student = self.student_controller.login(student_id)
+        except ValueError as e:
+            self.status.config(text=f"Fehler beim Login: {e}")
             return
 
         self.controller.student = student

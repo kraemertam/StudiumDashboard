@@ -1,8 +1,7 @@
-# --- Definition of Class "Course" ---
-
 import re
 from dataclasses import dataclass, field
 from domains.module import Module
+
 
 @dataclass
 class Course:

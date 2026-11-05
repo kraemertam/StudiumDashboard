@@ -1,13 +1,14 @@
-# --- Definition of Class "Student" ---
-from dataclasses import dataclass, field
 import re
+from dataclasses import dataclass
+from domains.course import Course
+
 
 @dataclass
 class Student:
     id: str
     name: str
     lastname: str
-    course_id: str | None = None
+    course: Course | None = None
     gradetarget: float | None = None
 
     def __post_init__(self):
@@ -19,13 +20,13 @@ class Student:
             raise ValueError("Ungültige Materikelnummer! Eine gültige Matrikelnummer startet mit \"IU\", gefolgt von 3 - 12 Ziffern, z.B. \"IU123456\"")
 
     def info_student(self):
-        return f"Name: {self.name} {self.lastname}, Matrikelnummer: {self.id}, Kurs: {self.course_id}, Notenziel: {self.gradetarget}"
+        return f"Name: {self.name} {self.lastname}, Matrikelnummer: {self.id}, Kurs: {self.course.name if self.course else 'Kein Kurs'}, Notenziel: {self.gradetarget}"
 
-    def enroll_student_in_course(self, course_id, gradetarget):
-        if self.course_id is not None:
+    def enroll_student_in_course(self, course: Course, gradetarget: float):
+        if self.course is not None:
             raise ValueError(f"{self.name} {self.lastname} ist bereits in einem Kurs eingeschrieben.")
         gradetarget = float(gradetarget)
         if not (1.0 <= gradetarget <= 4.0):
             raise ValueError("Das Ziel-Notendurchschnitt muss zwischen 1.0 und 4.0 liegen.")
-        self.course_id = course_id
+        self.course = course
         self.gradetarget = gradetarget

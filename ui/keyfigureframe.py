@@ -2,7 +2,6 @@ import tkinter as tk
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from controller.moduleprogress_controller import ModuleProgressController
-from controller.course_controller import CourseController
 from ui.theme import BG_COLOR, STATUS_COLORS, GRADEFRAME_BG, FRAME_BG, FONT_TITLE, FONT_SUBTITLE, FONT_TEXT
 
 try:
@@ -19,7 +18,6 @@ class Keyfigureframe:
         self.student = student
         self.student_id = student.id
         self.container = container
-        self.course_controller = CourseController()
         self.moduleprogress_controller = ModuleProgressController()
         self.metrics = self.moduleprogress_controller.get_dashboard_metrics(self.student)
         self.frame = tk.Frame(self.container, bg=FRAME_BG)
@@ -102,8 +100,7 @@ class Keyfigureframe:
         gradecolor, gradetargettext = self.grade_target_feedback()
         all_ects = self.metrics.ects_total
         achieved_ects = self.metrics.ects_achieved
-        course = self.course_controller.get_course(self.student.course_id)
-
+        course = self.student.course
         infoframe = tk.Frame(self.gradeframe, bg=GRADEFRAME_BG)
         infoframe.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
         course_label = tk.Label(infoframe, bg=GRADEFRAME_BG, text=f"Studiengang: {course.name}", font=FONT_SUBTITLE)

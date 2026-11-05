@@ -1,6 +1,5 @@
 """This file can be used to initialise the database and import inital data for the database in order to test the application. 
-This is useful for using or testing the application without having to enter all the data manually, but not needed.
-For this remove the "#" from the corresponding lines."""
+This is useful for using or testing the application without having to enter all the data manually, but not needed."""
 
 from pathlib import Path
 from controller.module_controller import ModuleController
@@ -83,9 +82,9 @@ student_controller.create_new_student("IU123", "Tamara", "Krämer") # => (check:
 student_controller.create_new_student("IU3333", "Lisa", "Lotte") # => (check:true)
 
 # --- ENROLL STUDENTS IN COURSE ---------------------------------------------------------------------------------------
-student_controller.enrollment_student_in_course("IU1111", "FS-BAAKI-01", 2.5)
-student_controller.enrollment_student_in_course("IU123","FS-BAAKI-01", 3.1 )
-student_controller.enrollment_student_in_course("IU3333", "FS-BAAKI-01", 1.5)
+student_controller.enroll_student_in_course("IU1111", "FS-BAAKI-01", 2.5)
+student_controller.enroll_student_in_course("IU123","FS-BAAKI-01", 3.1 )
+student_controller.enroll_student_in_course("IU3333", "FS-BAAKI-01", 1.5)
 
 
 

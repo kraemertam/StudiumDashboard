@@ -1,9 +1,9 @@
-"""This file contains the class keyfigureframe, including the keyfigures gradetarget and piechart."""
 import tkinter as tk
+from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from controller.moduleprogress_controller import ModuleProgressController
 from controller.course_controller import CourseController
-from ui.keyfigures import pie_chart, grade_point_average, calc_achieved_ects
-from ui.theme import GRADEFRAME_BG, FRAME_BG, FONT_TITLE, FONT_SUBTITLE, FONT_TEXT
+from ui.theme import BG_COLOR, STATUS_COLORS, GRADEFRAME_BG, FRAME_BG, FONT_TITLE, FONT_SUBTITLE, FONT_TEXT
 
 try:
     from ctypes import windll
@@ -11,24 +11,48 @@ try:
 except:
     pass
 
-# --- 
 # --- KEYFIGUREFRAME --------------------------------------------------------------------------------------------------
 
 class Keyfigureframe:
+    """This class contains the keyfigureframe, including the keyfigures gradetarget and piechart."""
     def __init__(self, student, container, *args, **kwargs):
         self.student = student
         self.student_id = student.id
         self.container = container
         self.course_controller = CourseController()
+        self.moduleprogress_controller = ModuleProgressController()
+        self.metrics = self.moduleprogress_controller.get_dashboard_metrics(self.student)
         self.frame = tk.Frame(self.container, bg=FRAME_BG)
         self.frame.grid(row=1, sticky="nsew", padx=5, pady=5)
         self.frame.columnconfigure(0, weight=0, uniform="keycols", minsize=300)
         self.frame.columnconfigure(1, weight=0, uniform="keycols")
         self.frame.columnconfigure(2, weight=1, uniform="keycols")
         self.frame.rowconfigure(0, weight=1)
-        #self.frame.rowconfigure(1, weight=1)
         self.frame.grid_propagate(False)
         self.frame.configure(height=300)
+
+    def create_pie_chart(self):
+        """Build the pie chart of the module status from the key figures."""
+        statuses = list(self.metrics.status_counts.keys())
+        sizes = list(self.metrics.status_counts.values())
+   
+        total = sum(sizes)
+        shares = [round(s/total *100, 2) if total else 0 for s in sizes]
+        labels = [f"{status}: {share}%" for status, share in zip(statuses, shares)]
+        colors = [STATUS_COLORS[s] for s in statuses]
+
+        fig = Figure(figsize=(3,3), dpi=100)
+        fig.patch.set_facecolor(BG_COLOR)
+        fig.subplots_adjust(right=0.75)
+        ax = fig.add_subplot(111)
+        ax.set_facecolor(BG_COLOR) 
+        wedges, *_ = ax.pie(sizes, colors=colors, startangle=90)
+        legend = ax.legend(wedges, labels, title="Modulstatus", loc="center left", bbox_to_anchor=(0.75, 0.5))
+        legend.get_frame().set_facecolor(BG_COLOR)
+        legend.get_frame().set_edgecolor(BG_COLOR)
+        ax.axis("equal")
+        ax.set_title("Übersicht über deinen Studienfortschritt")
+        return fig
 
     def get_pie_chart(self):
         self.pieframe = tk.Frame(self.frame, bg=FRAME_BG)
@@ -37,7 +61,7 @@ class Keyfigureframe:
         self.pieframe.rowconfigure(0, weight=1)
         self.pieframe.columnconfigure(0, weight=1)
 
-        self.pie = pie_chart(self.student)
+        self.pie = self.create_pie_chart()
         self.pie_canvas = FigureCanvasTkAgg(self.pie, master=self.pieframe)
         w = self.pie_canvas.get_tk_widget()
         w.grid(row=0, column=0, sticky="nsew",padx=15, pady=5)
@@ -60,21 +84,24 @@ class Keyfigureframe:
         self.pieframe.bind("<Configure>", lambda e: _resize_to_frame())
         self.pieframe.after_idle(_resize_to_frame)
 
+    def grade_target_feedback(self):
+        """Return text color and feedback text for the grade target."""
+        if self.metrics.average_grade is None:
+            return "black", "Noch keine Note vorhanden."
+        if self.metrics.grade_difference > 0:
+            return "red", f"Achtung! \nDu hast deine Zielnote um {self.metrics.grade_difference} überschritten!"
+        return "black", "Super gemacht! \nDu befindest dich innerhalb deines Notenziels. Weiter so!"
+
     def get_gradeframe(self):
         self.gradeframe = tk.Frame(self.frame, bg=FRAME_BG)
         self.gradeframe.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
-        #for r in range(6):
-        #    self.gradeframe.rowconfigure(r, weight=0)
         self.gradeframe.columnconfigure(0, weight=1)
 
-        grade_info = grade_point_average(self.student)
-        actual_grade_point_average = grade_info[0]
-        gradetarget = grade_info[1]
-        gradecolor = grade_info[2]
-        gradetargettext = grade_info[3]
-        ects_info = calc_achieved_ects(self.student)
-        all_ects = ects_info[0]
-        achieved_ects = ects_info[1]
+        actual_grade_point_average = self.metrics.average_grade if self.metrics.average_grade is not None else "-"
+        gradetarget = self.metrics.grade_target
+        gradecolor, gradetargettext = self.grade_target_feedback()
+        all_ects = self.metrics.ects_total
+        achieved_ects = self.metrics.ects_achieved
         course = self.course_controller.get_course(self.student.course_id)
 
         infoframe = tk.Frame(self.gradeframe, bg=GRADEFRAME_BG)
@@ -104,10 +131,12 @@ class Keyfigureframe:
     def keyfigureframe_refresh(self):
         for w in self.frame.winfo_children():
             w.destroy()
+        self.metrics = self.moduleprogress_controller.get_dashboard_metrics(self.student)
         self.get_gradeframe()
         self.get_pie_chart()
 
     def pie_chart_frame_refresh(self):
+        self.metrics = self.moduleprogress_controller.get_dashboard_metrics(self.student)
         self.pieframe.destroy() 
         self.get_pie_chart()
 

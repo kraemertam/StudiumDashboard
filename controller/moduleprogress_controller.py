@@ -2,6 +2,7 @@ from data.course_repository import CourseRepository
 from data.moduleprogress_repository import ModuleProgressRepository
 from domains.module import Module
 from domains.moduleprogress import ModuleProgress
+from services.metrics_service import DashboardMetrics, MetricsService
 
 
 class ModuleProgressController:
@@ -11,6 +12,10 @@ class ModuleProgressController:
         ModuleProgress.Status.IN_PROGRESS: 2,
         ModuleProgress.Status.OPEN: 3,
     }
+    def __init__(self):
+        self.moduleprogress_repository = ModuleProgressRepository()
+        self.course_repository = CourseRepository()
+        self.metrics_service = MetricsService()
 
     def create_moduleprogress_entries(self, student_id, course_id) ->list[ModuleProgress]:
         modules = self.course_repository.get_modules(course_id)
@@ -18,10 +23,6 @@ class ModuleProgressController:
         rows = [(p.student_id, p.module.id, p.status) for p in moduleprogresslist]
         self.moduleprogress_repository.create_entries(rows)
         return moduleprogresslist
-    
-    def __init__(self):
-        self.moduleprogress_repository = ModuleProgressRepository()
-        self.course_repository = CourseRepository()
 
     def get_all_moduleprogress(self, student_id):
         """Load all modules from a student as domainobject."""
@@ -42,3 +43,8 @@ class ModuleProgressController:
             moduleprogress.change_status(new_status)
         self.moduleprogress_repository.save(moduleprogress.student_id, moduleprogress.module.id, moduleprogress.status, moduleprogress.grade)
         return moduleprogress
+
+    def get_dashboard_metrics(self, student) -> DashboardMetrics:
+        moduleprogresses = self.get_all_moduleprogress(student.id) # loads all moduleprogresses for student as domainobject
+        dashboard_metrics = self.metrics_service.get_dashboard_metrics(moduleprogresses, float(student.gradetarget)) # calculates the key figures for the dashboard
+        return dashboard_metrics

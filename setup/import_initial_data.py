@@ -44,9 +44,9 @@ def insert_coursedata_db():
             course = line.strip().strip('"').split(", ")
             course_id = course[0]
             course_name = course[1]
-            course_title = course[2]
+            course_degree = course[2]
             course_ects = int(course[3])
-            course_controller.create_new_course(course_id, course_name, course_title, course_ects)
+            course_controller.create_new_course(course_id, course_name, course_degree, course_ects)
 
 def initialize_course():
     """Initial test data for the course-module relationships is being loaded."""

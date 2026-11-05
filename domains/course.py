@@ -8,7 +8,7 @@ from domains.module import Module
 class Course:
     id: str
     name: str
-    title: str
+    degree: str
     ects: int
     modules: list[Module] = field(default_factory=list)
 
@@ -22,10 +22,10 @@ class Course:
             raise ValueError(f"Ungültige Kurs-ID {self.id}. Erwartetes Format, wie z.B. \"FS-BAAKI-01\"")
 
     def _validate_ects(self) -> None:
-        if self.title.startswith("Bachelor"):
+        if self.degree.startswith("Bachelor"):
             if not (180 <= self.ects <= 240):
                 raise ValueError("Die ECTS-Punkte für einen Bachelorabschluss müssen zwischen 180 - 240 liegen.")
-        elif self.title.startswith("Master"):
+        elif self.degree.startswith("Master"):
             if not (60 <= self.ects <= 120):
                 raise ValueError("Die ECTS-Punkte für einen Masterabschluss müssen zwischen 60 - 120 liegen.")
 

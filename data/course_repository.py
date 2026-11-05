@@ -11,12 +11,12 @@ class CourseRepository(BaseRepository):
     TABLE = "course"
     ID_COLUMN = "course_id"
 
-    def create(self, course_id: str, course_name: str, course_title: str, course_ects: int) -> None:
+    def create(self, course_id: str, course_name: str, course_degree: str, course_ects: int) -> None:
         """Insert a new course. Raises ValueError if id already exists."""
         try: 
             with closing(self._connect()) as connection:
                 with connection:
-                    connection.execute("INSERT INTO course (course_id, course_name, course_title, course_ects) VALUES (?,?,?,?)", (course_id, course_name, course_title, course_ects))
+                    connection.execute("INSERT INTO course (course_id, course_name, course_degree, course_ects) VALUES (?,?,?,?)", (course_id, course_name, course_degree, course_ects))
         except sqlite3.IntegrityError:
             raise ValueError(f"Der Kurs {course_id}: {course_name} existiert in der Datenbank bereits.")
 

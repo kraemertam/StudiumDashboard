@@ -24,7 +24,7 @@ def start_databank():
             CREATE TABLE IF NOT EXISTS course (
                course_id TEXT PRIMARY KEY NOT NULL,
                course_name TEXT NOT NULL,
-               course_title TEXT NOT NULL,
+               course_degree TEXT NOT NULL,
                course_ects INTEGER NOT NULL
             )
             """)

@@ -4,8 +4,6 @@ Das Projekt "StudiumDashboard" ist eine Desktop-Anwendung zur Verwaltung des eig
 Entstanden ist das Studienprojekt im Rahhmen von "DLBDSOOFPP01_D: Objektorientierte und funktionale Programmierung mit Python". 
 
 ## Inhaltsverzeichnis 
-- [StudiumDashboard](#studiumdashboard)
-  - [Inhaltsverzeichnis](#inhaltsverzeichnis)
   - [Über das Projekt](#über-das-projekt)
     - [Zielsetzung:](#zielsetzung)
     - [Funktionsumfang](#funktionsumfang)

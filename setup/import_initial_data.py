@@ -67,24 +67,19 @@ def initialize_course():
             for course in course_info:
                 course_controller.add_module_to_course(course_id=course, module_id=module_id)
             
+def import_initial_data():
+    """Initial test data for the modules, courses and course-module relationships is being loaded."""
+    insert_moduledata_db()
+    insert_coursedata_db()
+    initialize_course()
 
+    student_controller.create_new_student("IU1111", "Tim", "Tuer")
+    student_controller.create_new_student("IU123", "Tamara", "Krämer")
+    student_controller.create_new_student("IU3333", "Lisa", "Lotte")
 
-# --- START INITIALISING AND IMPORTING TESTDATA -----------------------------------------------------------------------
+    student_controller.enroll_student_in_course("IU1111", "FS-BAAKI-01", 2.5)
+    student_controller.enroll_student_in_course("IU123", "FS-BAAKI-01", 3.1)
+    student_controller.enroll_student_in_course("IU3333", "FS-BAAKI-01", 1.5)
 
-# --- SET UP DATABASE AND READ IN TEST DATA----------------------------------------------------------------------------
-insert_moduledata_db() # => (check: true)
-insert_coursedata_db() # => (check: true)
-initialize_course() # => (check: true)
-
-# --- CREATE STUDENTS -------------------------------------------------------------------------------------------------
-student_controller.create_new_student("IU1111", "Tim", "Tuer") # => (check:true)
-student_controller.create_new_student("IU123", "Tamara", "Krämer") # => (check:true)
-student_controller.create_new_student("IU3333", "Lisa", "Lotte") # => (check:true)
-
-# --- ENROLL STUDENTS IN COURSE ---------------------------------------------------------------------------------------
-student_controller.enroll_student_in_course("IU1111", "FS-BAAKI-01", 2.5)
-student_controller.enroll_student_in_course("IU123","FS-BAAKI-01", 3.1 )
-student_controller.enroll_student_in_course("IU3333", "FS-BAAKI-01", 1.5)
-
-
-
+if __name__ == "__main__":
+    import_initial_data()

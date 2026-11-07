@@ -1,7 +1,7 @@
-DLBDSEAIS1-01_D, Artificial Intelligence, 5;FS-BAAKI-01
+﻿DLBDSEAIS1-01_D, Artificial Intelligence, 5;FS-BAAKI-01
 DLBDSIPWP_D, Einführung in die Programmierung mit Python, 5;FS-BAAKI-01
 DLBBIMD, Mathematik: Analysis, 5;FS-BAAKI-01
-DLBWIRITT, Einführung in das wissenschaftliche Arbeiten für IT und Technik, 5;FS-BAAKI-01
+DLBWIRITT, Einführung in das wissenschaftliche Arbeiten für IT und Technik, 5;FS-BAAKI-01, FS-BAWI-02
 DLBDSOOFPP_D, Projekt: Objektorientierte und funktionale Programmierung mit Python, 5;FS-BAAKI-01
 DLBBIM, Mathematik: Lineare Algebra, 5;FS-BAAKI-01
 DLBDSSPDS_D, Statistik - Wahrscheinlichkeit und deskriptive Statistik, 5;FS-BAAKI-01
@@ -14,7 +14,7 @@ DLBDSNNDL-01_D, Neuronale Netze und Deep Learning, 5;FS-BAAKI-01
 DLBAIICV_D, Einführung in Computer Vision , 5;FS-BAAKI-01
 DLBAIPCV_D, Projekt: Computer Vision, 5;FS-BAAKI-01
 DLBAIIRL_D, Einführung in das Reinforcement Learning, 5;FS-BAAKI-01
-DLBINGEDS, Einführung in Datenschutz und IT-Sicherheit, 5;FS-BAAKI-01
+DLBINGEDS, Einführung in Datenschutz und IT-Sicherheit, 5;FS-BAAKI-01, FS-BAWI-02
 DLBAIBEELAAI_D, Ethische und rechtliche Aspekte in der KI, 5;FS-BAAKI-01
 DLBAIINLP_D, Einführung in NLP, 5;FS-BAAKI-01
 DLBAIPNLP_D, Projekt: NLP, 5;FS-BAAKI-01
@@ -23,8 +23,99 @@ DLBAIBESEI_D, Seminar: Ethische Innovation, 5;FS-BAAKI-01
 $WPF,5,1, Wahlpflichtmodule A, 5;FS-BAAKI-01
 $WPF,5,2, Wahlpflichtmodule B, 10;FS-BAAKI-01
 DLBDSME_D, Model Engineering, 5;FS-BAAKI-01
-BBAK, Bachelorarbeit, 10;FS-BAAKI-01
+BBAK, Bachelorarbeit, 10;FS-BAAKI-01, FS-BASA-03, FS-BABA, FS-BAWI-02
 $WPF,6,2, Wahlpflichtmodule C, 10;FS-BAAKI-01
 $WPF,0,10, Wahlpflichtmodule D0, 10;FS-BAAKI-01
 $WPF,1,10, Wahlpflichtmodule D1, 10;FS-BAAKI-01
 $WPF,2,10, Wahlpflichtmodule D2, 10;FS-BAAKI-01
+DLBSAESA01-02, Einführung in die Soziale Arbeit, 5;FS-BASA-03
+DLBWIRPSO01, Einführung in das wissenschaftliche Arbeiten für Pädagogik und Soziales, 5;FS-BASA-03
+DLBSABFE01-01, Berufsfeldentwicklung, 5;FS-BASA-03
+DLBSAPAED01-02, Pädagogik: historische konzeptionelle und begriffliche Grundlagen, 5;FS-BASA-03
+DLBSAPBGSPH01, Projekt: Beratung und Gesprächsführung in sozialen und pädagogischen Handlungsfeldern, 5;FS-BASA-03
+$WPF,1,2, Wahlpflichtbereich D_01, 5;FS-BASA-03
+DLBSATKSA01-01, Theorien und Konzepte in der Sozialen Arbeit, 5;FS-BASA-03
+DLBSAPSY01-02, Psychologie, 5;FS-BASA-03
+DLBSAMISA01-01, Methoden und Instrumente der Sozialen Arbeit I, 5;FS-BASA-03
+DLBSASO01-01, Soziologie, 5;FS-BASA-03
+DLBKPPSPP01, Projekt: Selbstreflexion Persönlichkeitsentwicklung und Professionalisierung, 5;FS-BASA-03
+$WPF,2,1, Wahlpflichtbereich D_02, 5;FS-BASA-03
+DLBSAPMSO01, Projekt: Management sozialer Organisationen, 5;FS-BASA-03
+DLBSASPE01-02, Sozialgeschichte Philosophie Ethik, 5;FS-BASA-03
+DLBSAMISA02-01, Methoden und Instrumente der Sozialen Arbeit II, 5;FS-BASA-03
+DLBSAEUS01, Entwicklung und Sozialisation , 5;FS-BASA-03
+DLGSPO01-02, Sozialpolitik, 5;FS-BASA-03
+DLBSAPMSPH01, Projekt: Methodenkompetenzen in sozialen und pädagogischen Handlungsfeldern, 5;FS-BASA-03
+$WPF,3,1, Wahlpflichtbereich D_03, 5;FS-BASA-03
+DLBSASUD01-01, Soziale Ungleichheit und Diversität, 5;FS-BASA-03
+DLBSAIUM01-02, Perspektiven auf die (Trans-)Migrationsgesellschaft, 5;FS-BASA-03
+DLBSASOR01-01, Sozialrecht, 5;FS-BASA-03
+DLBPGQLFM01, Qualitative Forschungsmethoden, 5;FS-BASA-03
+DLBSAWKMV01-01, Kinderschutz bei Kindesmisshandlung und -vernachlässigung, 5;FS-BASA-03
+$WPF4,1, Wahlpflichtbereich D_04, 5;FS-BASA-03
+$WPF11,2, Wahlpflichtbereich A, 10;FS-BASA-03
+$WPF12,2, Wahlpflichtbereich B, 10;FS-BASA-03
+DLBSASRSA01, Spezielle Rechtsbezüge der Sozialen Arbeit, 5;FS-BASA-03
+DLBPGQNFM01-01, Quantitative Forschungsmethoden, 5;FS-BASA-03
+$WPF13,3, Wahlpflichtbereich C, 10;FS-BASA-03
+DLBSAGSA01, Gesundheitsorientierte Soziale Arbeit, 5;FS-BASA-03
+DLBBAAIWB01-01_E, Academic Integrity and Writing for Business, 5;FS-BABA
+DLBBAB01_E, Business 101, 5;FS-BABA
+DLBBWME01_E, Managerial Economics, 5;FS-BABA
+DLBIAWBSS01, Introduction to Academic Work for Business and Social Sciences, 5;FS-BABA
+DLBLOGC101_E, Global Corporations and Globalization, 5;FS-BABA
+BWMA01_E, Business Mathematics, 5;FS-BABA
+DLBBWOB01_E, Organizational Behavior, 5;FS-BABA
+DLBMAE01, Management Accounting, 5;FS-BABA
+DLBDSESCM01, Supply Chain Management I, 5;FS-BABA
+DLBDSEIMB01, International Marketing, 5;FS-BABA
+BSTA-01_E, Statistics, 5;FS-BABA
+DLBCFIE01, Corporate Finance and Investment, 5;FS-BABA
+DLBBAPM01_E, Principles of Management, 5;FS-BABA
+DLBBAEI01-01_E, Entrepreneurship and Innovation, 5;FS-BABA
+DLBINTIHR01_E, International HR Management, 5;FS-BABA
+DLBSM01, Service Operations Management, 5;FS-BABA
+DLBCSCW01, Collaborative Work, 5;FS-BABA
+DLBCSIDM01, Intercultural and Ethical Decision-Making, 5;FS-BABA
+DLBLODB01-01_E, Digital Business Models, 5;FS-BABA
+DLBBAS01-01_E, Sustainability, 5;FS-BABA
+DLFIAC01_E, International Accounting, 5;FS-BABA
+DLBBARM01_E, Research Methods, 5;FS-BABA
+DLBBACGS01_E, Corporate Governance and Strategy, 5;FS-BABA
+DLBWPLS01_E, Leadership 4.0, 5;FS-BABA
+DLBDSEIMB02, International Brand Management, 5;FS-BABA
+DLBINTSATIM01_E, Seminar: Current Issues in International Management, 5;FS-BABA
+DLBDSESCM02, Supply Chain Management II, 5;FS-BABA
+DLBCSAPM01, Project: Agile Project Management, 5;FS-BABA
+$E159, Elective A, 10;FS-BABA
+$E139, Elective B, 10;FS-BABA
+$E1579, Elective C, 10;FS-BABA
+DLBWIEWI01, Einführung in die Wirtschaftsinformatik, 5;FS-BAWI-02
+BBWL01-01, Betriebswirtschaftslehre, 5;FS-BAWI-02
+IDBS01, Datenmodellierung und Datenbanksysteme, 5;FS-BAWI-02
+DLBWPPDBM01, Projekt: Digitale Business-Modelle, 5;FS-BAWI-02
+DLBWIII01, Informationssysteme und Integration, 5;FS-BAWI-02
+IMT101, Mathematik Grundlagen I, 5;FS-BAWI-02
+DLBCSOOPJ01_D, Grundlagen der objektorientierten Programmierung mit Java, 5;FS-BAWI-02
+DLBINGDABD01, Data Analytics und Big Data, 5;FS-BAWI-02
+DLBWIPDTIT01, Projekt: Design Thinking für IT, 5;FS-BAWI-02
+BSTA01-02, Statistik, 5;FS-BAWI-02
+BBUB01-01, Buchführung und Bilanzierung, 5;FS-BAWI-02
+IREN01, Requirements Engineering, 5;FS-BAWI-02
+IPMG01-01, IT-Projektmanagement, 5;FS-BAWI-02
+DLBWIPDM01, Projekt: Datenmodellierung, 5;FS-BAWI-02
+IQSS01, Qualitätssicherung im Softwareprozess, 5;FS-BAWI-02
+DLBLOSCM01, Supply Chain Management, 5;FS-BAWI-02
+DLBDBATD01, Seminar: Aktuelle Themen der Digitalisierung, 5;FS-BAWI-02
+DLBWIPAPW01, Projekt: Analyse von Prozessen und Wertströmen, 5;FS-BAWI-02
+DLBWIPERPS01, Projekt: ERP-Systeme, 5;FS-BAWI-02
+ISEF01, Projekt: Software Engineering, 5;FS-BAWI-02
+$WI-WPF-A, Wahlpflichtbereich A (WI), 10;FS-BAWI-02
+$WI-WPF-B, Wahlpflichtbereich B (WI), 10;FS-BAWI-02
+$WI-WPF-C, Wahlpflichtbereich C (WI), 10;FS-BAWI-02
+$WI-WPF-D1, Wahlpflichtbereich D_01 (WI), 5;FS-BAWI-02
+$WI-WPF-D2, Wahlpflichtbereich D_02 (WI), 5;FS-BAWI-02
+$WI-WPF-D3, Wahlpflichtbereich D_03 (WI), 5;FS-BAWI-02
+$WI-WPF-D4, Wahlpflichtbereich D_04 (WI), 5;FS-BAWI-02
+$WI-WPF-D5, Wahlpflichtbereich D_05 (WI), 5;FS-BAWI-02
+$WI-WPF-D6, Wahlpflichtbereich D_06 (WI), 5;FS-BAWI-02

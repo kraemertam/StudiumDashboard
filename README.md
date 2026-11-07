@@ -28,6 +28,7 @@ Die Nutzeroberfläche wurde mit TKinter erstellt.
 * Getestet unter Windows 11 
 
 ## Installation
+Github-Link: https://github.com/kraemertam/StudiumDashboard
 bash
 git clone ....
 cd StudiumDashboard

@@ -58,4 +58,6 @@ def start_databank():
     connection.commit()
     connection.close()
 
-start_databank()
+
+if __name__ == "__main__": 
+    start_databank()

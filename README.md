@@ -4,63 +4,95 @@ Das Projekt "StudiumDashboard" ist eine Desktop-Anwendung zur Verwaltung des eig
 Entstanden ist das Studienprojekt im Rahhmen von "DLBDSOOFPP01_D: Objektorientierte und funktionale Programmierung mit Python". 
 
 ## Inhaltsverzeichnis 
-[Über das Projekt](#über-das-projekt)
+- [StudiumDashboard](#studiumdashboard)
+  - [Inhaltsverzeichnis](#inhaltsverzeichnis)
+  - [Über das Projekt](#über-das-projekt)
+    - [Zielsetzung:](#zielsetzung)
+    - [Funktionsumfang](#funktionsumfang)
+    - [Verwendete Technologien](#verwendete-technologien)
+  - [Voraussetzungen](#voraussetzungen)
+  - [Installation](#installation)
+  - [Projektstruktur](#projektstruktur)
+  - [Architektur](#architektur)
+  - [Bekannte Einschränkungen](#bekannte-einschränkungen)
 
 ## Über das Projekt
 ### Zielsetzung:
-Ziel des StudiumDashboard ist es, einen Überblick über das Studium zu geben und laufende Entwicklungen zu erfassen. Gerade beim nebenberuflichen Studium läuft man Gefahr, den Überblick zu verlieren. Wie ist mein Stand aktuell? Welche Module sind noch offen? Lässt sich davon etwas praktisch in meinen beruflichen Alltag integrieren? Dein Studiendashboard soll einen Überblick schaffen und dich dabei unterstützen.
+Ziel des StudiumDashboard ist es, einen Überblick über das Studium zu geben und den Fortschritt zu erfassen. Gerade beim nebenberuflichen Studium läuft man Gefahr, den Überblick zu verlieren: Wie ist mein aktueller Stand? Welche Module sind noch offen? Liege ich im Rahmen meines Notenziels? Das Dashboard soll einen Überblick schaffen und dich dabei unterstützen.
 
 ### Funktionsumfang
-* Studierende anlegen und in einen Kurs einschreiben (inkl. Notenziel)
-* Kurse und Module verwalten, Module einem Kurs zuordnen (mit ETCS-Prüfung gegen das Kurskontigent)
+* Studierende registrieren und in einen Kurs einschreiben (inkl. Notenziel)
 * Modulstatus pflegen: offen, in Bearbeitung, bestanden, nicht bestanden
-* Noten erfassen
-* Übersichts-Dashboard mit Modulliste & Kennzahlen
-* Initialbefüllung der Datenbank aus CSV-Dateien
+* Noten erfassen, mit automatischer Statusanpassung
+* Übersichts-Dashboard mit Modulübersicht, Kreisdiagramm und Kennzahlen (erreichte ECTS, Notendurchschnitt, Abgleich mit dem Notenziel)
+* Kurse und Module über CSV-Dateien anlegen, inklusive ECTS-Prüfung gegen das Kurskontingent
+* Automatische Initialbefüllung der Datenbank beim ersten Start
 
 ### Verwendete Technologien
-Als Datenbank wurde SQLite (sqplite3) verwendet.
-Die Nutzeroberfläche wurde mit TKinter erstellt.
+* Python 3.11+
+* SQLite (`sqlite3`) als Datenbank
+* Tkinter für die Benutzeroberfläche
+* matplotlib für das Kreisdiagramm, Pillow für Bilder
 
 ## Voraussetzungen
 * Python 3.11 oder neuer
 * die Abhängigkeiten aus requirements.txt
-* Getestet unter Windows 11 
+* getestet unter Windows 11 
 
 ## Installation
-Github-Link: https://github.com/kraemertam/StudiumDashboard
-bash
-git clone ....
+
+**1. Projekt herunterladen**
+```
+git clone https://github.com/kraemertam/StudiumDashboard.git
 cd StudiumDashboard
-
-Virtuelle Umgebung anlegen und aktivieren 
+```
+Ohne Git: auf GitHub „Code → Download ZIP“, entpacken und im Ordner StudiumDashboard ein Terminal öffnen.
+**2. Virtuelle Umgebung anlegen und aktivieren (PowerShell)**
+```
 python -m venv .venv
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
 .\.venv\Scripts\Activate.ps1
-
-Abhängigkeiten installieren
+```
+**3. Abhängigkeiten installieren**
+```
 pip install -r requirements.txt
+```
 
-Datenbank vorbereiten
-
-Anwendung starten
+**4. Anwendung starten**
+```
 python main.py
+```
 
-Es öffnet sich das Anmeldefenster. Mit den Beispieldaten kann die Studierenden-ID "UI123" zum Ausprobieren verwendet werden. 
+Beim ersten Start werden die Datenbank sowie Beispieldaten (4 Studiengänge mit Modulen und 3 Studierende) automatisch angelegt. Zum Testen mit der Matrikelnummer IU1111 anmelden oder über „Noch nicht registriert?“ einen eigenen Studenten anlegen.
+
+**Daten ergänzen oder zurücksetzen:** Kurse und Module lassen sich in setup/initial_data_csv/ ergänzen. Nach dem Löschen von data/databank.db wird die Datenbank beim nächsten Start neu aufgebaut.
 
 ## Projektstruktur
-
+```
+StudiumDashboard/
+├── main.py              Startpunkt der Anwendung
+├── controller/          Steuerung der Abläufe
+├── data/                Repositories und Datenbank
+├── domains/             Fachklassen und -regeln
+├── services/            Berechnung der Kennzahlen
+├── ui/                  Tkinter-Oberfläche
+├── setup/               Import der Beispieldaten und CSV-Dateien
+└── requirements.txt
+```
 
 ## Architektur
-Das Proejkt ist in vier Schichten aufgeteilt, die jeweilis nur nach unten hin abhängig sind:
-ui -> services -> domains / data
+Das Projekt ist in fünf Schichten aufgeteilt, deren Abhängigkeiten nur von oben nach unten verlaufen:
+UI → Controller → Service bzw. Repository
 
-* domains/ ...
-* data / ...
-* services / ...
-* ui/ ...
+ `ui/` stellt die Ansichten dar und nimmt Eingaben entgegen.
+* `controller/` steuert die Abläufe, lädt Daten über die Repositories und wandelt sie in Domain-Objekte um.
+* `services/` berechnet die Kennzahlen des Dashboards ohne eigenen Datenbankzugriff.
+* `data/` kapselt den Zugriff auf SQLite und liefert einfache Werte zurück.
+* `domains/` enthält die fachlichen Klassen und Regeln und kennt keine andere Schicht.
 
 ## Bekannte Einschränkungen
-* Keine Benutzerauthentifizierung: Die Anmeldung erfolgt allein über die Studenten-ID
+* Keine Benutzerauthentifizierung: Die Anmeldung erfolgt allein über die Studenten-ID(Matrikelnummer)
 * Einbenutzerbetrieb mit loaler SQLite-Datei, kein gleichzeitiger Zugriff mehrerer Nutzenden
+* Werden einem Kurs nachträglich Module hinzugefügt, erscheinen sie nicht bei bereits eingeschriebenen Studierenden.
 * Modulvoraussetzungen (Modul B setzt Modul A voraus) sind nicht abgebildet
 * Keine automatisierten Tests

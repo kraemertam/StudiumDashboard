@@ -47,6 +47,7 @@ git clone https://github.com/kraemertam/StudiumDashboard.git
 cd StudiumDashboard
 ```
 Ohne Git: auf GitHub „Code → Download ZIP“, entpacken und im Ordner StudiumDashboard ein Terminal öffnen.
+
 **2. Virtuelle Umgebung anlegen und aktivieren (PowerShell)**
 ```
 python -m venv .venv
@@ -84,7 +85,7 @@ StudiumDashboard/
 Das Projekt ist in fünf Schichten aufgeteilt, deren Abhängigkeiten nur von oben nach unten verlaufen:
 UI → Controller → Service bzw. Repository
 
- `ui/` stellt die Ansichten dar und nimmt Eingaben entgegen.
+* `ui/` stellt die Ansichten dar und nimmt Eingaben entgegen.
 * `controller/` steuert die Abläufe, lädt Daten über die Repositories und wandelt sie in Domain-Objekte um.
 * `services/` berechnet die Kennzahlen des Dashboards ohne eigenen Datenbankzugriff.
 * `data/` kapselt den Zugriff auf SQLite und liefert einfache Werte zurück.

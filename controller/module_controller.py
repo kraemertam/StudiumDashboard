@@ -6,7 +6,7 @@ class ModuleController:
     def __init__(self):
         self.module_repository = ModuleRepository()
 
-    def add_module_to_course(self, course_id: str, module_id: str) -> Module | None:
+    def create_new_module(self, module_id, module_name, module_ects) -> Module | None:
         try:
             new_module = Module(module_id, module_name, int(module_ects))
         except ValueError as e:

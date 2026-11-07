@@ -11,7 +11,7 @@ class StudentController:
         self.course_controller = CourseController()
 
 
-    def create_new_student(self, student_id, student_name, student_lastname) -> Student | None:
+    def create_new_student(self, student_id: str, student_name: str, student_lastname: str) -> Student | None:
         """Create an new Student in database & as objekt."""
         try:
             new_student = Student(id=student_id, name=student_name, lastname=student_lastname)

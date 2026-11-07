@@ -9,7 +9,7 @@ class CourseController:
         self.course_repository = CourseRepository()
         self.module_controller = ModuleController()
 
-    def create_new_course(self, course_id, course_name, course_degree, course_ects) -> Course | None:
+    def create_new_course(self, course_id: str, course_name: str, course_degree: str, course_ects: int) -> Course | None:
         try:
             new_course = Course(course_id, course_name, course_degree, course_ects)
         except ValueError as e:
@@ -23,7 +23,7 @@ class CourseController:
         print(f"Der Kurs {course_name} wurde anlegt.")
         return new_course
     
-    def get_course(self, course_id) -> Course | None:
+    def get_course(self, course_id: str) -> Course | None:
         coursedata = self.course_repository.get_by_id(course_id)
         if coursedata is None:
             print("Der Kurs ist nicht in der Datenbank vorhanden.")
@@ -41,7 +41,7 @@ class CourseController:
             courses.append(course)
         return courses
 
-    def add_module_to_course(self, course_id, module_id):
+    def add_module_to_course(self, course_id: str, module_id: str) -> bool:
         course = self.get_course(course_id) # Check, if Course in DB. If yes, return Course as Instance.
         if course is None:
             print(f"Der Kurs {course_id} ist nicht in der Datenbank enthalten.")

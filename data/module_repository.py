@@ -11,7 +11,7 @@ class ModuleRepository(BaseRepository):
     ID_COLUMN = "module_id"
 
     def create(self, module_id: str, module_name: str, module_ects: int) -> None:
-        """Insert a new module. Raises ValueError if id already exist."""
+        """Insert a new module. Raises ValueError if id already exists."""
         try:
             with closing (self._connect()) as connection:
                 with connection:

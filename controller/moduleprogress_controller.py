@@ -6,7 +6,7 @@ from services.metrics_service import DashboardMetrics, MetricsService
 
 
 class ModuleProgressController:
-    STATUS_ORDER = {
+    _STATUS_ORDER = {
         ModuleProgress.Status.COMPLETED: 0,
         ModuleProgress.Status.FAILED: 1,
         ModuleProgress.Status.IN_PROGRESS: 2,
@@ -17,14 +17,14 @@ class ModuleProgressController:
         self.course_repository = CourseRepository()
         self.metrics_service = MetricsService()
 
-    def create_moduleprogress_entries(self, student_id, course_id) ->list[ModuleProgress]:
+    def create_moduleprogress_entries(self, student_id: str, course_id: str) ->list[ModuleProgress]:
         modules = self.course_repository.get_modules(course_id)
         moduleprogresslist = [ModuleProgress(student_id, Module(module_id, name, ects)) for module_id, name, ects in modules]
         rows = [(p.student_id, p.module.id, p.status) for p in moduleprogresslist]
         self.moduleprogress_repository.create_entries(rows)
         return moduleprogresslist
 
-    def get_all_moduleprogress(self, student_id):
+    def get_all_moduleprogress(self, student_id: str) -> list[ModuleProgress]:
         """Load all modules from a student as domainobject."""
         all_moduleprogresses = self.moduleprogress_repository.get_for_student(student_id)
         progresses = [
@@ -34,9 +34,9 @@ class ModuleProgressController:
                         grade)
             for module_id, name, ects, status, grade in all_moduleprogresses
         ]
-        return sorted(progresses, key=lambda p: (self.STATUS_ORDER[p.status], p.module.name))
+        return sorted(progresses, key=lambda p: (self._STATUS_ORDER[p.status], p.module.name))
         
-    def update_moduleprogress(self, moduleprogress, new_status, grade = None):
+    def update_moduleprogress(self, moduleprogress: ModuleProgress, new_status: ModuleProgress.Status, grade: float | None = None) -> ModuleProgress | None:
         if grade is not None:
             moduleprogress.set_grade(grade)
         else:

@@ -1,19 +1,14 @@
 # StudiumDashboard
-Das Projekt "StudiumDashboard" ist eine Desktop-Anwendung zur Verwaltung des eigenen Studienfortschritts. Studierende schreiben sich in einem Kurs ein, sehen alle zugehörigen Modele auf einen Blick und pflegen pro Modul den Status und die Note. 
-Das Dashboard errechnet daraus Kennzahlen wie erreichte ETCs, Notendurchschnitt und Fortschritt.
+Das Projekt "StudiumDashboard" ist eine Desktop-Anwendung zur Verwaltung des eigenen Studienfortschritts. Studierende schreiben sich in einem Kurs ein, sehen alle zugehörigen Module auf einen Blick und pflegen pro Modul den Status und die Note. Das Dashboard errechnet daraus Kennzahlen wie erreichte ETCs, Notendurchschnitt und Fortschritt.
 
 Entstanden ist das Studienprojekt im Rahhmen von "DLBDSOOFPP01_D: Objektorientierte und funktionale Programmierung mit Python". 
 
-## Inhaltsverzeichnis
+## Inhaltsverzeichnis 
 [Über das Projekt](#über-das-projekt)
 
 ## Über das Projekt
 ### Zielsetzung:
-Ziel des StudiumDashboard ist es, einen Überblick über das Studium zu geben und 
-laufende Entwicklungen zu erfassen. Gerade beim nebenberuflichen Studium 
-läuft man Gefahr, den Überblick zu verlieren. 
-Wie ist mein Stand aktuell?
-Was steht noch an?
+Ziel des StudiumDashboard ist es, einen Überblick über das Studium zu geben und laufende Entwicklungen zu erfassen. Gerade beim nebenberuflichen Studium läuft man Gefahr, den Überblick zu verlieren. Wie ist mein Stand aktuell? Welche Module sind noch offen? Lässt sich davon etwas praktisch in meinen beruflichen Alltag integrieren? Dein Studiendashboard soll einen Überblick schaffen und dich dabei unterstützen.
 
 ### Funktionsumfang
 * Studierende anlegen und in einen Kurs einschreiben (inkl. Notenziel)
@@ -22,12 +17,6 @@ Was steht noch an?
 * Noten erfassen
 * Übersichts-Dashboard mit Modulliste & Kennzahlen
 * Initialbefüllung der Datenbank aus CSV-Dateien
-
-### Was macht das Projekt?
-Mit wenigen Kennzahlen kannst du dir direkt einen Überblick verschaffen.
-Mit der Modulübersicht wird dir ein Gesamtüberblick über die unterschiedlichen 
-Module deines Studiums gegeben. Welche Module sind mit deinem beruflichen Weg aktuell 
-interessant und relevant? Was liegt vor dir? 
 
 ### Verwendete Technologien
 Als Datenbank wurde SQLite (sqplite3) verwendet.
@@ -74,6 +63,3 @@ ui -> services -> domains / data
 * Einbenutzerbetrieb mit loaler SQLite-Datei, kein gleichzeitiger Zugriff mehrerer Nutzenden
 * Modulvoraussetzungen (Modul B setzt Modul A voraus) sind nicht abgebildet
 * Keine automatisierten Tests
-
-
-

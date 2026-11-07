@@ -130,7 +130,7 @@ class RegisterView(ttk.Frame):
 
         # Enrollment Student in Course
         try:
-            student = self.student_controller.enrollment_student_in_course(self.controller.student.id, course_id, gradetarget)
+            student = self.student_controller.enroll_student_in_course(self.controller.student.id, course_id, gradetarget)
         except ValueError as e:
             self.status.config(text=str(e))
             return

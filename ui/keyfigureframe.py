@@ -16,7 +16,6 @@ class Keyfigureframe:
     """This class contains the keyfigureframe, including the keyfigures gradetarget and piechart."""
     def __init__(self, student, container, *args, **kwargs):
         self.student = student
-        self.student_id = student.id
         self.container = container
         self.moduleprogress_controller = ModuleProgressController()
         self.metrics = self.moduleprogress_controller.get_dashboard_metrics(self.student)
@@ -130,10 +129,5 @@ class Keyfigureframe:
             w.destroy()
         self.metrics = self.moduleprogress_controller.get_dashboard_metrics(self.student)
         self.get_gradeframe()
-        self.get_pie_chart()
-
-    def pie_chart_frame_refresh(self):
-        self.metrics = self.moduleprogress_controller.get_dashboard_metrics(self.student)
-        self.pieframe.destroy() 
         self.get_pie_chart()
 

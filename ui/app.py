@@ -18,7 +18,7 @@ class App(tk.Tk):
         self.current_frame = None    # currently displayed frame
         self.student = None          # currently logged-in student
 
-    def show(self, frame_class, **kwargs):
+    def show(self, frame_class, **kwargs) -> None:
         """Replace the current view with a new one."""
         if self.current_frame is not None:
             self.current_frame.destroy()

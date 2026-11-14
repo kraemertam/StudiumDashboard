@@ -38,7 +38,7 @@ class ModuleProgressController:
         
     def update_moduleprogress(self, moduleprogress: ModuleProgress, new_status: ModuleProgress.Status, grade: float | None = None) -> ModuleProgress | None:
         if grade is not None:
-            moduleprogress.set_grade(grade)
+            moduleprogress.grade = grade
         else:
             moduleprogress.change_status(new_status)
         self.moduleprogress_repository.save(moduleprogress.student_id, moduleprogress.module.id, moduleprogress.status, moduleprogress.grade)

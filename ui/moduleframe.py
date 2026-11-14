@@ -89,7 +89,7 @@ class Moduleview:
 
 
         def toggle_grade_field(event=None):
-            if new_moduleprogress.get() == Status.COMPLETED:
+            if new_moduleprogress.get() in (Status.COMPLETED, Status.FAILED):
                 grade_label.grid(row=2, column=0, padx=5, pady=5)
                 grade_entry.grid(row=3, column=0, padx=5, pady=5)
                 grade_entry.focus_set()
@@ -100,7 +100,7 @@ class Moduleview:
         def save():
             status = Status(new_moduleprogress.get())
             grade = None
-            if status == Status.COMPLETED:
+            if status in (Status.COMPLETED, Status.FAILED):
                 try:
                     grade = float(new_modulegrade.get().strip().replace(",", "."))
                 except ValueError:

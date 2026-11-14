@@ -19,9 +19,6 @@ class Student:
         if not re.match(pattern, self.id):
             raise ValueError("Ungültige Materikelnummer! Eine gültige Matrikelnummer startet mit \"IU\", gefolgt von 3 - 12 Ziffern, z.B. \"IU123456\"")
 
-    def info_student(self):
-        return f"Name: {self.name} {self.lastname}, Matrikelnummer: {self.id}, Kurs: {self.course.name if self.course else 'Kein Kurs'}, Notenziel: {self.gradetarget}"
-
     def enroll_student_in_course(self, course: Course, gradetarget: float):
         if self.course is not None:
             raise ValueError(f"{self.name} {self.lastname} ist bereits in einem Kurs eingeschrieben.")

@@ -97,7 +97,7 @@ class Keyfigureframe:
         self.gradeframe.columnconfigure(0, weight=1)
 
         actual_grade_point_average = self.metrics.average_grade if self.metrics.average_grade is not None else "-"
-        gradetarget = self.metrics.grade_target
+        gradetarget = self.metrics.grade_target if self.metrics.grade_target is not None else "nicht festgelegt"
         gradecolor, gradetargettext = self.grade_target_feedback()
         all_ects = self.metrics.ects_total
         achieved_ects = self.metrics.ects_achieved

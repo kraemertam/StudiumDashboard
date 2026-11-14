@@ -37,12 +37,6 @@ class ModuleProgressRepository(BaseRepository):
                 ORDER BY m.module_id""", (student_id,))
             return cursor.fetchall()
 
-    def get_grades(self, student_id: str) -> list[float]:
-        """Return all grades a student has received so far."""
-        with closing(self._connect()) as connection:
-            cursor = connection.execute("SELECT module_grade FROM moduleprogress WHERE student_id = ? AND module_grade IS NOT NULL", (student_id, ))
-            return [row[0] for row in cursor.fetchall()]
-
     def save(self, student_id: str, module_id: str, module_status: str, module_grade: float | None) -> None:
         """Save status and grade of one module in one step."""
         with closing(self._connect()) as connection:

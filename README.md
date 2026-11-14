@@ -1,9 +1,11 @@
 # StudiumDashboard
-Das Projekt "StudiumDashboard" ist eine Desktop-Anwendung zur Verwaltung des eigenen Studienfortschritts. Studierende schreiben sich in einem Kurs ein, sehen alle zugehörigen Module auf einen Blick und pflegen pro Modul den Status und die Note. Das Dashboard errechnet daraus Kennzahlen wie erreichte ETCs, Notendurchschnitt und Fortschritt.
+Das Projekt "StudiumDashboard" ist eine Desktop-Anwendung zur Verwaltung des eigenen Studienfortschritts. Studierende schreiben sich in einem Kurs ein, sehen alle zugehörigen Module auf einen Blick und pflegen pro Modul den Status und die Note. Das Dashboard errechnet daraus Kennzahlen wie erreichte ECTS, Notendurchschnitt und Fortschritt.
 
-Entstanden ist das Studienprojekt im Rahhmen von "DLBDSOOFPP01_D: Objektorientierte und funktionale Programmierung mit Python". 
+Entstanden ist das Studienprojekt im Rahmen von "DLBDSOOFPP01_D: Objektorientierte und funktionale Programmierung mit Python". 
 
 ## Inhaltsverzeichnis 
+- [StudiumDashboard](#studiumdashboard)
+  - [Inhaltsverzeichnis](#inhaltsverzeichnis)
   - [Über das Projekt](#über-das-projekt)
     - [Zielsetzung:](#zielsetzung)
     - [Funktionsumfang](#funktionsumfang)
@@ -91,7 +93,7 @@ UI → Controller → Service bzw. Repository
 
 ## Bekannte Einschränkungen
 * Keine Benutzerauthentifizierung: Die Anmeldung erfolgt allein über die Studenten-ID(Matrikelnummer)
-* Einbenutzerbetrieb mit loaler SQLite-Datei, kein gleichzeitiger Zugriff mehrerer Nutzenden
+* Einbenutzerbetrieb mit lokaler SQLite-Datei, kein gleichzeitiger Zugriff mehrerer Nutzenden
 * Werden einem Kurs nachträglich Module hinzugefügt, erscheinen sie nicht bei bereits eingeschriebenen Studierenden.
 * Modulvoraussetzungen (Modul B setzt Modul A voraus) sind nicht abgebildet
 * Keine automatisierten Tests

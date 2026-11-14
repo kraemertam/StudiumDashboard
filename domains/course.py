@@ -48,9 +48,4 @@ class Course:
     def remove_module(self, module: Module) -> None:
         self.modules.remove(module)
 
-    def return_modules(self) -> list[Module]:
-        return self.modules
-
-    def return_ects(self) -> int:
-        return self.ects
 

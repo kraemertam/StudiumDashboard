@@ -5,11 +5,13 @@ from controller.module_controller import ModuleController
 
 
 class CourseController:
+    """Coordinates loading, creating and changing courses between UI, domain and database."""
     def __init__(self):
         self.course_repository = CourseRepository()
         self.module_controller = ModuleController()
 
     def create_new_course(self, course_id: str, course_name: str, course_degree: str, course_ects: int) -> Course | None:
+        """Create a new course: validate via the domain class, then save in the database."""
         try:
             new_course = Course(course_id, course_name, course_degree, course_ects)
         except ValueError as e:
@@ -24,6 +26,7 @@ class CourseController:
         return new_course
     
     def get_course(self, course_id: str) -> Course | None:
+        """Load a course including its modules. Returns None if it does not exist."""
         coursedata = self.course_repository.get_by_id(course_id)
         if coursedata is None:
             print("Der Kurs ist nicht in der Datenbank vorhanden.")
@@ -34,6 +37,7 @@ class CourseController:
         return course
                 
     def get_all_courses(self) -> list[Course]:
+        """Load all courses without their modules."""
         courses_data = self.course_repository.get_all()
         courses = []
         for course_data in courses_data:
@@ -42,6 +46,7 @@ class CourseController:
         return courses
 
     def add_module_to_course(self, course_id: str, module_id: str) -> bool:
+        """Add a module to a course after checking it via the domain class. Returns True on success."""
         course = self.get_course(course_id) # Check, if Course in DB. If yes, return Course as Instance.
         if course is None:
             print(f"Der Kurs {course_id} ist nicht in der Datenbank enthalten.")

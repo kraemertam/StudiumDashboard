@@ -1,4 +1,3 @@
-# ui/register_view.py
 import tkinter as tk
 from tkinter import ttk
 
@@ -8,6 +7,7 @@ from ui.moduleframe import Moduleview
 
 
 class DashboardView(ttk.Frame):
+    """Dashboard with key figures and one tile per module progress."""
     def __init__(self, parent, controller):
         super().__init__(parent, padding=40)
         self.controller = controller

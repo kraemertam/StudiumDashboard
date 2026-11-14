@@ -7,6 +7,7 @@ ALL_STATUS: tuple[ModuleProgress.Status, ...] = tuple(Status)
 
 @dataclass
 class DashboardMetrics:
+    """Container for the key figures that are passed to the dashboard."""
     status_counts: dict[Status, int]
     ects_total: int
     ects_achieved: int
@@ -18,6 +19,7 @@ class MetricsService:
      """Calculates the key figures for the dashboard. Has no access to the database."""
      
      def get_dashboard_metrics(self, moduleprogress: list[ModuleProgress], gradetarget: float | None) -> DashboardMetrics:
+        """Calculate status counts, ECTS and the ECTS-weighted average grade of all passed modules."""
         number_of_status = Counter(m.status for m in moduleprogress)    # counts number of modules for each status
 
         status_counts = {s: number_of_status.get(s, 0) for s in ALL_STATUS}  # creates a dictionary with all statuses and their counts

@@ -5,6 +5,7 @@ from domains.module import Module
 
 @dataclass
 class Course:
+    """A course of study with its modules. Ensures that the ECTS of all modules do not exceed the planned ECTS."""
     id: str
     name: str
     degree: str
@@ -16,11 +17,13 @@ class Course:
         self._validate_ects()
 
     def _validate_id(self) -> None:
+        """Check that the course id matches the expected format."""
         pattern = r"^[A-Za-z]{2}-[A-Za-z]{1,6}-{0,1}\d{0,4}$"
         if not re.match(pattern, self.id):
             raise ValueError(f"Ungültige Kurs-ID {self.id}. Erwartetes Format, wie z.B. \"FS-BAAKI-01\"")
 
     def _validate_ects(self) -> None:
+        """Check that the planned ECTS match the degree (Bachelor or Master)."""
         if self.degree.startswith("Bachelor"):
             if not (180 <= self.ects <= 240):
                 raise ValueError("Die ECTS-Punkte für einen Bachelorabschluss müssen zwischen 180 - 240 liegen.")
@@ -38,6 +41,7 @@ class Course:
         return remaining_ects
 
     def add_module(self, module: Module) -> None:
+        """Add a module if it is not yet part of the course and enough ECTS are left."""
         if any(m.id == module.id for m in self.modules):
             raise ValueError(f"Modul {module.name} ist bereits im Kurs {self.name} enthalten.")
         if module.ects > self.remaining_ects():
@@ -46,6 +50,7 @@ class Course:
         self.modules.append(module)
 
     def remove_module(self, module: Module) -> None:
+        """Remove a module from the course."""
         self.modules.remove(module)
 
 

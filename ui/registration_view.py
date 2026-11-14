@@ -7,6 +7,7 @@ from ui.dashboard_view import DashboardView
 
 
 class RegisterView(ttk.Frame):
+    """Two-step registration: create a profile, then choose a course and grade target."""
     def __init__(self, parent, controller):
         super().__init__(parent, padding=40)
         self.controller = controller
@@ -77,6 +78,7 @@ class RegisterView(ttk.Frame):
         
 
     def registration_check(self):
+        """Check the input of step 1 and create the student."""
         self.status.config(text="", foreground="red")
 
         student_id = self.student_id.get().strip()
@@ -109,6 +111,7 @@ class RegisterView(ttk.Frame):
         self.step2.grid()
 
     def course_enrollment_check(self):
+        """Check the input of step 2, enroll the student and open the dashboard."""
         self.status.config(text="", foreground="red")
 
         gradetarget = self.gradetarget.get().strip().replace(",", ".")

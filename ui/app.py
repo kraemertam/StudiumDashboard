@@ -4,6 +4,7 @@ import tkinter as tk
 from tkinter import ttk
 
 class App(tk.Tk):
+    """Main window of the application. Holds the logged-in student and switches between views."""
     def __init__(self):
         super().__init__() # Calls the constructor of tk.Tk
         self.title("Dashboard fürs Studium")

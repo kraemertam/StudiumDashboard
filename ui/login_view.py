@@ -8,6 +8,7 @@ from ui.dashboard_view import DashboardView
 
 
 class LoginView(ttk.Frame):
+    """Start view with login via matriculation number and link to registration."""
     def __init__(self, parent, controller):
         super().__init__(parent, padding=40)
         self.controller = controller
@@ -45,6 +46,7 @@ class LoginView(ttk.Frame):
            command=lambda: self.controller.show(RegisterView)).grid(row=7, pady=5)
 
     def on_login(self):
+        """Check the input, log in via the StudentController and open the dashboard."""
         self.status.config(text="")
         student_id = self.student_id.get().strip()
 

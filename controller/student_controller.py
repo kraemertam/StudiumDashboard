@@ -5,6 +5,7 @@ from domains.student import Student
 
 
 class StudentController:
+    """Coordinates registration, login and enrollment of students."""
     def __init__(self):
         self.student_repository = StudentRepository()
         self.moduleprogress_controller = ModuleProgressController()

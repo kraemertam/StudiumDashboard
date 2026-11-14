@@ -6,6 +6,7 @@ from services.metrics_service import DashboardMetrics, MetricsService
 
 
 class ModuleProgressController:
+    """Coordinates loading and changing module progresses and provides the key figures for the dashboard."""
     _STATUS_ORDER = {
         ModuleProgress.Status.COMPLETED: 0,
         ModuleProgress.Status.FAILED: 1,
@@ -18,6 +19,7 @@ class ModuleProgressController:
         self.metrics_service = MetricsService()
 
     def create_moduleprogress_entries(self, student_id: str, course_id: str) ->list[ModuleProgress]:
+        """Create an OPEN progress entry for every module of the course."""
         modules = self.course_repository.get_modules(course_id)
         moduleprogresslist = [ModuleProgress(student_id, Module(module_id, name, ects)) for module_id, name, ects in modules]
         rows = [(p.student_id, p.module.id, p.status) for p in moduleprogresslist]
@@ -37,6 +39,7 @@ class ModuleProgressController:
         return sorted(progresses, key=lambda p: (self._STATUS_ORDER[p.status], p.module.name))
         
     def update_moduleprogress(self, moduleprogress: ModuleProgress, new_status: ModuleProgress.Status, grade: float | None = None) -> ModuleProgress | None:
+        """Change status or grade via the domain class and save the result."""
         if grade is not None:
             moduleprogress.grade = grade
         else:
@@ -45,6 +48,7 @@ class ModuleProgressController:
         return moduleprogress
 
     def get_dashboard_metrics(self, student) -> DashboardMetrics:
+        """Load the module progresses of the student and let the MetricsService calculate the key figures."""
         moduleprogresses = self.get_all_moduleprogress(student.id) # loads all moduleprogresses for student as domainobject
         dashboard_metrics = self.metrics_service.get_dashboard_metrics(moduleprogresses, student.gradetarget) # calculates the key figures for the dashboard
         return dashboard_metrics

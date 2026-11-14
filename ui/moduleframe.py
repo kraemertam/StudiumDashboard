@@ -15,17 +15,15 @@ except:
 
 
 # --- FRAME FOR EVERY SINGLE MODULEPROGRESS --------------------------------------------------------------------------------------
-
 class Moduleview:
+    """Tile for a single module progress with status, grade and a dialog to change them."""
     def __init__(self, progress, container, on_change = None):
         self.moduleprogress = progress
         self.container = container
         self.on_change = on_change
         self.moduleprogress_controller = ModuleProgressController()
 
-
         # --- STRUCTURE & ELEMENTS OF MODULEFRAME --------------------------------------------------------------------
-
         self.frame = tk.Frame(self.container, borderwidth=1, relief="solid")
         self.frame.columnconfigure(0, weight=1, uniform="cols", pad=5)
         for r in range(5):
@@ -49,6 +47,7 @@ class Moduleview:
         self.status_button.grid(row=4, sticky="s", padx=1, pady=1)
 
         self.render()
+
     # --- DRAWS THE TILE ACCORDING TO THE CURRENT PROGRESS --------------------------------------------------------------------
     def render(self):
         """Updates colors, labels and visibility to match the current module progress."""
@@ -70,6 +69,7 @@ class Moduleview:
 
 # --- CHANGE THE STATUS OF A MODULE -------------------------------------------------------------------
     def open_status_dialog(self):
+        """Open a dialog to change status and grade of the module."""
         dialog_status_change = tk.Toplevel(self.container)
         dialog_status_change.title(self.moduleprogress.module.name)
 

@@ -52,6 +52,7 @@ class Keyfigureframe:
         return fig
 
     def get_pie_chart(self):
+        """Place the pie chart in the frame and adjust it to the available size."""
         self.pieframe = tk.Frame(self.frame, bg=FRAME_BG)
         self.pieframe.grid(row=0, column=1, columnspan=2, sticky="nsew", padx=5, pady=5)
         self.pieframe.grid_propagate(False)
@@ -92,6 +93,7 @@ class Keyfigureframe:
         return "black", "Super gemacht! \nDu befindest dich innerhalb deines Notenziels. Weiter so!"
 
     def get_gradeframe(self):
+        """Show course, ECTS, grade target and average grade."""
         self.gradeframe = tk.Frame(self.frame, bg=FRAME_BG)
         self.gradeframe.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
         self.gradeframe.columnconfigure(0, weight=1)
@@ -127,6 +129,7 @@ class Keyfigureframe:
         gradetarget_info.grid(row=5, column=0, sticky="w", padx=15, pady=5)
 
     def keyfigureframe_refresh(self):
+        """Reload the key figures and redraw the frame."""
         for w in self.frame.winfo_children():
             w.destroy()
         self.metrics = self.moduleprogress_controller.get_dashboard_metrics(self.student)

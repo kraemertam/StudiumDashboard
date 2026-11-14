@@ -3,7 +3,9 @@ from domains.module import Module
 
 
 class ModuleProgress:
+    """Progress of a student in a module. Status and grade are encapsulated so that they always stay consistent."""
     class Status(StrEnum):
+        """Possible states of a module progress."""
         OPEN = "Offen"
         IN_PROGRESS = "In Bearbeitung"
         COMPLETED = "Bestanden"
@@ -21,14 +23,17 @@ class ModuleProgress:
 
     @property
     def status(self) -> Status:
+        """Current status. Read only, changes only via grade or change_status()."""
         return self._status
 
     @property
     def grade(self) -> float | None:
+        """Current grade or None if no grade has been set."""
         return self._grade
 
     @grade.setter
     def grade(self, grade: float) -> None:
+        """Set a grade between 1.0 and 5.0 and derive the status from it (up to 4.0 completed, above failed)."""
         if not (1.0 <= grade <= 5.0):
             raise ValueError("Eine Note muss zwischen 1.0 und 5.0 liegen.")
         self._grade = grade
@@ -38,6 +43,7 @@ class ModuleProgress:
             self._status = ModuleProgress.Status.COMPLETED
 
     def change_status(self, new_status: Status) -> None:
+        """Change the status to OPEN or IN_PROGRESS and remove the grade. Completed and failed result only from a grade."""
         if new_status not in (ModuleProgress.Status.OPEN, ModuleProgress.Status.IN_PROGRESS):
             raise ValueError("Bestanden oder nicht bestanden ergibt sich aus der Note. Bitte trage eine Note ein.")
         self._grade = None

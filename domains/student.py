@@ -19,7 +19,7 @@ class Student:
         """Check that the matriculation number matches the expected format."""
         pattern = r"^IU\d{3,12}$"
         if not re.match(pattern, self.id):
-            raise ValueError("Ungültige Materikelnummer! Eine gültige Matrikelnummer startet mit \"IU\", gefolgt von 3 - 12 Ziffern, z.B. \"IU123456\"")
+            raise ValueError("Ungültige Matrikelnummer! Eine gültige Matrikelnummer startet mit \"IU\", gefolgt von 3 - 12 Ziffern, z.B. \"IU123456\"")
 
     def enroll_student_in_course(self, course: Course, gradetarget: float):
         """Enroll the student in a course. Raises ValueError if already enrolled or the grade target is invalid."""
@@ -27,6 +27,6 @@ class Student:
             raise ValueError(f"{self.name} {self.lastname} ist bereits in einem Kurs eingeschrieben.")
         gradetarget = float(gradetarget)
         if not (1.0 <= gradetarget <= 4.0):
-            raise ValueError("Das Ziel-Notendurchschnitt muss zwischen 1.0 und 4.0 liegen.")
+            raise ValueError("Das Notenziel muss zwischen 1.0 und 4.0 liegen.")
         self.course = course
         self.gradetarget = gradetarget

@@ -25,7 +25,6 @@ def insert_moduledata_db():
                 continue
         
             module_info, _, course_info = line.partition(";")
-            print(f"module_info: {module_info}")
             module_info = [m.strip() for m in module_info.split(", ")]
             module_id = module_info[0]
             module_name = module_info[1]
@@ -58,7 +57,6 @@ def initialize_course():
                 continue
 
             module_info, _, course_info = line.partition(";")
-            print(f"module_info: {module_info}")
             module_info = [m.strip() for m in module_info.split(", ")]
 
             module_id = module_info[0]

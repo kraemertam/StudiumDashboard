@@ -15,14 +15,13 @@ class CourseController:
         try:
             new_course = Course(course_id, course_name, course_degree, course_ects)
         except ValueError as e:
-            print(f"Kurs konnte nicht anlegt werden: {e}")
+            print(f"Kurs konnte nicht angelegt werden: {e}")
             raise
         try:
             self.course_repository.create(course_id, course_name, course_degree, course_ects)
         except ValueError as e:
-            print(f"Kurs konnte nicht anlegt werden: {e}")
+            print(f"Kurs konnte nicht angelegt werden: {e}")
             raise
-        print(f"Der Kurs {course_name} wurde anlegt.")
         return new_course
     
     def get_course(self, course_id: str) -> Course | None:

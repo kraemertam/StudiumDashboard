@@ -46,7 +46,6 @@ class Course:
             raise ValueError(f"Modul {module.name} ist bereits im Kurs {self.name} enthalten.")
         if module.ects > self.remaining_ects():
             raise ValueError (f"Das Modul {module.name} mit {module.ects} passt nicht mehr in den Kurs {self.name}. Es sind lediglich {self.remaining_ects()} ECTS-Punkte übrig.")
-        print(f"Module {module.name} wurde {self.name} hinzugefügt.")
         self.modules.append(module)
 
     def remove_module(self, module: Module) -> None:

@@ -13,18 +13,17 @@ class StudentController:
 
 
     def create_new_student(self, student_id: str, student_name: str, student_lastname: str) -> Student | None:
-        """Create an new Student in database & as objekt."""
+        """Create a new student: validate via the domain class, then save in the database."""
         try:
             new_student = Student(id=student_id, name=student_name, lastname=student_lastname)
         except ValueError as e:
-            print(f"Student konnte nicht anlegt werden: {e}")
+            print(f"Student konnte nicht angelegt werden: {e}")
             raise
         try: 
             self.student_repository.create(student_id, student_name, student_lastname)
         except ValueError as e:
-            print(f"Student konnte nicht anlegt werden: {e}")
+            print(f"Student konnte nicht angelegt werden: {e}")
             raise
-        print(f"{new_student.name} {new_student.lastname} wurde als neuer Student angelegt.")
         return new_student
 
     def get_student(self, student_id: str) -> Student | None:
@@ -34,11 +33,10 @@ class StudentController:
             return None
         course = self.course_controller.get_course(this_student[3]) if this_student[3] is not None else None
         student = Student(id= this_student[0], name = this_student[1], lastname=this_student[2], course = course, gradetarget = this_student[4])
-        print(f"Student {student.name}, {student.lastname}, {student.id} wurde geladen.")
         return student
 
     def login(self, student_id: str) -> Student:
-        """Load student for login. Raises ValueError if student does not exist or is not enrolled."""
+        """Load an existing student including the course. Returns None if not found."""
         student = self.get_student(student_id)
         if student is None:
             raise ValueError(f"Kein Student mit der Matrikelnummer {student_id}.")

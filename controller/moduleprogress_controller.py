@@ -46,5 +46,5 @@ class ModuleProgressController:
 
     def get_dashboard_metrics(self, student) -> DashboardMetrics:
         moduleprogresses = self.get_all_moduleprogress(student.id) # loads all moduleprogresses for student as domainobject
-        dashboard_metrics = self.metrics_service.get_dashboard_metrics(moduleprogresses, float(student.gradetarget)) # calculates the key figures for the dashboard
+        dashboard_metrics = self.metrics_service.get_dashboard_metrics(moduleprogresses, student.gradetarget) # calculates the key figures for the dashboard
         return dashboard_metrics

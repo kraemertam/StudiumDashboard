@@ -85,6 +85,8 @@ class Keyfigureframe:
         """Return text color and feedback text for the grade target."""
         if self.metrics.average_grade is None:
             return "black", "Noch keine Note vorhanden."
+        if self.metrics.grade_target is None:
+            return "black", "Kein Notenziel festgelegt."
         if self.metrics.grade_difference > 0:
             return "red", f"Achtung! \nDu hast deine Zielnote um {self.metrics.grade_difference} überschritten!"
         return "black", "Super gemacht! \nDu befindest dich innerhalb deines Notenziels. Weiter so!"

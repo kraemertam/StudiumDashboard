@@ -8,7 +8,7 @@ class ModuleRepository(BaseRepository):
     """Database access for modules. Inherits get_by_id(), get_all() and exists() from BaseRepository."""
 
     TABLE = "modules"
-    ID_COLUMN = "module_id"
+    ID_COLUMNS = ("module_id",)
 
     def create(self, module_id: str, module_name: str, module_ects: int) -> None:
         """Insert a new module. Raises ValueError if id already exists."""

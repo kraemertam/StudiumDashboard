@@ -5,13 +5,13 @@ from data.base_repository import BaseRepository
 
 
 class ModuleProgressRepository(BaseRepository):
-    """Database access for the progress of a student in his modules. 
-
-    The table has a composite primary key (student_id, module_id).
-    Therefore ID_COLUMN stays empty and get_by_id()/exists() are not used here;
-    this class only uses the helper method of BaseRepository."""
+    """Database access for the progress of a student in his modules.
+    Inherits get_by_id(), get_all() and exists() from BaseRepository.
+    The table has a composite primary key (student_id, module_id),
+    therefore ID_COLUMNS contains both columns."""
 
     TABLE = "moduleprogress"
+    ID_COLUMNS = ("student_id", "module_id")
     
     def create_entries(self, moduleprogress_rows: list[tuple]) -> None:
         """Insert several progress entries at once.

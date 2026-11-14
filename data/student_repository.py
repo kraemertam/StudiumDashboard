@@ -8,7 +8,7 @@ class StudentRepository(BaseRepository):
     """Database access for students. Inherits get_by_id(), get_all() and exists() from BaseRepository."""
 
     TABLE = "student"
-    ID_COLUMN = "student_id"
+    ID_COLUMNS = ("student_id",)
 
     def create(self, student_id: str, student_name: str, student_lastname: str) -> None:
         """Insert a new student. Raises ValueError if the id already exists."""

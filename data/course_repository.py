@@ -9,7 +9,7 @@ class CourseRepository(BaseRepository):
     Inherits get_by_id(), get_all() and exists() from BaseRepository."""
 
     TABLE = "course"
-    ID_COLUMN = "course_id"
+    ID_COLUMNS = ("course_id",)
 
     def create(self, course_id: str, course_name: str, course_degree: str, course_ects: int) -> None:
         """Insert a new course. Raises ValueError if id already exists."""
